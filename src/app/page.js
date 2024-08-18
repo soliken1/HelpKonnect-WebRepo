@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <div className="flex h-screen overflow-hidden">
       <div className="w-1/2 h-screen flex justify-center items-center">
-        <label className="text-red-300">Image</label>
+        <label className="text-red-300">Image Here</label>
       </div>
       <div
         className={`w-1/2 h-screen p-16 flex justify-center transform transition-transform duration-1000 ease-in-out ${slideEffect} bg-red-300`}
