@@ -15,7 +15,7 @@ function Startup() {
     <div className="flex flex-col justify-center items-center h-screen w-screen">
       <Image
         className="absolute top-16"
-        src="/Logo.png"
+        src="/Logo/Logo.png"
         width={300}
         height={300}
         alt="Logo"
