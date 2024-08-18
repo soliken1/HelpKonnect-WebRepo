@@ -6,6 +6,7 @@ const Startup = dynamic(() => import("@/components/home/Startup"), {
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const [isStarting, setIsStarting] = useState(true);
@@ -59,9 +60,11 @@ export default function Home() {
           <div class="relative mt-5">
             <input
               type="email"
+              name="email"
               id="floating_outlined"
               class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
               placeholder=" "
+              autocomplete="off"
             />
             <label
               for="floating_outlined"
@@ -76,6 +79,7 @@ export default function Home() {
               id="floating_outlined"
               class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
               placeholder=" "
+              autocomplete="new-password"
             />
             <label
               for="floating_outlined"
@@ -84,13 +88,13 @@ export default function Home() {
               Password
             </label>
           </div>
-          <div className="w-full ps-24 pe-24">
-            <button
-              className="w-full h-10 mt-3 bg-red-500 rounded-lg text-white font-bold"
-              type="submit"
+          <div className="w-full flex justify-center items-center">
+            <Link
+              className="w-1/2 flex items-center justify-center h-10 mt-3 bg-red-500 rounded-lg text-white font-bold"
+              href="/dashboard"
             >
-              Login
-            </button>
+              <label className="cursor-pointer">Login</label>
+            </Link>
           </div>
         </form>
       </div>
