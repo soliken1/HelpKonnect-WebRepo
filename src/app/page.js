@@ -38,7 +38,7 @@ export default function Home() {
         />
       </div>
       <div
-        className={`w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out ${slideEffect} bg-red-300`}
+        className={`w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out rounded-s-2xl ${slideEffect} shadow-xl shadow-red-300 bg-red-300`}
       >
         <div className="w-full h-2/6 flex justify-center items-center">
           <Image src="/Logo/LogoCircular.png" width={175} height={175} />
