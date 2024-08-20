@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import { pinwheel } from "ldrs";
+import { ring2 } from "ldrs";
 
 function Startup() {
-  pinwheel.register();
+  ring2.register();
 
   useEffect(() => {
     const timer = setTimeout(() => {}, 2000);
@@ -26,7 +26,14 @@ function Startup() {
       <label className="text-black text-4xl mb-8">
         Your Mental Health Care Provider and Assistant
       </label>
-      <l-pinwheel size="40" stroke="3.5" speed="0.9" color="pink"></l-pinwheel>
+      <l-ring-2
+        size="40"
+        stroke="5"
+        stroke-length="0.25"
+        bg-opacity="0.1"
+        speed="0.8"
+        color="pink"
+      ></l-ring-2>{" "}
       <label className="absolute bottom-10 text-red-300 text-xl">
         The Help-Konnect Team 2024
       </label>

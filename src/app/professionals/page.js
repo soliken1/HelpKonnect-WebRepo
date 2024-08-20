@@ -1,12 +1,12 @@
 "use client";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Analytics from "@/components/dashboard/Analytics";
-import SideAnalytics from "@/components/dashboard/SideAnalytics";
+import React from "react";
 import { useState, useEffect } from "react";
-import { getCookie } from "cookies-next";
+import Sidebar from "@/components/dashboard/Sidebar";
+import Table from "@/components/professionals/Table";
 import Profile from "@/components/dashboard/Profile";
+import { getCookie } from "cookies-next";
 
-function Dashboard() {
+function Professionals() {
   const [role, setRole] = useState("");
   useEffect(() => {
     setRole(getCookie("role"));
@@ -14,11 +14,10 @@ function Dashboard() {
   return (
     <div className="flex flex-row">
       <Sidebar role={role} />
-      <Analytics />
       <Profile />
-      <SideAnalytics />
+      <Table />
     </div>
   );
 }
 
-export default Dashboard;
+export default Professionals;

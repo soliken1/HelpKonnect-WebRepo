@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function Sidebar({ role }) {
   return (
-    <div className="h-screen w-36 flex flex-col gap-5 bg-red-300">
+    <div className="h-screen w-32 flex flex-col gap-5 bg-red-300 shadow-md shadow-red-400">
       <div className="w-full h-32 flex items-center justify-center">
         <Image src="/Logo/Logo.png" width={100} height={100} alt="Logo" />
       </div>
@@ -79,7 +79,7 @@ function Sidebar({ role }) {
               </div>
             </Link>
             <Link
-              href="/dashboard"
+              href="/professionals"
               className="w-full flex items-center justify-center h-16"
             >
               <div className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md">
