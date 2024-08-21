@@ -87,7 +87,7 @@ function Sidebar({ role }) {
                   src="/Icons/ProfessionalIcon.png"
                   width={28}
                   height={28}
-                  alt="Analytics Icon"
+                  alt="Professionals Icon"
                 />
                 <label className="text-white text-sm font-bold cursor-pointer">
                   Professionals
@@ -103,7 +103,7 @@ function Sidebar({ role }) {
                   src="/Icons/ReservationIcon.png"
                   width={25}
                   height={25}
-                  alt="Analytics Icon"
+                  alt="Reservation Icon"
                 />
                 <label className="text-white text-sm font-bold cursor-pointer">
                   Reservation
@@ -111,7 +111,7 @@ function Sidebar({ role }) {
               </div>
             </Link>
             <Link
-              href="/dashboard"
+              href="/resources"
               className="w-full flex items-center justify-center h-16"
             >
               <div className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md">
@@ -119,7 +119,7 @@ function Sidebar({ role }) {
                   src="/Icons/BoxIcon.png"
                   width={25}
                   height={25}
-                  alt="Analytics Icon"
+                  alt="Resources Icon"
                 />
                 <label className="text-white text-sm font-bold cursor-pointer">
                   Resources
