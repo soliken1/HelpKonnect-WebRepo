@@ -95,7 +95,7 @@ function Sidebar({ role }) {
               </div>
             </Link>
             <Link
-              href="/dashboard"
+              href="/bookings"
               className="w-full flex items-center justify-center h-16"
             >
               <div className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md">
