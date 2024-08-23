@@ -8,10 +8,7 @@ function Table() {
         Professional List on Sample Facility
       </label>
       <div className="flex justify-end mt-10 mb-4">
-        <button
-          type="button"
-          className="bg-green-400 shadow-md shadow-green-200 text-white ps-4 pe-4 pt-2 pb-2 rounded-lg"
-        >
+        <button className="bg-green-400 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400">
           Add Professional
         </button>
       </div>
