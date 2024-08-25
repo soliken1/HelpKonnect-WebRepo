@@ -8,6 +8,7 @@ import Profile from "@/components/dashboard/Profile";
 
 function Dashboard() {
   const [role, setRole] = useState("");
+
   useEffect(() => {
     setRole(getCookie("role"));
   }, []);

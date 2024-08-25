@@ -32,6 +32,7 @@ export default function Home() {
     event.preventDefault();
     try {
       setCookie("role", "facility");
+      setCookie("user", "Sample Facility 1");
       router.push("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);

@@ -1,8 +1,16 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getCookie } from "cookies-next";
+import { useState, useEffect } from "react";
 
 function Profile() {
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    setUser(getCookie("user"));
+  }, []);
   return (
     <Link
       href="/profile"
@@ -14,9 +22,7 @@ function Profile() {
         width={30}
         height={30}
       />
-      <label className="text-white font-semibold cursor-pointer">
-        Sample Facility
-      </label>
+      <label className="text-white font-semibold cursor-pointer">{user}</label>
     </Link>
   );
 }
