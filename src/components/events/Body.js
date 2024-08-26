@@ -43,9 +43,9 @@ function Body() {
         </button>
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2 className="text-2xl font-semibold mb-1">Add Professional</h2>
+        <h2 className="text-2xl font-semibold mb-1">Add Events</h2>
         <label className="text-gray-400 font-semibold">
-          Add Pending Professionals on the Applying on Your Facility
+          For Posting To Users on Help-Konnect To Participate In
         </label>
         <div className="h-5/6 flex flex-row w-full mt-4">
           <div className="w-96 h-full flex justify-center items-center">
