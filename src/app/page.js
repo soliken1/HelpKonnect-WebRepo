@@ -31,8 +31,8 @@ export default function Home() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      setCookie("role", "facility");
-      setCookie("user", "Sample Facility 1");
+      setCookie("role", "admin");
+      setCookie("user", "Soliken");
       router.push("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
