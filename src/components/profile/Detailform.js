@@ -4,7 +4,7 @@ import React from "react";
 function Detailform({ username }) {
   return (
     <div className="h-96 mt-5 px-4">
-      <form className="h-auto">
+      <form className="h-auto flex flex-col">
         <div className="flex flex-row justify-center items-center gap-5">
           <input
             id="username"
@@ -17,7 +17,7 @@ function Detailform({ username }) {
             <img className="w-6 h-6" src="/Icons/EditIcon.png" />
           </button>
         </div>
-        <div className="flex flex-row h-80 mt-7 px-4">
+        <div className="flex flex-row h-auto mt-7 px-4 pb-5">
           <div className="flex flex-col gap-7 w-1/3">
             <label className="text-lg font-semibold">Description: </label>
             <label className="text-lg font-semibold">Location: </label>
@@ -58,6 +58,14 @@ function Detailform({ username }) {
               </button>
             </div>
           </div>
+        </div>
+        <div className="w-full h-10 flex items-center justify-center mt-5">
+          <button
+            type="submit"
+            className="bg-green-400 px-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400"
+          >
+            Apply Changes
+          </button>
         </div>
       </form>
     </div>

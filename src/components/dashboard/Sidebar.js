@@ -65,7 +65,7 @@ function Sidebar({ role }) {
             <div className="w-full flex items-center justify-center h-16">
               <Link
                 href="/dashboard"
-                className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+                className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
               >
                 <Image
                   src="/Icons/AnalyticsIcon.png"
@@ -81,7 +81,7 @@ function Sidebar({ role }) {
             <div className="w-full flex items-center justify-center h-16">
               <Link
                 href="/professionals"
-                className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+                className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
               >
                 <Image
                   src="/Icons/ProfessionalIcon.png"
@@ -97,7 +97,7 @@ function Sidebar({ role }) {
             <div className="w-full flex items-center justify-center h-16">
               <Link
                 href="/bookings"
-                className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+                className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
               >
                 <Image
                   src="/Icons/ReservationIcon.png"
@@ -113,7 +113,7 @@ function Sidebar({ role }) {
             <div className="w-full flex items-center justify-center h-16">
               <Link
                 href="/resources"
-                className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+                className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
               >
                 <Image
                   src="/Icons/BoxIcon.png"
@@ -129,7 +129,7 @@ function Sidebar({ role }) {
             <div className="w-full flex items-center justify-center h-16">
               <Link
                 href="/events"
-                className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+                className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
               >
                 <Image
                   src="/Icons/EventsIcon.png"
@@ -148,7 +148,7 @@ function Sidebar({ role }) {
       <div className="w-full flex items-center justify-center h-16">
         <Link
           href="/"
-          className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+          className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
         >
           <Image
             src="/Icons/ExitIcon.png"

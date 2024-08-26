@@ -21,6 +21,7 @@ function Profile() {
         src="/SampleProfile.jpg"
         width={30}
         height={30}
+        alt="Profile"
       />
       <label className="text-white font-semibold cursor-pointer">{user}</label>
     </Link>
