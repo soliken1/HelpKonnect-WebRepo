@@ -47,8 +47,8 @@ function Body() {
         <label className="text-gray-400 font-semibold">
           For Posting To Users on Help-Konnect To Participate In
         </label>
-        <div className="h-5/6 flex flex-row w-full mt-4">
-          <div className="w-96 h-full flex justify-center items-center">
+        <div className="md:h-5/6 flex flex-col md:flex-row w-full h-full md:mt-4 mt-2">
+          <div className="md:w-96 h-52 md:h-full flex justify-center items-center">
             <input
               type="file"
               accept="image/*"
@@ -58,7 +58,7 @@ function Body() {
             />
             <label
               htmlFor="imageUpload"
-              className="h-80 w-80 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
+              className="md:h-80 md:w-80 h-40 w-40 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
             >
               {imagePreview ? (
                 <img
@@ -67,11 +67,13 @@ function Body() {
                   className="h-full w-full object-cover rounded-full"
                 />
               ) : (
-                <span className="text-gray-500">Click To Set An Image</span>
+                <span className="md:text-base text-xs font-semibold text-gray-500">
+                  Click To Set An Image
+                </span>
               )}
             </label>
           </div>
-          <div className="w-2/3 bg-red-200 p-10 rounded-md">
+          <div className="md:w-2/3 bg-red-200 p-10 rounded-md">
             <form onSubmit={handleAddEvent}>
               <div className="relative mt-5">
                 <input
@@ -121,7 +123,7 @@ function Body() {
                   Event Venue
                 </label>
               </div>
-              <div className="flex flex-row justify-between mt-7">
+              <div className="flex flex-row justify-between mt-7 gap-5">
                 <div className="relative">
                   <input
                     type="number"

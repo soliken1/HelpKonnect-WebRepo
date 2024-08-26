@@ -3,7 +3,7 @@ import React from "react";
 
 function Detailform({ username }) {
   return (
-    <div className="h-96 mt-5 px-4">
+    <div className="h-96 mt-5 md:px-4">
       <form className="h-auto flex flex-col">
         <div className="flex flex-row justify-center items-center gap-5">
           <input
@@ -14,16 +14,19 @@ function Detailform({ username }) {
             disabled={true}
           />
           <button type="button">
-            <img className="w-6 h-6" src="/Icons/EditIcon.png" />
+            <img
+              className="w-6 h-6 object-scale-down"
+              src="/Icons/EditIcon.png"
+            />
           </button>
         </div>
-        <div className="flex flex-row h-auto mt-7 px-4 pb-5">
+        <div className="flex flex-row h-auto mt-7 md:px-4 pb-5">
           <div className="flex flex-col gap-7 w-1/3">
             <label className="text-lg font-semibold">Description: </label>
             <label className="text-lg font-semibold">Location: </label>
             <label className="text-lg font-semibold">Contact Number: </label>
           </div>
-          <div className="flex flex-col gap-9 w-1/2">
+          <div className="flex flex-col gap-9 md:w-full">
             <div className="flex flex-row gap-9">
               <input
                 type="text"
@@ -32,7 +35,10 @@ function Detailform({ username }) {
                 disabled={true}
               />
               <button type="button">
-                <img className="w-6 h-6" src="/Icons/EditIcon.png" />
+                <img
+                  className="w-6 h-6 object-scale-down"
+                  src="/Icons/EditIcon.png"
+                />
               </button>
             </div>
             <div className="flex flex-row gap-9">
@@ -43,7 +49,10 @@ function Detailform({ username }) {
                 disabled={true}
               />
               <button type="button">
-                <img className="w-6 h-6" src="/Icons/EditIcon.png" />
+                <img
+                  className="w-6 h-6 object-scale-down"
+                  src="/Icons/EditIcon.png"
+                />
               </button>
             </div>
             <div className="flex flex-row gap-9">
@@ -54,7 +63,10 @@ function Detailform({ username }) {
                 disabled={true}
               />
               <button type="button">
-                <img className="w-6 h-6" src="/Icons/EditIcon.png" />
+                <img
+                  className="w-6 h-6 object-scale-down"
+                  src="/Icons/EditIcon.png"
+                />
               </button>
             </div>
           </div>

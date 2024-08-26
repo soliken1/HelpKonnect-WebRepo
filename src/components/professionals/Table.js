@@ -28,18 +28,23 @@ function Table() {
         </button>
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2 className="text-2xl font-semibold mb-1">Add Professional</h2>
-        <label className="text-gray-400 font-semibold">
-          Add Pending Professionals on the Applying on Your Facility
-        </label>
-        <div className="h-5/6 flex flex-row w-full mt-4">
-          <div className="w-96 h-full flex justify-center items-center">
+        <div className="flex flex-col">
+          <label className="text-2xl font-semibold md:mb-1">
+            Add Professional
+          </label>
+          <label className="text-gray-400 font-semibold">
+            Add Pending Professionals on the Applying on Your Facility
+          </label>
+        </div>
+
+        <div className="h-5/6 flex flex-col md:flex-row w-full mt-4">
+          <div className="md:w-96 w-full h-full flex justify-center items-center">
             <img
               src="/SampleProfile.jpg"
-              className="h-80 w-80 rounded-full shadow-md"
+              className="md:h-80 md:w-80 w-40 h-40 rounded-full shadow-md"
             />
           </div>
-          <div className="w-2/3 bg-red-200 p-10 rounded-md">
+          <div className="md:w-2/3 md:mt-0 mt-5 bg-red-200 p-10 rounded-md">
             <form onSubmit={handleAddProffssional}>
               <div className="relative mt-5">
                 <input

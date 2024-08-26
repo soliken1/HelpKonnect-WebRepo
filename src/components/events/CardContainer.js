@@ -3,7 +3,7 @@ import Card from "./Card";
 
 function CardContainer() {
   return (
-    <div className="flex justify-evenly gap-3 mt-5">
+    <div className="flex flex-col items-center md:flex-row md:items-start md:justify-evenly gap-5 md:gap-3 mt-5">
       <Card />
       <Card />
       <Card />

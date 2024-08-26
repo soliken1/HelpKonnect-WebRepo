@@ -41,7 +41,7 @@ function Body() {
         />
         <label
           htmlFor="imageUpload"
-          className="h-80 w-80 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
+          className="md:h-80 md:w-80 h-60 w-60 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
         >
           {imagePreview ? (
             <img

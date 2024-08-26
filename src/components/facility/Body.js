@@ -44,8 +44,8 @@ function Body() {
         <label className="text-gray-400 font-semibold">
           Add Subscribing Facility on the Platform
         </label>
-        <div className="h-5/6 flex flex-row w-full mt-4">
-          <div className="w-96 h-full flex justify-center items-center">
+        <div className="h-5/6 flex flex-col md:flex-row w-full mt-4 overflow-auto">
+          <div className="md:w-96 h-full flex justify-center items-center">
             <input
               type="file"
               accept="image/*"
@@ -55,7 +55,7 @@ function Body() {
             />
             <label
               htmlFor="imageUpload"
-              className="h-80 w-80 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
+              className="md:h-80 md:w-80 h-40 w-40 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
             >
               {imagePreview ? (
                 <img
@@ -64,11 +64,13 @@ function Body() {
                   className="h-full w-full object-cover rounded-full"
                 />
               ) : (
-                <span className="text-gray-500">Click To Set An Image</span>
+                <span className="md:text-sm font-semibold text-xs text-gray-500">
+                  Click To Set An Image
+                </span>
               )}
             </label>
           </div>
-          <div className="w-2/3 h-full bg-red-200 px-10 rounded-md">
+          <div className="md:w-2/3 h-full bg-red-200 px-10 py-4 md:py-0 md:mt-0 mt-5 rounded-md">
             <form className="pt-5" onSubmit={handleAddEvent}>
               <div className="relative mt-5">
                 <input

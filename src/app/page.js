@@ -31,7 +31,7 @@ export default function Home() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      setCookie("role", "admin");
+      setCookie("role", "facility");
       setCookie("user", "Soliken");
       router.push("/dashboard");
     } catch (error) {
