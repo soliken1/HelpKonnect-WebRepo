@@ -15,7 +15,7 @@ function Sidebar({ role }) {
     <>
       <div
         className={`z-10 fixed top-6 left-6 flex flex-col gap-1
-         cursor-pointer bg-red-300 rounded-full hover:opacity-100 opacity-50 duration-300 md:opacity-100 ${
+         cursor-pointer bg-red-300 rounded-full hover:opacity-100 opacity-100 duration-300  ${
            isPressed ? "opacity-100" : "opacity-50"
          }`}
         onClick={handleSelect}
