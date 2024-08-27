@@ -40,8 +40,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <div className="w-1/2 h-screen flex justify-center items-center">
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+      <div className="w-1/2 hidden md:block h-screen justify-center items-center">
         <Image
           width={1200}
           height={1200}
@@ -50,7 +50,7 @@ export default function Home() {
         />
       </div>
       <div
-        className={`w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out rounded-s-2xl ${slideEffect} shadow-xl shadow-red-300 bg-red-300`}
+        className={`w-full md:w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out rounded-s-2xl ${slideEffect} shadow-xl shadow-red-300 bg-red-300`}
       >
         <div className="w-full h-2/6 flex justify-center items-center">
           <Image src="/Logo/LogoCircular.png" width={175} height={175} />
@@ -59,10 +59,10 @@ export default function Home() {
           className="w-full h-4/6 ps-16 pe-16 flex flex-col gap-3"
           onSubmit={handleLogin}
         >
-          <label className="text-white text-2xl font-bold">
+          <label className="text-white text-2xl font-bold text-center">
             Logging In As Admin
           </label>
-          <label className="text-white font-normal">
+          <label className="text-white font-normal text-center">
             Not an Admin? Check Out Our{" "}
             <a
               target="_blank"

@@ -13,7 +13,7 @@ function Dashboard() {
     setRole(getCookie("role"));
   }, []);
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row overflow-hidden">
       <Sidebar role={role} />
       <Analytics />
       <Profile />

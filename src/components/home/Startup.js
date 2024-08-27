@@ -20,10 +20,10 @@ function Startup() {
         height={300}
         alt="Logo"
       />
-      <label className="text-black text-6xl font-bold mb-5">
+      <label className="text-black text-6xl mt-16 font-bold mb-5">
         Help-<label className="text-red-300 text-6xl font-bold ">Konnect</label>
       </label>
-      <label className="text-black text-4xl mb-8">
+      <label className="text-black text-4xl mb-8 text-center">
         Your Mental Health Care Provider and Assistant
       </label>
       <l-ring-2

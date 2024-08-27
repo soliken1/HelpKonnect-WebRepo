@@ -44,7 +44,7 @@ function Table() {
               className="md:h-80 md:w-80 w-40 h-40 rounded-full shadow-md"
             />
           </div>
-          <div className="md:w-2/3 md:mt-0 mt-5 bg-red-200 p-10 rounded-md">
+          <div className="md:w-2/3 md:mt-0 mt-5 bg-red-200 px-10 py-2 md:p-10 rounded-md">
             <form onSubmit={handleAddProffssional}>
               <div className="relative mt-5">
                 <input
