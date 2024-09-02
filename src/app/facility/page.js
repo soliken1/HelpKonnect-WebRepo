@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
+import dynamic from "next/dynamic";
 const Sidebar = dynamic(() => import("@/components/dashboard/Sidebar.js"));
 const Profile = dynamic(() => import("@/components/dashboard/Profile.js"));
 const Body = dynamic(() => import("@/components/facility/Body.js"));
