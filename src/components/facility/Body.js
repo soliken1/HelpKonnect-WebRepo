@@ -1,21 +1,32 @@
 "use client";
-import React from "react";
+import { useState, useEffect } from "react";
 import Modal from "./AddFacilityModal";
-import { useState } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, getDocs, collection, getDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { db, auth } from "@/configs/firebaseConfigs";
+
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [facilities, setFacilities] = useState([]);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    facilityName: "",
+    facilityDescription: "",
+    facilityLocation: "",
+  });
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleAddEvent = async (event) => {
-    event.preventDefault();
-  };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -23,8 +34,127 @@ function Body() {
       reader.readAsDataURL(file);
     } else {
       setImagePreview(null);
+      setImageFile(null);
     }
   };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleAddEvent = async (event) => {
+    event.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+
+      const user = userCredential.user;
+
+      const storage = getStorage();
+      let imageUrl = "";
+
+      if (imageFile) {
+        const imageName = `${uuidv4()}.${imageFile.name.split(".").pop()}`;
+        const storageRef = ref(storage, `facilities/${imageName}`);
+
+        await uploadBytes(storageRef, imageFile);
+
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      const facilityData = {
+        ...formData,
+        imageUrl,
+        userId: user.uid,
+      };
+
+      const setInitFacility = {
+        prof: 0,
+        books: 0,
+        income: 0,
+        status: true,
+        userId: user.uid,
+      };
+
+      const docRef = doc(db, "credentials", user.uid);
+      const facRef = doc(db, "facilities", user.uid);
+      await setDoc(docRef, facilityData);
+      await setDoc(facRef, setInitFacility);
+
+      console.log("Facility registered successfully:", facilityData);
+
+      setFormData({
+        email: "",
+        password: "",
+        facilityName: "",
+        facilityDescription: "",
+        facilityLocation: "",
+        role: "facility",
+      });
+      setImagePreview(null);
+      setImageFile(null);
+      closeModal();
+    } catch (error) {
+      console.error("Error registering facility:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const facilitiesSnapshot = await getDocs(collection(db, "facilities"));
+        const facilitiesData = facilitiesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const facilitiesWithNames = await Promise.all(
+          facilitiesData.map(async (facility) => {
+            try {
+              const credentialsDocRef = doc(db, "credentials", facility.userId);
+              const credentialsDocSnap = await getDoc(credentialsDocRef);
+
+              if (credentialsDocSnap.exists()) {
+                const credentialsData = credentialsDocSnap.data();
+                return {
+                  ...facility,
+                  facilityName:
+                    credentialsData.facilityName || "Unknown Facility Name",
+                };
+              } else {
+                console.log(
+                  `No credentials found for userId ${facility.userId}`
+                );
+                return {
+                  ...facility,
+                  facilityName: "Unknown Facility Name",
+                };
+              }
+            } catch (error) {
+              console.error(
+                `Error fetching credentials for userId ${facility.userId}:`,
+                error
+              );
+              return {
+                ...facility,
+                facilityName: "Error fetching name",
+              };
+            }
+          })
+        );
+
+        setFacilities(facilitiesWithNames);
+      } catch (error) {
+        console.error("Error fetching facilities:", error);
+      }
+    };
+
+    fetchFacilities();
+  }, []);
+
   return (
     <div className="w-full flex flex-col p-10">
       <label className="text-lg font-bold">Subscribed Facilities</label>
@@ -74,31 +204,35 @@ function Body() {
             <form className="pt-5" onSubmit={handleAddEvent}>
               <div className="relative mt-5">
                 <input
-                  type="text"
-                  name="text"
-                  id="floating_outlined"
+                  type="email"
+                  name="email"
+                  id="email"
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
+                  value={formData.email}
+                  onChange={handleInputChange}
                 />
                 <label
-                  htmlFor="floating_outlined"
+                  htmlFor="email"
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
-                  Username
+                  Email
                 </label>
               </div>
               <div className="relative mt-7">
                 <input
-                  type="text"
-                  name="text"
-                  id="floating_outlined"
+                  type="password"
+                  name="password"
+                  id="password"
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
+                  value={formData.password}
+                  onChange={handleInputChange}
                 />
                 <label
-                  htmlFor="floating_outlined"
+                  htmlFor="password"
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
                   Password
@@ -107,14 +241,16 @@ function Body() {
               <div className="relative mt-7">
                 <input
                   type="text"
-                  name="text"
-                  id="floating_outlined"
+                  name="facilityName"
+                  id="facilityName"
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
+                  value={formData.facilityName}
+                  onChange={handleInputChange}
                 />
                 <label
-                  htmlFor="floating_outlined"
+                  htmlFor="facilityName"
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
                   Facility Name
@@ -123,14 +259,16 @@ function Body() {
               <div className="relative mt-7">
                 <input
                   type="text"
-                  name="text"
-                  id="floating_outlined"
+                  name="facilityDescription"
+                  id="facilityDescription"
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
+                  value={formData.facilityDescription}
+                  onChange={handleInputChange}
                 />
                 <label
-                  htmlFor="floating_outlined"
+                  htmlFor="facilityDescription"
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
                   Facility Description
@@ -139,14 +277,16 @@ function Body() {
               <div className="relative mt-7">
                 <input
                   type="text"
-                  name="text"
-                  id="floating_outlined"
+                  name="facilityLocation"
+                  id="facilityLocation"
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
+                  value={formData.facilityLocation}
+                  onChange={handleInputChange}
                 />
                 <label
-                  htmlFor="floating_outlined"
+                  htmlFor="facilityLocation"
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
                   Facility Location
@@ -186,23 +326,25 @@ function Body() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-                Sample Facility 1
-              </td>
-              <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-                20
-              </td>
-              <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-                50
-              </td>
-              <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
-                $1 000
-              </td>
-              <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
-                Active
-              </td>
-            </tr>
+            {facilities.map((facility) => (
+              <tr key={facility.id}>
+                <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+                  {facility.facilityName || "No Name"}
+                </td>
+                <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+                  {facility.prof || 0}
+                </td>
+                <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+                  {facility.books || 0}
+                </td>
+                <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
+                  {facility.income || 0}
+                </td>
+                <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
+                  {facility.status ? "Active" : "Inactive"}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

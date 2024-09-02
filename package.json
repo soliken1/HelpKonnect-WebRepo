@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "cookies-next": "^4.2.1",
+    "firebase": "^10.13.1",
     "ldrs": "^1.0.2",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "eslint": "^8",

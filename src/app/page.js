@@ -1,16 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { db } from "@/configs/firebaseConfigs";
+import dynamic from "next/dynamic";
+import { doc, getDoc } from "firebase/firestore";
+import Image from "next/image";
+import { auth } from "@/configs/firebaseConfigs";
+import { setCookie } from "cookies-next";
+
 const Startup = dynamic(() => import("@/components/home/Startup"), {
   ssr: false,
 });
 
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
 export default function Home() {
   const [isStarting, setIsStarting] = useState(true);
   const [slideEffect, setSlideEffect] = useState("translate-x-full opacity-0");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,12 +36,38 @@ export default function Home() {
     }, 200);
   }
 
-  const handleLogin = async (event) => {
+  const handleLogin = async (event, email, password) => {
     event.preventDefault();
     try {
-      setCookie("role", "facility");
-      setCookie("user", "Soliken");
-      router.push("/dashboard");
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      if (email === "helpkonnectdev@gmail.com" && password != null) {
+        console.log("Admin User Login");
+        setCookie("role", "admin");
+        setCookie("user", "HelpKonnect Dev");
+        router.push("/dashboard");
+      }
+
+      const user = userCredential.user;
+
+      const docRef = doc(db, "credentials", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        console.log("User Data:", userData);
+
+        setCookie("role", userData.role);
+        setCookie("user", userData.facilityName);
+
+        router.push("/dashboard");
+      } else {
+        console.log("No such document!");
+      }
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -42,12 +76,7 @@ export default function Home() {
   return (
     <div className="flex flex-col md:flex-row h-screen overflow-hidden">
       <div className="w-1/2 hidden md:block h-screen justify-center items-center">
-        <Image
-          width={1200}
-          height={1200}
-          objectFit="cover"
-          src="/Background.png"
-        />
+        <img className="object-cover w-full h-full" src="/Background.png" />
       </div>
       <div
         className={`w-full md:w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out rounded-s-2xl ${slideEffect} shadow-xl shadow-red-300 bg-red-300`}
@@ -57,7 +86,7 @@ export default function Home() {
         </div>
         <form
           className="w-full h-4/6 ps-16 pe-16 flex flex-col gap-3"
-          onSubmit={handleLogin}
+          onSubmit={(e) => handleLogin(e, email, password)}
         >
           <label className="text-white text-2xl font-bold text-center">
             Logging In As Admin
@@ -76,13 +105,15 @@ export default function Home() {
             <input
               type="email"
               name="email"
-              id="floating_outlined"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
               placeholder=" "
               autoComplete="off"
             />
             <label
-              htmlFor="floating_outlined"
+              htmlFor="email"
               className="absolute text-sm text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
             >
               Email
@@ -91,13 +122,15 @@ export default function Home() {
           <div className="relative mt-5">
             <input
               type="password"
-              id="floating_outlined"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
               placeholder=" "
               autoComplete="new-password"
             />
             <label
-              htmlFor="floating_outlined"
+              htmlFor="password"
               className="absolute text-sm text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
             >
               Password
@@ -111,6 +144,7 @@ export default function Home() {
               Login
             </button>
           </div>
+          {error && <p className="text-red-500 text-center">{error}</p>}
         </form>
       </div>
     </div>
