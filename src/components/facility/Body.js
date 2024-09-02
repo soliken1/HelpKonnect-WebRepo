@@ -21,6 +21,7 @@ function Body() {
     facilityName: "",
     facilityDescription: "",
     facilityLocation: "",
+    role: "facility",
   });
 
   const openModal = () => setIsModalOpen(true);
@@ -88,18 +89,17 @@ function Body() {
       await setDoc(facRef, setInitFacility);
 
       console.log("Facility registered successfully:", facilityData);
-
       setFormData({
         email: "",
         password: "",
         facilityName: "",
         facilityDescription: "",
         facilityLocation: "",
-        role: "facility",
       });
       setImagePreview(null);
       setImageFile(null);
       closeModal();
+      window.location.reload();
     } catch (error) {
       console.error("Error registering facility:", error);
     }
