@@ -18,7 +18,7 @@ export default function Home() {
   const [slideEffect, setSlideEffect] = useState("translate-x-full opacity-0");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Home() {
         console.log("No such document!");
       }
     } catch (error) {
-      console.error("Error logging in:", error);
+      setError("Something Went Wrong, Please Try Again!");
     }
   };
 
@@ -144,7 +144,7 @@ export default function Home() {
               Login
             </button>
           </div>
-          {error && <p className="text-red-500 text-center">{error}</p>}
+          {error && <p className="text-white font-bold text-center">{error}</p>}
         </form>
       </div>
     </div>
