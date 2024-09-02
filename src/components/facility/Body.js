@@ -1,11 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
-import Modal from "./AddFacilityModal";
+const Modal = dynamic(() =>
+  import("@/components/facility/AddFacilityModal.js")
+);
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, getDocs, collection, getDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db, auth } from "@/configs/firebaseConfigs";
+import dynamic from "next/dynamic";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);

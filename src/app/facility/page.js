@@ -1,10 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
-import Sidebar from "@/components/dashboard/Sidebar";
-import React from "react";
-import Profile from "@/components/dashboard/Profile";
-import Body from "@/components/facility/Body";
+const Sidebar = dynamic(() => import("@/components/dashboard/Sidebar.js"));
+const Profile = dynamic(() => import("@/components/dashboard/Profile.js"));
+const Body = dynamic(() => import("@/components/facility/Body.js"));
 
 function Facility() {
   const [role, setRole] = useState("");
