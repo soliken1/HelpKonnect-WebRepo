@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import dynamic from "next/dynamic";
 const Sidebar = dynamic(() => import("@/components/dashboard/Sidebar.js"));
-const Profile = dynamic(() => import("@/components/dashboard/Profile.js"));
+const Ribbon = dynamic(() => import("@/components/dashboard/Ribbon.js"));
 const Body = dynamic(() => import("@/components/facility/Body.js"));
 
 function Facility() {
@@ -15,7 +15,7 @@ function Facility() {
   return (
     <div className="flex flex-row">
       <Sidebar role={role} />
-      <Profile />
+      <Ribbon />
       <Body />
     </div>
   );

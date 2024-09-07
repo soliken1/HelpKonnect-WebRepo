@@ -2,22 +2,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
-import Ribbon from "@/components/dashboard/Ribbon";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Body from "@/components/events/Body";
+import Analytics from "@/components/dashboard/Analytics";
+import Ribbon from "@/components/dashboard/Ribbon";
 
-function Events() {
+function Message() {
   const [role, setRole] = useState("");
+
   useEffect(() => {
     setRole(getCookie("role"));
   }, []);
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row overflow-hidden">
       <Sidebar role={role} />
       <Ribbon />
-      <Body />
     </div>
   );
 }
 
-export default Events;
+export default Message;

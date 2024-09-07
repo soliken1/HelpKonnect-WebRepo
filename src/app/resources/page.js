@@ -5,6 +5,7 @@ import Profile from "@/components/dashboard/Profile";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import Body from "@/components/resources/Body";
+import Ribbon from "@/components/dashboard/Ribbon";
 
 function Resources() {
   const [role, setRole] = useState("");
@@ -14,7 +15,7 @@ function Resources() {
   return (
     <div className="flex flex-row">
       <Sidebar role={role} />
-      <Profile />
+      <Ribbon />
       <Body />
     </div>
   );

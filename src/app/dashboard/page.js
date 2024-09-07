@@ -4,8 +4,7 @@ import Analytics from "@/components/dashboard/Analytics";
 import SideAnalytics from "@/components/dashboard/SideAnalytics";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
-import Profile from "@/components/dashboard/Profile";
-
+import Ribbon from "@/components/dashboard/Ribbon";
 function Dashboard() {
   const [role, setRole] = useState("");
 
@@ -16,7 +15,7 @@ function Dashboard() {
     <div className="flex flex-row overflow-hidden">
       <Sidebar role={role} />
       <Analytics />
-      <Profile />
+      <Ribbon />
       <SideAnalytics />
     </div>
   );

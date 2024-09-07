@@ -3,8 +3,8 @@ import React from "react";
 import Table from "@/components/bookings/Table";
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Profile from "@/components/dashboard/Profile";
 import { getCookie } from "cookies-next";
+import Ribbon from "@/components/dashboard/Ribbon";
 
 function Bookings() {
   const [role, setRole] = useState("");
@@ -14,7 +14,7 @@ function Bookings() {
   return (
     <div className="flex flex-row">
       <Sidebar role={role} />
-      <Profile />
+      <Ribbon />
       <Table />
     </div>
   );

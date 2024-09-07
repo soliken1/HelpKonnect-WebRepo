@@ -14,7 +14,7 @@ function Profile() {
   return (
     <Link
       href="/profile"
-      className="absolute flex flex-row justify-center gap-2 end-2 top-2 md:end-10 md:top-10 bg-red-300 rounded-3xl shadow-md shadow-gray-200 px-4 py-2"
+      className="bg-red-300 w-auto flex flex-row gap-2 justify-center items-center h-12 rounded-3xl shadow-md shadow-gray-200 px-4 py-2"
     >
       <Image
         className="rounded-full"
