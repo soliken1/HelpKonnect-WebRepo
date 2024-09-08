@@ -3,8 +3,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Analytics from "@/components/dashboard/Analytics";
 import Ribbon from "@/components/dashboard/Ribbon";
+import Body from "@/components/messages/Body";
 
 function Message() {
   const [role, setRole] = useState("");
@@ -16,6 +16,7 @@ function Message() {
     <div className="flex flex-row overflow-hidden">
       <Sidebar role={role} />
       <Ribbon />
+      <Body />
     </div>
   );
 }
