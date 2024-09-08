@@ -9,7 +9,7 @@ function Detailform({ username }) {
           <input
             id="username"
             type="text"
-            value={username}
+            value={username ? username : "somethings wrong"}
             className="text-3xl font-semibold text-center w-60 h-10 bg-white"
             disabled={true}
           />

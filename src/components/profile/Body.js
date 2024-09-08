@@ -34,6 +34,7 @@ function Body() {
       <div className="w-full h-96 flex flex-col justify-center items-center mt-5">
         <input
           type="file"
+          value=""
           accept="image/*"
           className="hidden"
           id="imageUpload"

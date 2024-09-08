@@ -44,9 +44,12 @@ function Table() {
               className="md:h-80 md:w-80 w-40 h-40 rounded-full shadow-md"
             />
           </div>
-          <div className="md:w-2/3 md:mt-0 mt-5 bg-red-200 px-10 py-2 md:p-10 rounded-md">
-            <form onSubmit={handleAddProffssional}>
-              <div className="relative mt-5">
+          <div className="md:w-2/3 md:mt-0  bg-red-200 px-10 py-8 md:p-10 rounded-md">
+            <form
+              className="flex flex-col gap-5"
+              onSubmit={handleAddProffssional}
+            >
+              <div className="relative">
                 <input
                   type="text"
                   name="text"
@@ -62,7 +65,7 @@ function Table() {
                   Username
                 </label>
               </div>
-              <div className="relative mt-7">
+              <div className="relative">
                 <input
                   type="text"
                   name="text"
@@ -78,7 +81,7 @@ function Table() {
                   License
                 </label>
               </div>
-              <div className="relative mt-7">
+              <div className="relative">
                 <input
                   type="text"
                   name="text"
@@ -94,7 +97,7 @@ function Table() {
                   Gender
                 </label>
               </div>
-              <div className="w-full h-32 flex items-center justify-center">
+              <div className="w-full flex items-center justify-center">
                 <button
                   type="submit"
                   className="bg-green-400 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400"

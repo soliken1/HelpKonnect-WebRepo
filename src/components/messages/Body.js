@@ -1,10 +1,18 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import List from "./List";
 import MessageList from "./MessageList";
 import { db } from "@/configs/firebaseConfigs";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  getDocs,
+} from "firebase/firestore";
 
-function Body() {
+function Body({ currentUser }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -27,27 +35,46 @@ function Body() {
   }, []);
 
   useEffect(() => {
-    if (selectedUser) {
-      const fetchMessages = async () => {
-        try {
-          const querySnapshot = await getDocs(
-            collection(db, `messages/${selectedUser.id}/userMessages`)
-          );
+    let unsubscribe;
+
+    if (selectedUser && currentUser) {
+      console.log("Setting up real-time listener for messages");
+
+      const q = query(
+        collection(db, "message"),
+        where("receiver", "in", [selectedUser.userId, currentUser]),
+        where("sender", "in", [selectedUser.userId, currentUser]),
+        orderBy("time", "asc")
+      );
+
+      unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
           const messagesData = querySnapshot.docs.map((doc) => doc.data());
           setMessages(messagesData);
-        } catch (error) {
-          console.error("Error fetching messages:", error);
+          console.log("Real-time messages data:", messagesData);
+        },
+        (error) => {
+          console.error("Error listening to real-time messages:", error);
         }
-      };
-
-      fetchMessages();
+      );
     }
-  }, [selectedUser]);
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [selectedUser, currentUser]);
 
   return (
-    <div className="w-full flex flex-row gap-5 p-10">
+    <div className="w-full flex md:flex-row flex-col gap-5 p-10">
       <List users={users} onSelectUser={setSelectedUser} />
-      <MessageList messages={messages} />
+      <MessageList
+        messages={messages}
+        selectedUser={selectedUser}
+        currentUser={currentUser}
+      />
     </div>
   );
 }

@@ -44,14 +44,6 @@ export default function Home() {
         email,
         password
       );
-
-      if (email === "helpkonnectdev@gmail.com" && password != null) {
-        console.log("Admin User Login");
-        setCookie("role", "admin");
-        setCookie("user", "HelpKonnect Dev");
-        router.push("/dashboard");
-      }
-
       const user = userCredential.user;
 
       const docRef = doc(db, "credentials", user.uid);
@@ -63,6 +55,8 @@ export default function Home() {
 
         setCookie("role", userData.role);
         setCookie("user", userData.facilityName);
+        setCookie("userId", userData.userId);
+        setCookie("userProfile", userData.imageUrl);
 
         router.push("/dashboard");
       } else {

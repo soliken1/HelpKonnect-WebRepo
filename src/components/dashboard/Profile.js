@@ -7,18 +7,20 @@ import { useState, useEffect } from "react";
 
 function Profile() {
   const [user, setUser] = useState("");
+  const [userProfile, setUserProfile] = useState("");
 
   useEffect(() => {
     setUser(getCookie("user"));
+    setUserProfile(getCookie("userProfile"));
   }, []);
   return (
     <Link
       href="/profile"
-      className="bg-red-300 w-auto flex flex-row gap-2 justify-center items-center h-12 rounded-3xl shadow-md shadow-gray-200 px-4 py-2"
+      className="z-50 bg-red-300 w-auto flex flex-row gap-2 justify-center items-center h-12 rounded-3xl shadow-md shadow-gray-200 px-4 py-2"
     >
-      <Image
+      <img
         className="rounded-full"
-        src="/SampleProfile.jpg"
+        src={userProfile}
         width={30}
         height={30}
         alt="Profile"
