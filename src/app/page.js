@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import Image from "next/image";
 import { auth } from "@/configs/firebaseConfigs";
 import { setCookie } from "cookies-next";
+import { logUserActivity } from "@/utils/userActivity";
 
 const Startup = dynamic(() => import("@/components/home/Startup"), {
   ssr: false,
@@ -60,6 +61,8 @@ export default function Home() {
         setCookie("userDescription", userData.facilityDescription);
         setCookie("userLocation", userData.facilityLocation);
         setCookie("userEmail", userData.email);
+
+        await logUserActivity(userData.userId);
 
         router.push("/dashboard");
       } else {
