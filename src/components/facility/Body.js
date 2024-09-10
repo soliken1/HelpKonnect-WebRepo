@@ -91,7 +91,6 @@ function Body() {
       console.log("Facility registered successfully:", facilityData);
       setFormData({
         email: "",
-        password: "",
         facilityName: "",
         facilityDescription: "",
         facilityLocation: "",

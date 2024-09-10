@@ -11,6 +11,14 @@ function Sidebar({ role }) {
     setPressed(!isPressed);
   };
 
+  const handleLogout = () => {
+    const cookies = document.cookie.split(";");
+    cookies.forEach((cookie) => {
+      const [name] = cookie.split("=");
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    });
+  };
+
   return (
     <>
       <div
@@ -168,6 +176,7 @@ function Sidebar({ role }) {
         </div>
         <div className="w-full flex items-center justify-center h-16">
           <Link
+            onClick={handleLogout}
             href="/"
             className="flex flex-col w-full py-4 items-center justify-center gap-1 transition duration-150 hover:bg-red-400 rounded-md"
           >

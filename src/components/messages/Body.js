@@ -69,7 +69,11 @@ function Body({ currentUser }) {
 
   return (
     <div className="w-full flex md:flex-row flex-col gap-5 p-10">
-      <List users={users} onSelectUser={setSelectedUser} />
+      <List
+        users={users}
+        currentUser={currentUser}
+        onSelectUser={setSelectedUser}
+      />
       <MessageList
         messages={messages}
         selectedUser={selectedUser}

@@ -57,6 +57,9 @@ export default function Home() {
         setCookie("user", userData.facilityName);
         setCookie("userId", userData.userId);
         setCookie("userProfile", userData.imageUrl);
+        setCookie("userDescription", userData.facilityDescription);
+        setCookie("userLocation", userData.facilityLocation);
+        setCookie("userEmail", userData.email);
 
         router.push("/dashboard");
       } else {
