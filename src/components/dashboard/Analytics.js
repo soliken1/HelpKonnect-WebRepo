@@ -61,7 +61,7 @@ function Analytics() {
         </label>
         <div className="flex flex-col h-full md:flex-row mt-6">
           <div className="flex flex-col md:w-3/4">
-            <div className="w-full h-5/6 flex justify-center items-center p-2 rounded-lg">
+            <div className="w-full h-full md:min-w-full md:min-h-full flex justify-center items-center p-2 rounded-lg">
               {chartData ? <LineChart data={chartData} /> : <p>Loading...</p>}
             </div>
           </div>
