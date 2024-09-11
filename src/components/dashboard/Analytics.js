@@ -16,7 +16,6 @@ function Analytics() {
     async function fetchChartData() {
       try {
         const data = await getDailyActiveUsers();
-        console.log("Fetched data:", data); // Add this line to check data
 
         if (!Array.isArray(data)) {
           throw new Error("Data is not an array");
@@ -54,13 +53,29 @@ function Analytics() {
   }, []);
 
   return (
-    <div className="flex flex-col w-3/4 h-screen p-10">
+    <div className="flex flex-col w-screen h-screen p-10">
       <label className="text-lg font-bold">Analytics</label>
-      <label className="font-medium text-gray-400">
-        General Statistics on {role === "admin" ? "Application" : user}
-      </label>
-      <div className="h-5/6 flex justify-center items-center">
-        {chartData ? <LineChart data={chartData} /> : <p>Loading...</p>}
+      <div className="flex flex-col h-full w-full">
+        <label className="font-medium text-gray-400">
+          General Statistics on {role === "admin" ? "Application" : user}
+        </label>
+        <div className="flex flex-col h-full md:flex-row mt-6">
+          <div className="flex flex-col md:w-3/4">
+            <div className="w-full h-5/6 flex justify-center items-center p-2 rounded-lg">
+              {chartData ? <LineChart data={chartData} /> : <p>Loading...</p>}
+            </div>
+          </div>
+
+          <div className="w-full md:w-1/4 flex flex-col p-4">
+            <div className="flex flex-col gap-1 border-b-2 pb-2">
+              <label className="text-lg font-bold">Total Users</label>
+              <label>1.1k</label>
+              <label>
+                <label className="text-green-400">+20 </label>In Previous Day
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

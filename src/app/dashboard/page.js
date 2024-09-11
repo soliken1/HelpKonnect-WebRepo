@@ -1,7 +1,6 @@
 "use client";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Analytics from "@/components/dashboard/Analytics";
-import SideAnalytics from "@/components/dashboard/SideAnalytics";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import Ribbon from "@/components/dashboard/Ribbon";
@@ -16,7 +15,6 @@ function Dashboard() {
       <Sidebar role={role} />
       <Analytics />
       <Ribbon />
-      <SideAnalytics />
     </div>
   );
 }

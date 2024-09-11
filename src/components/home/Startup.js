@@ -13,17 +13,14 @@ function Startup() {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen w-screen">
-      <Image
-        className="absolute top-16"
-        src="/Logo/Logo.png"
-        width={300}
-        height={300}
-        alt="Logo"
-      />
-      <label className="text-black text-6xl mt-16 font-bold mb-5">
-        Help-<label className="text-red-300 text-6xl font-bold ">Konnect</label>
+      <img className="w-52 h-52 rounded-full" src="/Logo/Logo.png" alt="Logo" />
+      <label className="text-black text-3xl md:text-6xl font-bold mb-5">
+        Help-
+        <label className="text-red-300 text-3xl md:text-6xl font-bold ">
+          Konnect
+        </label>
       </label>
-      <label className="text-black text-4xl mb-8 text-center">
+      <label className="text-black text-xl md:text-4xl mb-8 text-center">
         Your Mental Health Care Provider and Assistant
       </label>
       <l-ring-2
@@ -34,7 +31,7 @@ function Startup() {
         speed="0.8"
         color="pink"
       ></l-ring-2>{" "}
-      <label className="absolute bottom-10 text-red-300 text-xl">
+      <label className="absolute bottom-10 text-red-300 text-lg">
         The Help-Konnect Team 2024
       </label>
     </div>
