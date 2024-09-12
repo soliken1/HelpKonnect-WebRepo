@@ -1,21 +1,50 @@
 "use client";
 import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
-import { getDailyActiveUsers } from "@/utils/dau.js";
+import { getWeeklyData } from "@/utils/weeklyData.js";
 import LineChart from "./LineChart";
+import { getTotalUser, getPrevTotalUser } from "@/utils/totaluser";
+import { getDau, getPrevActivity } from "@/utils/dau";
 
 function Analytics() {
   const [user, setUser] = useState("");
   const [role, setRole] = useState("");
   const [chartData, setChartData] = useState(null);
+  const [totalUser, setTotalUser] = useState("Loading...");
+  const [dau, setDau] = useState("Loading...");
+  const [prevDayActivity, setPrevDayActivity] = useState("Loading...");
+  const [prevTotalUser, setPrevTotalUser] = useState("Loading...");
 
   useEffect(() => {
     setUser(getCookie("user"));
     setRole(getCookie("role"));
 
+    async function fetchDau() {
+      try {
+        const data = await getDau();
+        const prevData = await getPrevActivity();
+
+        setPrevDayActivity(prevData);
+        setDau(data);
+      } catch (error) {
+        console.error("Error fetching Dau:", error);
+      }
+    }
+
+    async function fetchTotalUser() {
+      try {
+        const data = await getTotalUser();
+        const prevData = await getPrevTotalUser();
+        setPrevTotalUser(prevData);
+        setTotalUser(data);
+      } catch (error) {
+        console.error("Error fetching total user:", error);
+      }
+    }
+
     async function fetchChartData() {
       try {
-        const data = await getDailyActiveUsers();
+        const data = await getWeeklyData();
 
         if (!Array.isArray(data)) {
           throw new Error("Data is not an array");
@@ -49,6 +78,8 @@ function Analytics() {
       }
     }
 
+    fetchDau();
+    fetchTotalUser();
     fetchChartData();
   }, []);
 
@@ -66,12 +97,44 @@ function Analytics() {
             </div>
           </div>
 
-          <div className="w-full md:w-1/4 flex flex-col p-4">
+          <div className="w-full md:w-1/4 flex flex-col p-4 gap-5">
             <div className="flex flex-col gap-1 border-b-2 pb-2">
               <label className="text-lg font-bold">Total Users</label>
-              <label>1.1k</label>
+              <label>{totalUser}</label>
               <label>
-                <label className="text-green-400">+20 </label>In Previous Day
+                <label className="text-green-400">
+                  {totalUser - prevTotalUser >= 0
+                    ? `+${totalUser - prevTotalUser}`
+                    : `-${totalUser - prevTotalUser}`}{" "}
+                </label>
+                In Previous Day
+              </label>
+            </div>
+            <div className="flex flex-col gap-1 border-b-2 pb-2">
+              <label className="text-lg font-bold">Total User Activities</label>
+              <label>{dau}</label>
+              <label>
+                <label
+                  className={
+                    dau - prevDayActivity >= 0
+                      ? "text-green-400"
+                      : "text-red-400"
+                  }
+                >
+                  {dau - prevDayActivity >= 0
+                    ? `+${dau - prevDayActivity}`
+                    : `-${dau - prevDayActivity}`}{" "}
+                </label>
+                In Previous Day
+              </label>
+            </div>
+            <div className="flex flex-col gap-1 border-b-2 pb-2">
+              <label className="text-lg font-bold">
+                Average Session Duration
+              </label>
+              <label>5m 10s</label>
+              <label>
+                <label className="text-red-400">-30 </label>In Previous Day
               </label>
             </div>
           </div>
