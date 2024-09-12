@@ -9,6 +9,7 @@ import Image from "next/image";
 import { auth } from "@/configs/firebaseConfigs";
 import { setCookie } from "cookies-next";
 import { logUserActivity } from "@/utils/userActivity";
+import { logSessionStart } from "@/utils/sessions";
 
 const Startup = dynamic(() => import("@/components/home/Startup"), {
   ssr: false,
@@ -52,7 +53,6 @@ export default function Home() {
 
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        console.log("User Data:", userData);
 
         setCookie("role", userData.role);
         setCookie("user", userData.facilityName);
@@ -63,6 +63,7 @@ export default function Home() {
         setCookie("userEmail", userData.email);
 
         await logUserActivity(userData.userId);
+        await logSessionStart(userData.userId);
 
         router.push("/dashboard");
       } else {

@@ -3,6 +3,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { logSessionEnd } from "@/utils/sessions";
+import { getCookie } from "cookies-next";
 
 function Sidebar({ role }) {
   const [isPressed, setPressed] = useState(true);
@@ -11,7 +13,9 @@ function Sidebar({ role }) {
     setPressed(!isPressed);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logSessionEnd(getCookie("userId"));
+
     const cookies = document.cookie.split(";");
     cookies.forEach((cookie) => {
       const [name] = cookie.split("=");
