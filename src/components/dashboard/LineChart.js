@@ -109,9 +109,9 @@ function LineChart({ data }) {
           },
           line: {
             tension: 0.4,
-            borderColor: "rgba(75, 192, 192, 1)",
+            borderColor: "black",
             borderWidth: 2,
-            backgroundColor: "rgba(75, 192, 192, 0.1)",
+            backgroundColor: "rgba(255, 99, 132, 0.1)",
           },
         },
       }}

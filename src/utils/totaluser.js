@@ -19,9 +19,17 @@ export async function getTotalUser() {
 
 export async function getPrevTotalUser() {
   const now = Timestamp.now();
-  const startOfYesterday = new Timestamp(now.seconds - 24 * 60 * 60, 0);
+
+  const startOfToday = new Timestamp(
+    now.seconds - (now.seconds % (24 * 60 * 60)),
+    0
+  );
+  const startOfYesterday = new Timestamp(
+    startOfToday.seconds - 24 * 60 * 60,
+    0
+  );
   const startOfDayBeforeYesterday = new Timestamp(
-    now.seconds - 2 * 24 * 60 * 60,
+    startOfYesterday.seconds - 24 * 60 * 60,
     0
   );
 

@@ -9,6 +9,7 @@ import {
   getTodayAvgSessionDuration,
   getPrevDayAvgSessionDuration,
 } from "@/utils/avgSession";
+import formatDuration from "@/utils/formatDuration";
 
 function Analytics() {
   const [user, setUser] = useState("");
@@ -18,8 +19,8 @@ function Analytics() {
   const [dau, setDau] = useState("Loading...");
   const [prevDayActivity, setPrevDayActivity] = useState("Loading...");
   const [prevTotalUser, setPrevTotalUser] = useState("Loading...");
-  const [avgSession, setAvgSession] = useState("Loading...");
-  const [prevAvgSession, setPrevAvgSession] = useState("Loading...");
+  const [avgSession, setAvgSession] = useState(0);
+  const [prevAvgSession, setPrevAvgSession] = useState(0);
 
   useEffect(() => {
     setUser(getCookie("user"));
@@ -84,9 +85,10 @@ function Analytics() {
             {
               label: "Daily Active Users",
               data: values,
-              borderColor: "rgba(75, 192, 192, 1)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderWidth: 1,
+              fill: true,
             },
           ],
         });
@@ -99,12 +101,6 @@ function Analytics() {
     fetchTotalUser();
     fetchChartData();
   }, []);
-
-  function formatDuration(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes}m ${secs}s`;
-  }
 
   return (
     <div className="flex flex-col w-screen h-screen p-10">
@@ -149,7 +145,7 @@ function Analytics() {
                   >
                     {dau - prevDayActivity >= 0
                       ? `+${dau - prevDayActivity}`
-                      : `-${dau - prevDayActivity}`}{" "}
+                      : `${dau - prevDayActivity}`}{" "}
                   </label>
                   In Previous Day
                 </label>
