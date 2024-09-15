@@ -60,7 +60,7 @@ function Comments({ postId }) {
   }, [postId]);
 
   if (loading) {
-    return <div>Loading comments...</div>;
+    return <div className="animate-pulse w-full h-full"></div>;
   }
 
   if (comments.length === 0) {

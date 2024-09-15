@@ -12,6 +12,7 @@ import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
 import Comments from "./Comments";
 import { getCookie } from "cookies-next";
+import PostLoader from "../loaders/PostLoader";
 
 function SelectedPost() {
   const { postId } = useParams();
@@ -79,11 +80,11 @@ function SelectedPost() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <PostLoader />;
   }
 
   if (!post) {
-    return <div>Post not found</div>;
+    return <PostLoader />;
   }
 
   return (
@@ -110,30 +111,28 @@ function SelectedPost() {
         </div>
 
         {/* Image Section with Slider */}
-        <div className="relative w-full flex-grow flex justify-center min-h-[600px] z-10">
+
+        <div className="relative w-full flex-1">
+          <button
+            onClick={handlePreviousImage}
+            className="absolute left-4 top-1 bg-gray-700 text-white rounded-full w-8 h-8 hover:bg-gray-600"
+          >
+            &#8592;
+          </button>
+
+          <button
+            onClick={handleNextImage}
+            className="absolute right-4 top-1 bg-gray-700 text-white rounded-full w-8 h-8 hover:bg-gray-600"
+          >
+            &#8594;
+          </button>
           {post.imageUrls && post.imageUrls.length > 0 && (
             <img
               src={post.imageUrls[currentImageIndex]}
               alt="Post"
-              className="object-cover w-full h-5/6"
+              className="object-cover w-full max-h-[500px] rounded-b-md z-10"
             />
           )}
-
-          <div className="mt-5">
-            <button
-              onClick={handlePreviousImage}
-              className="absolute left-4 bg-gray-700 text-white rounded-full w-8 h-8 hover:bg-gray-600"
-            >
-              &#8592;
-            </button>
-
-            <button
-              onClick={handleNextImage}
-              className="absolute right-4 bg-gray-700 text-white rounded-full w-8 h-8 hover:bg-gray-600"
-            >
-              &#8594;
-            </button>
-          </div>
         </div>
       </div>
 

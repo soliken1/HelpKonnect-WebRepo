@@ -10,15 +10,14 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "@/configs/firebaseConfigs"; // Ensure Firebase config is correctly imported
+import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
 import ImageModal from "./ImageModal";
 import Link from "next/link";
 
 function Posts({ posts, userId }) {
-  // Pass userId as a prop
   const [modalImage, setModalImage] = useState(null);
-  const [likes, setLikes] = useState({}); // Track likes for posts
+  const [likes, setLikes] = useState({});
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -54,7 +53,6 @@ function Posts({ posts, userId }) {
     const likeSnapshot = await getDocs(likeQuery);
 
     if (likeSnapshot.empty) {
-      // User hasn't liked the post, so add a like
       await updateDoc(postRef, { heart: increment(1) });
       await addDoc(collection(db, "likes"), {
         postId: post.id,
@@ -62,7 +60,6 @@ function Posts({ posts, userId }) {
       });
       setLikes((prev) => ({ ...prev, [post.id]: true }));
     } else {
-      // User already liked the post, so remove the like
       const likeDocRef = likeSnapshot.docs[0].ref;
       await updateDoc(postRef, { heart: increment(-1) });
       await deleteDoc(likeDocRef);
