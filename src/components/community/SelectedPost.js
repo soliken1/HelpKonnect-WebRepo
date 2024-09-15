@@ -1,17 +1,28 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
+import Comments from "./Comments";
+import { getCookie } from "cookies-next";
 
 function SelectedPost() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [postComment, setPostComment] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
+    setUserId(getCookie("userId"));
     const fetchPost = async () => {
       try {
         const docRef = doc(db, "community", postId);
@@ -33,7 +44,6 @@ function SelectedPost() {
     }
   }, [postId]);
 
-  // Function to handle next image
   const handleNextImage = () => {
     if (post && post.imageUrls) {
       setCurrentImageIndex(
@@ -42,13 +52,29 @@ function SelectedPost() {
     }
   };
 
-  // Function to handle previous image
   const handlePreviousImage = () => {
     if (post && post.imageUrls) {
       setCurrentImageIndex(
         (prevIndex) =>
           (prevIndex - 1 + post.imageUrls.length) % post.imageUrls.length
       );
+    }
+  };
+
+  const handleComments = async (e) => {
+    e.preventDefault();
+    if (postComment.trim() === "") return;
+    try {
+      await addDoc(collection(db, "comments"), {
+        time: serverTimestamp(),
+        postId,
+        userId: userId,
+        comment: postComment,
+      });
+      setPostComment("");
+      window.location.reload();
+    } catch (e) {
+      console.error("Error adding document:", e);
     }
   };
 
@@ -113,9 +139,26 @@ function SelectedPost() {
 
       {/* Right-hand Side */}
       <div className="w-full md:w-1/3 h-5/6 flex flex-col shadow-lg rounded-md bg-white p-4">
-        <div className="">
+        <div className="h-5/6 w-full">
           <label>Comments</label>
+          <div className="flex flex-col mt-5 gap-2">
+            <Comments postId={postId} />
+          </div>
         </div>
+        <form onSubmit={handleComments}>
+          <textarea
+            value={postComment}
+            onChange={(e) => setPostComment(e.target.value)}
+            className="w-full p-2 mt-5 resize-none bg-gray-100 rounded-md text-sm"
+            placeholder="Write a comment..."
+          ></textarea>
+          <button
+            type="submit"
+            className="w-full bg-red-400 text-white rounded-md py-2"
+          >
+            Comment
+          </button>
+        </form>
       </div>
     </div>
   );

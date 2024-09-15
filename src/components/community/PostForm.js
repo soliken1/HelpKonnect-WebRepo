@@ -45,11 +45,13 @@ function PostForm({ userId, username, userProfile }) {
         userProfile,
         userProfile,
         imageUrls,
+        heart: 0,
         time: serverTimestamp(),
       });
 
       setPostMessage("");
       setImages([]);
+      window.location.reload();
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -58,13 +60,19 @@ function PostForm({ userId, username, userProfile }) {
   return (
     <div className="w-full h-full md:w-1/3 flex flex-col gap-2 px-3 py-6 shadow-md rounded-lg bg-white">
       <form className="gap-5 flex flex-col" onSubmit={handlePostMessage}>
+        <div className="px-4 flex flex-col">
+          <label className="font-bold">Community</label>
+          <label className="font-normal text-sm text-gray-400">
+            Share Your Thoughts On The Community
+          </label>
+        </div>
         <div className="flex flex-row gap-2">
           <img className="w-10 h-10 rounded-full" src={userProfile} />
           <textarea
             value={postMessage}
             onChange={(e) => setPostMessage(e.target.value)}
             className="h-32 w-5/6 resize-none bg-gray-100 rounded-lg p-3"
-            placeholder="Share To The Community"
+            placeholder="I'm feeling..."
           ></textarea>
         </div>
         <div className="flex flex-row gap-4">

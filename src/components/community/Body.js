@@ -23,7 +23,7 @@ function Body() {
           userId={userId}
           username={userName}
         />
-        <PostContainer />
+        <PostContainer userId={userId} />
       </div>
     </div>
   );
