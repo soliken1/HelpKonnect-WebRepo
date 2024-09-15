@@ -3,7 +3,7 @@ import React from "react";
 
 function List({ users, onSelectUser, currentUser }) {
   return (
-    <div className="flex flex-col  md:w-3/12 md:h-full p-4 rounded-lg shadow-md">
+    <div className="flex flex-col md:w-3/12 md:h-full p-4 rounded-lg shadow-md">
       <label className="text-black font-bold text-xl">Chats</label>
       <input
         type="text"

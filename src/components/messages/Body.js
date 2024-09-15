@@ -68,7 +68,7 @@ function Body({ currentUser }) {
   }, [selectedUser, currentUser]);
 
   return (
-    <div className="w-full flex md:flex-row flex-col gap-5 p-10">
+    <div className="w-full h-full flex md:flex-row flex-col gap-5 p-10">
       <List
         users={users}
         currentUser={currentUser}
