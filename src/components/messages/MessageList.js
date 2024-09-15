@@ -27,7 +27,7 @@ function MessageList({ messages, selectedUser, currentUser }) {
     <div className="flex-1 flex flex-col h-full bg-white rounded-lg shadow-md">
       <div className="w-full h-16 shadow-sm px-8 flex items-center">
         <label className="mt-2 font-semibold">
-          {selectedUser?.facilityName}
+          {selectedUser?.facilityName || selectedUser?.username}
         </label>
       </div>
       <div className="w-full h-5/6 flex flex-col px-8 py-4 md:py-0 overflow-auto gap-3 mt-4">

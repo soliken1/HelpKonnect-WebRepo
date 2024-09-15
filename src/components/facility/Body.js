@@ -121,6 +121,11 @@ function Body() {
 
               if (credentialsDocSnap.exists()) {
                 const credentialsData = credentialsDocSnap.data();
+
+                if (credentialsData.role && credentialsData.role === "user") {
+                  return null;
+                }
+
                 return {
                   ...facility,
                   facilityName:
@@ -130,25 +135,23 @@ function Body() {
                 console.log(
                   `No credentials found for userId ${facility.userId}`
                 );
-                return {
-                  ...facility,
-                  facilityName: "Unknown Facility Name",
-                };
+                return null;
               }
             } catch (error) {
               console.error(
                 `Error fetching credentials for userId ${facility.userId}:`,
                 error
               );
-              return {
-                ...facility,
-                facilityName: "Error fetching name",
-              };
+              return null;
             }
           })
         );
 
-        setFacilities(facilitiesWithNames);
+        const filteredFacilities = facilitiesWithNames.filter(
+          (facility) => facility !== null
+        );
+
+        setFacilities(filteredFacilities);
       } catch (error) {
         console.error("Error fetching facilities:", error);
       }

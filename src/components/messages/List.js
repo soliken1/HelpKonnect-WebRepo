@@ -24,11 +24,11 @@ function List({ users, onSelectUser, currentUser }) {
                 width={20}
                 height={20}
                 className="rounded-full w-12 h-12"
-                alt={`${user.facilityName}'s profile`}
+                alt={`${user.facilityName || user.username}'s profile`}
               />
               <div className="flex flex-col justify-center">
                 <label className="text-sm font-semibold">
-                  {user.facilityName}
+                  {user.facilityName || user.username}
                 </label>
                 <label className="text-gray-400 text-xs">
                   Render Recent Message Here

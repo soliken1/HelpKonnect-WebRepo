@@ -1,8 +1,13 @@
+"use client";
 import React from "react";
 import { useState } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db, storage } from "@/configs/firebaseConfigs";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-function PostForm({ userProfile }) {
+function PostForm({ userId, username, userProfile }) {
   const [images, setImages] = useState([]);
+  const [postMessage, setPostMessage] = useState("");
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -15,12 +20,49 @@ function PostForm({ userProfile }) {
       prevImages.filter((_, index) => index !== indexToRemove)
     );
   };
+
+  const handlePostMessage = async (e) => {
+    e.preventDefault();
+    if (postMessage.trim() === "" && images.length === 0) return;
+
+    try {
+      const imageUrls = await Promise.all(
+        images.map(async (image) => {
+          const storageRef = ref(
+            storage,
+            `communityImages/${image.name}-${Date.now()}`
+          );
+          const uploadResult = await uploadBytes(storageRef, image);
+          const downloadUrl = await getDownloadURL(uploadResult.ref);
+          return downloadUrl;
+        })
+      );
+
+      await addDoc(collection(db, "community"), {
+        caption: postMessage,
+        userId: userId,
+        username: username,
+        userProfile,
+        userProfile,
+        imageUrls,
+        time: serverTimestamp(),
+      });
+
+      setPostMessage("");
+      setImages([]);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
+
   return (
     <div className="w-full h-full md:w-1/3 flex flex-col gap-2 px-3 py-6 shadow-md rounded-lg">
-      <form className="gap-5 flex flex-col">
+      <form className="gap-5 flex flex-col" onSubmit={handlePostMessage}>
         <div className="flex flex-row gap-2">
           <img className="w-10 h-10 rounded-full" src={userProfile} />
           <textarea
+            value={postMessage}
+            onChange={(e) => setPostMessage(e.target.value)}
             className="h-32 w-5/6 resize-none bg-gray-100 rounded-lg p-3"
             placeholder="Share To The Community"
           ></textarea>
