@@ -22,7 +22,7 @@ function PostContainer() {
     fetchPosts();
   }, []);
   return (
-    <div className="w-full md:w-2/3 h-full flex flex-col gap-2 px-3 py-6 items-center shadow-md rounded-lg overflow-auto">
+    <div className="w-full md:w-2/3 h-full flex flex-col gap-2 px-3 py-6 items-center rounded-lg overflow-auto">
       <Posts posts={posts} />
     </div>
   );

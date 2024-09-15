@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import formatDate from "@/utils/formatDate";
 import ImageModal from "./ImageModal";
+import Link from "next/link";
 
 function Posts({ posts }) {
   const [modalImage, setModalImage] = useState(null);
@@ -18,7 +19,7 @@ function Posts({ posts }) {
       {posts.map((post) => (
         <div
           key={post.id}
-          className="w-full h-3/4 shadow-md flex flex-col gap-2 rounded-md p-4"
+          className="w-full h-[800px] md:h-5/6 shadow-md flex flex-col gap-2 rounded-md p-4 bg-white"
         >
           <div className="w-full flex flex-row gap-2">
             <img className="w-12 h-12 rounded-full" src={post.userProfile} />
@@ -46,6 +47,23 @@ function Posts({ posts }) {
                 />
               </div>
             ))}
+          </div>
+          <div className="flex flex-row h-12 border-t-2">
+            <button
+              type="button"
+              className="w-1/2 h-full flex flex-row justify-center items-center gap-5 border-e-2 hover:bg-gray-200 rounded-sm duration-200"
+            >
+              <img className="" src="/Icons/HeartIcon.svg" />
+              <label className="cursor-pointer">0</label>
+            </button>
+            <Link
+              href={`/community/${post.id}`}
+              type="button"
+              className="w-1/2 h-full flex flex-row justify-center items-center gap-5 hover:bg-gray-200 rounded-sm duration-200"
+            >
+              <img className="" src="/Icons/CommentIcon.svg" />
+              <label className="cursor-pointer"> 0 Comments</label>
+            </Link>
           </div>
         </div>
       ))}

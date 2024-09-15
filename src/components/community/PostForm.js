@@ -56,7 +56,7 @@ function PostForm({ userId, username, userProfile }) {
   };
 
   return (
-    <div className="w-full h-full md:w-1/3 flex flex-col gap-2 px-3 py-6 shadow-md rounded-lg">
+    <div className="w-full h-full md:w-1/3 flex flex-col gap-2 px-3 py-6 shadow-md rounded-lg bg-white">
       <form className="gap-5 flex flex-col" onSubmit={handlePostMessage}>
         <div className="flex flex-row gap-2">
           <img className="w-10 h-10 rounded-full" src={userProfile} />
