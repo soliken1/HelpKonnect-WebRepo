@@ -21,10 +21,14 @@ function Body({ currentUser }) {
     const fetchUsers = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "credentials"));
-        const usersData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+
+        const usersData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .filter((user) => user.role !== "User"); // Do not render docs that has a role of user
+
         setUsers(usersData);
       } catch (error) {
         console.error("Error fetching users:", error);
