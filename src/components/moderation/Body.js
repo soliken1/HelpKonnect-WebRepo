@@ -1,13 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
+import FlagList from "./FlagList";
+import FlagContent from "./FlagContent";
 
 function Body() {
   return (
-    <div className="w-full flex flex-col p-10">
-      <label className="text-lg font-bold">Moderation</label>
-      <label className="font-medium text-gray-400">
-        Moderation of the Help-Konnect Community
-      </label>
+    <div className="w-full h-full flex md:flex-row flex-col gap-5 p-10">
+      <FlagList />
+      <FlagContent />
     </div>
   );
 }
