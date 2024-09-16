@@ -44,7 +44,6 @@ function Posts({ posts, userId }) {
 
   const handleHeartReact = async (post) => {
     const postRef = doc(db, "community", post.id);
-    console.log("User ID: ", userId);
     const likeQuery = query(
       collection(db, "likes"),
       where("postId", "==", post.id),

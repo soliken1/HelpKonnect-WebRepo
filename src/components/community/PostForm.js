@@ -33,6 +33,15 @@ function PostForm({ userId, username, userProfile }) {
       alert(
         "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been marked for moderation."
       );
+      try {
+        await addDoc(collection(db, "flaggedAccounts"), {
+          time: serverTimestamp(),
+          userId: userId,
+          comment: postMessage,
+        });
+      } catch (e) {
+        console.error(e);
+      }
       setPostMessage("");
       return;
     }

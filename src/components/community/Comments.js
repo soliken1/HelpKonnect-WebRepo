@@ -46,7 +46,6 @@ function Comments({ postId }) {
         );
 
         setComments(commentsWithUserDetails);
-        console.log(commentsWithUserDetails);
       } catch (error) {
         console.error("Error fetching comments:", error);
       } finally {

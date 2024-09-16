@@ -13,6 +13,7 @@ import formatDate from "@/utils/formatDate";
 import Comments from "./Comments";
 import { getCookie } from "cookies-next";
 import PostLoader from "../loaders/Community/PostLoader";
+import { handleModerationTest } from "@/configs/textFiltering";
 
 function SelectedPost() {
   const { postId } = useParams();
@@ -65,6 +66,24 @@ function SelectedPost() {
   const handleComments = async (e) => {
     e.preventDefault();
     if (postComment.trim() === "") return;
+    const result = await handleModerationTest(postComment.trim());
+    if (result.result.includes("*")) {
+      alert(
+        "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been flagged for moderation."
+      );
+      try {
+        await addDoc(collection(db, "flaggedAccounts"), {
+          time: serverTimestamp(),
+          userId: userId,
+          comment: postComment,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+      setPostComment("");
+      return;
+    }
+
     try {
       await addDoc(collection(db, "comments"), {
         time: serverTimestamp(),
