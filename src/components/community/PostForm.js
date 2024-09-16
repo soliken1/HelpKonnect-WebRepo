@@ -4,6 +4,7 @@ import { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, storage } from "@/configs/firebaseConfigs";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { handleModerationTest } from "@/configs/textFiltering";
 
 function PostForm({ userId, username, userProfile }) {
   const [images, setImages] = useState([]);
@@ -23,7 +24,18 @@ function PostForm({ userId, username, userProfile }) {
 
   const handlePostMessage = async (e) => {
     e.preventDefault();
+
     if (postMessage.trim() === "" && images.length === 0) return;
+
+    const result = await handleModerationTest(postMessage.trim());
+
+    if (result.result.includes("*")) {
+      alert(
+        "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been marked for moderation."
+      );
+      setPostMessage("");
+      return;
+    }
 
     try {
       const imageUrls = await Promise.all(
@@ -42,7 +54,6 @@ function PostForm({ userId, username, userProfile }) {
         caption: postMessage,
         userId: userId,
         username: username,
-        userProfile,
         userProfile,
         imageUrls,
         heart: 0,
