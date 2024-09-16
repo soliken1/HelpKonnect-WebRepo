@@ -12,7 +12,7 @@ import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
 import Comments from "./Comments";
 import { getCookie } from "cookies-next";
-import PostLoader from "../loaders/PostLoader";
+import PostLoader from "../loaders/Community/PostLoader";
 
 function SelectedPost() {
   const { postId } = useParams();
@@ -88,7 +88,7 @@ function SelectedPost() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row items-center px-10 py-2 gap-4">
+    <div className="w-full h-full flex flex-col md:flex-row items-center px-10 py-2 gap-4 z-0">
       <div className="w-full md:w-2/3 h-5/6 shadow-lg rounded-md bg-white flex flex-col">
         {/* User Info */}
         <div className="p-4">

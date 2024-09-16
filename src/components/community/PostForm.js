@@ -67,7 +67,11 @@ function PostForm({ userId, username, userProfile }) {
           </label>
         </div>
         <div className="flex flex-row gap-2">
-          <img className="w-10 h-10 rounded-full" src={userProfile} />
+          {userProfile === "" ? (
+            <div className="w-10 h-10 rounded-full bg-red-300 animate-pulse"></div>
+          ) : (
+            <img className="w-10 h-10 rounded-full" src={userProfile} />
+          )}
           <textarea
             value={postMessage}
             onChange={(e) => setPostMessage(e.target.value)}

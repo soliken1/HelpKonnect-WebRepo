@@ -26,7 +26,7 @@ function Sidebar({ role }) {
   return (
     <>
       <div
-        className={`z-50 fixed top-6 left-6 flex flex-col gap-1
+        className={`z-20 fixed top-6 left-6 flex flex-col gap-1
          cursor-pointer bg-red-300 rounded-full hover:opacity-100 opacity-100 duration-300  ${
            isPressed ? "opacity-100" : "opacity-50"
          }`}
@@ -35,7 +35,7 @@ function Sidebar({ role }) {
         <Image src="/Logo/Logo.png" width={75} height={75} alt="Logo" />
       </div>
       <div
-        className={`h-screen fixed md:relative w-32 ${
+        className={`h-screen z-10 fixed md:relative w-32 ${
           isPressed ? "inline" : "hidden"
         } flex flex-col gap-5 bg-red-300 shadow-md shadow-red-400`}
       >

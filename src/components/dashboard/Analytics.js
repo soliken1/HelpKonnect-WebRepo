@@ -10,15 +10,16 @@ import {
   getPrevDayAvgSessionDuration,
 } from "@/utils/avgSession";
 import formatDuration from "@/utils/formatDuration";
+import ChartLoader from "../loaders/Analytics/ChartLoader";
 
 function Analytics() {
   const [user, setUser] = useState("");
   const [role, setRole] = useState("");
   const [chartData, setChartData] = useState(null);
-  const [totalUser, setTotalUser] = useState("Loading...");
-  const [dau, setDau] = useState("Loading...");
-  const [prevDayActivity, setPrevDayActivity] = useState("Loading...");
-  const [prevTotalUser, setPrevTotalUser] = useState("Loading...");
+  const [totalUser, setTotalUser] = useState("");
+  const [dau, setDau] = useState("");
+  const [prevDayActivity, setPrevDayActivity] = useState("");
+  const [prevTotalUser, setPrevTotalUser] = useState("");
   const [avgSession, setAvgSession] = useState(0);
   const [prevAvgSession, setPrevAvgSession] = useState(0);
 
@@ -113,42 +114,64 @@ function Analytics() {
           <div className="flex flex-col h-full md:flex-row mt-6">
             <div className="flex flex-col md:w-3/4">
               <div className="w-full h-full md:min-w-full md:min-h-full flex justify-center items-center p-2 rounded-lg">
-                {chartData ? <LineChart data={chartData} /> : <p>Loading...</p>}
+                {chartData ? <LineChart data={chartData} /> : <ChartLoader />}
               </div>
             </div>
 
             <div className="w-full md:w-1/4 flex flex-col p-4 gap-5">
               <div className="flex flex-col gap-1 border-b-2 pb-2">
                 <label className="text-lg font-bold">Total Users</label>
-                <label>{totalUser}</label>
-                <label>
-                  <label className="text-green-400">
-                    {totalUser - prevTotalUser >= 0
-                      ? `+${totalUser - prevTotalUser}`
-                      : `-${totalUser - prevTotalUser}`}{" "}
+                {totalUser === "" ? (
+                  <div className="w-32 h-4 bg-red-300 rounded-full animate-pulse"></div>
+                ) : (
+                  <label>{totalUser}</label>
+                )}
+                {totalUser === "" && prevTotalUser === "" ? (
+                  <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
+                ) : (
+                  <label>
+                    <label
+                      className={
+                        dau - prevDayActivity >= 0
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {totalUser - prevTotalUser >= 0
+                        ? `+${totalUser - prevTotalUser}`
+                        : `-${totalUser - prevTotalUser}`}{" "}
+                    </label>
+                    In Previous Day
                   </label>
-                  In Previous Day
-                </label>
+                )}
               </div>
               <div className="flex flex-col gap-1 border-b-2 pb-2">
                 <label className="text-lg font-bold">
                   Total User Activities
                 </label>
-                <label>{dau}</label>
-                <label>
-                  <label
-                    className={
-                      dau - prevDayActivity >= 0
-                        ? "text-green-400"
-                        : "text-red-400"
-                    }
-                  >
-                    {dau - prevDayActivity >= 0
-                      ? `+${dau - prevDayActivity}`
-                      : `${dau - prevDayActivity}`}{" "}
+                {dau === "" ? (
+                  <div className="w-32 h-4 bg-red-300 animate-pulse rounded-full"></div>
+                ) : (
+                  <label>{dau}</label>
+                )}
+                {dau === "" && prevDayActivity === "" ? (
+                  <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
+                ) : (
+                  <label>
+                    <label
+                      className={
+                        dau - prevDayActivity >= 0
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {dau - prevDayActivity >= 0
+                        ? `+${dau - prevDayActivity}`
+                        : `${dau - prevDayActivity}`}{" "}
+                    </label>
+                    In Previous Day
                   </label>
-                  In Previous Day
-                </label>
+                )}
               </div>
               <div className="flex flex-col gap-1 border-b-2 pb-2">
                 <label className="text-lg font-bold">
