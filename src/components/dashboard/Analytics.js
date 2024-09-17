@@ -110,94 +110,88 @@ function Analytics() {
         <label className="font-medium text-gray-400">
           General Statistics on {role === "admin" ? "Application" : user}
         </label>
-        {role === "admin" ? (
-          <div className="flex flex-col h-full md:flex-row mt-6">
-            <div className="flex flex-col md:w-3/4">
-              <div className="w-full h-full md:min-w-full md:min-h-full flex justify-center items-center p-2 rounded-lg">
-                {chartData ? <LineChart data={chartData} /> : <ChartLoader />}
-              </div>
-            </div>
-
-            <div className="w-full md:w-1/4 flex flex-col p-4 gap-5">
-              <div className="flex flex-col gap-1 border-b-2 pb-2">
-                <label className="text-lg font-bold">Total Users</label>
-                {totalUser === "" ? (
-                  <div className="w-32 h-4 bg-red-300 rounded-full animate-pulse"></div>
-                ) : (
-                  <label>{totalUser}</label>
-                )}
-                {totalUser === "" && prevTotalUser === "" ? (
-                  <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
-                ) : (
-                  <label>
-                    <label
-                      className={
-                        dau - prevDayActivity >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }
-                    >
-                      {totalUser - prevTotalUser >= 0
-                        ? `+${totalUser - prevTotalUser}`
-                        : `-${totalUser - prevTotalUser}`}{" "}
-                    </label>
-                    In Previous Day
-                  </label>
-                )}
-              </div>
-              <div className="flex flex-col gap-1 border-b-2 pb-2">
-                <label className="text-lg font-bold">
-                  Total User Activities
-                </label>
-                {dau === "" ? (
-                  <div className="w-32 h-4 bg-red-300 animate-pulse rounded-full"></div>
-                ) : (
-                  <label>{dau}</label>
-                )}
-                {dau === "" && prevDayActivity === "" ? (
-                  <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
-                ) : (
-                  <label>
-                    <label
-                      className={
-                        dau - prevDayActivity >= 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }
-                    >
-                      {dau - prevDayActivity >= 0
-                        ? `+${dau - prevDayActivity}`
-                        : `${dau - prevDayActivity}`}{" "}
-                    </label>
-                    In Previous Day
-                  </label>
-                )}
-              </div>
-              <div className="flex flex-col gap-1 border-b-2 pb-2">
-                <label className="text-lg font-bold">
-                  Average Session Duration
-                </label>
-                <label>{formatDuration(avgSession)}</label>
-                <label>
-                  <label
-                    className={`${
-                      avgSession - prevAvgSession > 0
-                        ? `${"text-green-400"}`
-                        : `${"text-red-400"}`
-                    }`}
-                  >
-                    {avgSession - prevAvgSession > 0
-                      ? `+${formatDuration(avgSession - prevAvgSession)}`
-                      : `-${formatDuration(prevAvgSession - avgSession)}`}
-                  </label>{" "}
-                  In Previous Day
-                </label>
-              </div>
+        <div className="flex flex-col h-full md:flex-row mt-6">
+          <div className="flex flex-col md:w-3/4">
+            <div className="w-full h-full md:min-w-full md:min-h-full flex justify-center items-center p-2 rounded-lg">
+              {chartData ? <LineChart data={chartData} /> : <ChartLoader />}
             </div>
           </div>
-        ) : (
-          <div className="">Display Separate Analytics Distinct From Admin</div>
-        )}
+
+          <div className="w-full md:w-1/4 flex flex-col p-4 gap-5">
+            <div className="flex flex-col gap-1 border-b-2 pb-2">
+              <label className="text-lg font-bold">Total Users</label>
+              {totalUser === "" ? (
+                <div className="w-32 h-4 bg-red-300 rounded-full animate-pulse"></div>
+              ) : (
+                <label>{totalUser}</label>
+              )}
+              {totalUser === "" && prevTotalUser === "" ? (
+                <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
+              ) : (
+                <label>
+                  <label
+                    className={
+                      dau - prevDayActivity >= 0
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }
+                  >
+                    {totalUser - prevTotalUser >= 0
+                      ? `+${totalUser - prevTotalUser}`
+                      : `-${totalUser - prevTotalUser}`}{" "}
+                  </label>
+                  In Previous Day
+                </label>
+              )}
+            </div>
+            <div className="flex flex-col gap-1 border-b-2 pb-2">
+              <label className="text-lg font-bold">Total User Activities</label>
+              {dau === "" ? (
+                <div className="w-32 h-4 bg-red-300 animate-pulse rounded-full"></div>
+              ) : (
+                <label>{dau}</label>
+              )}
+              {dau === "" && prevDayActivity === "" ? (
+                <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
+              ) : (
+                <label>
+                  <label
+                    className={
+                      dau - prevDayActivity >= 0
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }
+                  >
+                    {dau - prevDayActivity >= 0
+                      ? `+${dau - prevDayActivity}`
+                      : `${dau - prevDayActivity}`}{" "}
+                  </label>
+                  In Previous Day
+                </label>
+              )}
+            </div>
+            <div className="flex flex-col gap-1 border-b-2 pb-2">
+              <label className="text-lg font-bold">
+                Average Session Duration
+              </label>
+              <label>{formatDuration(avgSession)}</label>
+              <label>
+                <label
+                  className={`${
+                    avgSession - prevAvgSession > 0
+                      ? `${"text-green-400"}`
+                      : `${"text-red-400"}`
+                  }`}
+                >
+                  {avgSession - prevAvgSession > 0
+                    ? `+${formatDuration(avgSession - prevAvgSession)}`
+                    : `-${formatDuration(prevAvgSession - avgSession)}`}
+                </label>{" "}
+                In Previous Day
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

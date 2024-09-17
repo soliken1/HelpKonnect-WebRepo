@@ -27,10 +27,10 @@ function List({ users, onSelectUser, currentUser }) {
                 alt={`${user.facilityName || user.username}'s profile`}
               />
               <div className="flex flex-col justify-center">
-                <label className="text-sm font-semibold">
+                <label className="text-sm font-semibold cursor-pointer">
                   {user.facilityName || user.username}
                 </label>
-                <label className="text-gray-400 text-xs">
+                <label className="text-gray-400 text-xs cursor-pointer">
                   Render Recent Message Here
                 </label>
               </div>
