@@ -10,6 +10,7 @@ import { auth } from "@/configs/firebaseConfigs";
 import { setCookie } from "cookies-next";
 import { logUserActivity } from "@/utils/userActivity";
 import { logSessionStart } from "@/utils/sessions";
+import LoginLoading from "@/components/loaders/Login/LoginLoading";
 
 const Startup = dynamic(() => import("@/components/home/Startup"), {
   ssr: false,
@@ -21,6 +22,7 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loggingIn, setLoggingIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,6 +42,8 @@ export default function Home() {
 
   const handleLogin = async (event, email, password) => {
     event.preventDefault();
+    setError("");
+    setLoggingIn(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -54,6 +58,11 @@ export default function Home() {
       if (docSnap.exists()) {
         const userData = docSnap.data();
 
+        if (userData.banned) {
+          alert("Your account has been banned. Please contact support.");
+          return;
+        }
+
         setCookie("role", userData.role);
         setCookie("user", userData.facilityName);
         setCookie("userId", userData.userId);
@@ -66,16 +75,19 @@ export default function Home() {
         await logSessionStart(userData.userId);
 
         router.push("/dashboard");
+        setLoggingIn(false);
       } else {
+        setIsLoading(false);
         console.log("No such document!");
       }
     } catch (error) {
-      setError("Something Went Wrong, Please Try Again!");
+      setError("User Email or Password Is Incorrect, Please Try Again");
+      setLoggingIn(false);
     }
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden relative">
       <div className="w-1/2 hidden md:block h-screen justify-center items-center">
         <img className="object-cover w-full h-full" src="/Background.png" />
       </div>
@@ -148,6 +160,7 @@ export default function Home() {
           {error && <p className="text-white font-bold text-center">{error}</p>}
         </form>
       </div>
+      {loggingIn && <LoginLoading />}
     </div>
   );
 }

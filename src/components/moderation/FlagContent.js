@@ -1,12 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 
 function FlagContent() {
   const { flaggedUser } = useParams();
   const [flaggedComments, setFlaggedComments] = useState([]);
+  const [isBanned, setIsBanned] = useState(false);
 
   useEffect(() => {
     const fetchFlaggedComments = async () => {
@@ -28,8 +37,36 @@ function FlagContent() {
       }
     };
 
+    const fetchUserStatus = async () => {
+      try {
+        const userRef = doc(db, "credentials", flaggedUser);
+        const userSnapshot = await getDoc(userRef);
+
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data();
+          setIsBanned(userData.banned || false);
+        }
+      } catch (err) {
+        console.error("Error fetching user status: ", err);
+      }
+    };
+
     fetchFlaggedComments();
+    fetchUserStatus();
   }, [flaggedUser]);
+
+  const handleBanUser = async () => {
+    try {
+      const userRef = doc(db, "credentials", flaggedUser);
+
+      await updateDoc(userRef, { banned: true });
+      setIsBanned(true);
+
+      console.log(`User with ID: ${flaggedUser} has been banned.`);
+    } catch (err) {
+      console.error("Error banning user: ", err);
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col h-full bg-white rounded-lg shadow-md p-4">
@@ -52,18 +89,19 @@ function FlagContent() {
         )}
       </div>
       <div className="w-full flex-1 flex flex-row gap-5">
-        <button
-          type="button"
-          className="w-1/2 h-12 rounded-lg text-white shadow-md bg-red-400 hover:bg-red-600 duration-75"
-        >
-          Ban User
-        </button>
-        <button
-          type="button"
-          className="w-1/2 h-12  rounded-lg text-white shadow-md bg-green-400 hover:bg-green-600  duration-75"
-        >
-          Unflag User
-        </button>
+        {isBanned ? (
+          <span className="w-full h-12 flex justify-center items-center rounded-lg text-white shadow-md bg-gray-400">
+            User is Banned
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={handleBanUser}
+            className="w-full h-12 rounded-lg text-white shadow-md bg-red-400 hover:bg-red-600 duration-75"
+          >
+            Ban User
+          </button>
+        )}
       </div>
     </div>
   );
