@@ -9,6 +9,7 @@ import {
   updateDoc,
   doc,
   getDoc,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 
@@ -22,8 +23,10 @@ function FlagContent() {
       try {
         const q = query(
           collection(db, "flaggedAccounts"),
-          where("userId", "==", flaggedUser)
+          where("userId", "==", flaggedUser),
+          orderBy("time", "desc")
         );
+
         const querySnapshot = await getDocs(q);
 
         const commentsData = querySnapshot.docs.map((doc) => ({
@@ -32,11 +35,11 @@ function FlagContent() {
         }));
 
         setFlaggedComments(commentsData);
+        console.log(commentsData);
       } catch (err) {
         console.error("Error fetching flagged comments: ", err);
       }
     };
-
     const fetchUserStatus = async () => {
       try {
         const userRef = doc(db, "credentials", flaggedUser);
