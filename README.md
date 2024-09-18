@@ -8,7 +8,7 @@ Developers has Analytics for the Whole Platform, Registering of Incoming Partner
 
 ## Screenshots
 
-![App Screenshot](Public/Preview.png)
+![App Screenshot](public/Preview.png)
 
 ## Authors
 
