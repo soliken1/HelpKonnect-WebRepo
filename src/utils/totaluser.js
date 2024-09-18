@@ -19,28 +19,37 @@ export async function getTotalUser() {
 
 export async function getPrevTotalUser() {
   const now = Timestamp.now();
-
-  const startOfToday = new Timestamp(
-    now.seconds - (now.seconds % (24 * 60 * 60)),
-    0
-  );
-  const startOfYesterday = new Timestamp(
-    startOfToday.seconds - 24 * 60 * 60,
-    0
-  );
-  const startOfDayBeforeYesterday = new Timestamp(
-    startOfYesterday.seconds - 24 * 60 * 60,
-    0
+  const yesterday = new Timestamp(now.seconds - 24 * 60 * 60, now.nanoseconds);
+  const twoDaysAgo = new Timestamp(
+    now.seconds - 2 * 24 * 60 * 60,
+    now.nanoseconds
   );
 
   const q = query(
     collection(db, "credentials"),
-    where("dateCreated", ">=", startOfDayBeforeYesterday),
-    where("dateCreated", "<", startOfYesterday)
+    where("dateCreated", ">=", yesterday),
+    where("dateCreated", "<", twoDaysAgo)
   );
 
   const querySnapshot = await getDocs(q);
-  const prevTotalUsers = querySnapshot.size;
+
+  const prevTotalUsers = querySnapshot.docs.filter((doc) => {
+    const data = doc.data();
+    let dateCreated = data.dateCreated;
+
+    if (typeof dateCreated === "string") {
+      const parsedDate = Date.parse(dateCreated);
+      if (!isNaN(parsedDate)) {
+        dateCreated = Timestamp.fromDate(new Date(parsedDate));
+      } else {
+        return false;
+      }
+    }
+    return (
+      dateCreated.seconds >= startOfDayBeforeYesterday.seconds &&
+      dateCreated.seconds < startOfYesterday.seconds
+    );
+  }).length;
 
   return prevTotalUsers;
 }

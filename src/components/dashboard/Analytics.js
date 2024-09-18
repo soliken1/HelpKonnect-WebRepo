@@ -131,14 +131,14 @@ function Analytics() {
                 <label>
                   <label
                     className={
-                      dau - prevDayActivity >= 0
+                      totalUser - prevTotalUser >= 0
                         ? "text-green-400"
                         : "text-red-400"
                     }
                   >
                     {totalUser - prevTotalUser >= 0
-                      ? `+${totalUser - prevTotalUser}`
-                      : `-${totalUser - prevTotalUser}`}{" "}
+                      ? `+${prevTotalUser}`
+                      : `${prevTotalUser}`}{" "}
                   </label>
                   In Previous Day
                 </label>
