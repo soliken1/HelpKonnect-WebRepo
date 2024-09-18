@@ -6,8 +6,8 @@ export const handleModerationTest = async (text) => {
     url: "https://community-purgomalum.p.rapidapi.com/json",
     params: { text },
     headers: {
-      "x-rapidapi-key": process.env.NEXT_PUBLIC_X_RAPID_API_KEY,
-      "x-rapidapi-host": process.env.NEXT_PUBLIC_X_RAPID_API_HOST,
+      "x-rapidapi-key": process.env.RAPID_API_KEY,
+      "x-rapidapi-host": process.env.RAPID_API_HOST,
     },
   };
 
