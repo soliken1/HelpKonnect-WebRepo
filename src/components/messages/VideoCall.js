@@ -32,7 +32,7 @@ const VideoCall = ({ remoteStream, localStreamRef, onClose }) => {
         <video
           ref={remoteVideoRef}
           autoPlay
-          className="bg-black w-screen h-screen"
+          className="w-screen h-screen"
         ></video>
       </div>
     </div>
