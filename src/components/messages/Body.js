@@ -42,8 +42,6 @@ function Body({ currentUser }) {
     let unsubscribe;
 
     if (selectedUser && currentUser) {
-      console.log("Setting up real-time listener for messages");
-
       const q = query(
         collection(db, "message"),
         where("receiver", "in", [selectedUser.userId, currentUser]),
@@ -56,7 +54,6 @@ function Body({ currentUser }) {
         (querySnapshot) => {
           const messagesData = querySnapshot.docs.map((doc) => doc.data());
           setMessages(messagesData);
-          console.log("Real-time messages data:", messagesData);
         },
         (error) => {
           console.error("Error listening to real-time messages:", error);

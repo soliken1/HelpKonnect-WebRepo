@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
+import CallComponent from "./CallComponent";
 
 function MessageList({ messages, selectedUser, currentUser }) {
   const [newMessage, setNewMessage] = useState("");
@@ -25,10 +26,11 @@ function MessageList({ messages, selectedUser, currentUser }) {
 
   return (
     <div className="flex-1 flex flex-col h-full bg-white rounded-lg shadow-md">
-      <div className="w-full h-16 shadow-sm px-8 flex items-center">
+      <div className="w-full h-16 shadow-sm px-8 flex items-center gap-5">
         <label className="mt-2 font-semibold">
           {selectedUser?.facilityName || selectedUser?.username}
         </label>
+        <CallComponent currentUser={currentUser} selectedUser={selectedUser} />
       </div>
       <div className="w-full h-5/6 flex flex-col px-8 py-4 md:py-0 overflow-auto gap-3 mt-4">
         {messages.length === 0 ? (
