@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Ribbon from "@/components/dashboard/Ribbon";
-import Body from "@/components/community/Body";
 import SelectedPost from "@/components/community/SelectedPost";
 
 function PostID() {
