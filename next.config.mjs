@@ -14,6 +14,8 @@ const nextConfig = {
     FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
     RAPID_API_KEY: process.env.RAPID_API_KEY,
     RAPID_API_HOST: process.env.RAPID_API_HOST,
+    STREAM_API_KEY: process.env.STREAM_API_KEY,
+    STREAM_API_SECRET: process.env.STREAM_API_SECRET,
   },
 };
 

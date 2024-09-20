@@ -6,7 +6,14 @@ const Modal = dynamic(() =>
 );
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDocs, collection, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db, auth } from "@/configs/firebaseConfigs";
 
@@ -22,6 +29,8 @@ function Body() {
     facilityDescription: "",
     facilityLocation: "",
     role: "facility",
+    banned: false,
+    dateCreated: serverTimestamp(),
   });
 
   const openModal = () => setIsModalOpen(true);
@@ -56,6 +65,17 @@ function Body() {
       );
 
       const user = userCredential.user;
+
+      await fetch("/api/createUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          username: formData.facilityName,
+        }),
+      });
 
       const storage = getStorage();
       let imageUrl = "";

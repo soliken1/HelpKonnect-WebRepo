@@ -3,22 +3,45 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Ribbon from "@/components/dashboard/Ribbon";
-import Body from "@/components/messages/Body";
+import UserList from "@/components/messages/UserList";
+import { db } from "@/configs/firebaseConfigs";
+import { collection, getDocs } from "firebase/firestore";
 
 function Message() {
   const [role, setRole] = useState("");
   const [userId, setUserId] = useState("");
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     setRole(getCookie("role"));
     setUserId(getCookie("userId"));
   }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "credentials"));
+
+        const usersData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .filter((user) => user.role !== "User");
+
+        setUsers(usersData);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
     <div className="flex flex-row h-screen w-screen overflow-x-hidden">
       <Sidebar role={role} />
-      <Ribbon />
-      <Body currentUser={userId} />
+      <UserList users={users} currentUser={userId} />
     </div>
   );
 }
