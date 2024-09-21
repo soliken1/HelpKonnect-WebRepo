@@ -109,6 +109,7 @@ function Page() {
         chatClient={chatClient}
         channel={channel}
         selectedUser={selectedUser}
+        currentUser={currentUser}
       />
     </div>
   );
