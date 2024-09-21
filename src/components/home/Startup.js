@@ -13,7 +13,14 @@ function Startup() {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen w-screen">
-      <img className="w-52 h-52 rounded-full" src="/Logo/Logo.png" alt="Logo" />
+      <Image
+        width={300}
+        height={300}
+        className="w-52 h-52 rounded-full"
+        src="/Logo/Logo.png"
+        alt="Image"
+        priority={true}
+      />
       <label className="text-black text-3xl md:text-6xl font-bold mb-5">
         Help-
         <label className="text-red-300 text-3xl md:text-6xl font-bold ">

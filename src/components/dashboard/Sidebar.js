@@ -5,22 +5,31 @@ import Link from "next/link";
 import { useState } from "react";
 import { logSessionEnd } from "@/utils/sessions";
 import { getCookie } from "cookies-next";
-
+import { useRouter } from "next/navigation";
 function Sidebar({ role }) {
   const [isPressed, setPressed] = useState(true);
+  const router = useRouter();
 
   const handleSelect = () => {
     setPressed(!isPressed);
   };
 
   const handleLogout = async () => {
-    await logSessionEnd(getCookie("userId"));
+    try {
+      await logSessionEnd(getCookie("userId"));
 
-    const cookies = document.cookie.split(";");
-    cookies.forEach((cookie) => {
-      const [name] = cookie.split("=");
-      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-    });
+      await fetch("/api/clearCookie", { method: "POST" });
+
+      const cookies = document.cookie.split(";");
+      cookies.forEach((cookie) => {
+        const [name] = cookie.split("=");
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
@@ -211,9 +220,8 @@ function Sidebar({ role }) {
           ) : null}
         </div>
         <div className="w-full flex items-center justify-center h-16">
-          <Link
+          <div
             onClick={handleLogout}
-            href="/"
             className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
           >
             <Image
@@ -225,7 +233,7 @@ function Sidebar({ role }) {
             <label className="text-white text-sm font-bold cursor-pointer">
               Logout
             </label>
-          </Link>
+          </div>
         </div>
       </div>
     </>
