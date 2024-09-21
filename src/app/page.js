@@ -11,7 +11,6 @@ import { setCookie } from "cookies-next";
 import { logUserActivity } from "@/utils/userActivity";
 import { logSessionStart } from "@/utils/sessions";
 import LoginLoading from "@/components/loaders/Login/LoginLoading";
-
 const Startup = dynamic(() => import("@/components/home/Startup"), {
   ssr: false,
 });
@@ -39,6 +38,16 @@ export default function Home() {
       setSlideEffect("translate-x-0");
     }, 200);
   }
+
+  const setServerCookie = async (user) => {
+    await fetch("/api/generateCookie", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: user.userId, email: user.email }),
+    });
+  };
 
   const handleLogin = async (event, email, password) => {
     event.preventDefault();
@@ -74,6 +83,8 @@ export default function Home() {
         await logUserActivity(userData.userId);
         await logSessionStart(userData.userId);
 
+        await setServerCookie(userData);
+
         router.push("/dashboard");
         setLoggingIn(false);
       } else {
@@ -89,13 +100,25 @@ export default function Home() {
   return (
     <div className="flex flex-col md:flex-row h-screen overflow-hidden relative">
       <div className="w-1/2 hidden md:block h-screen justify-center items-center">
-        <img className="object-cover w-full h-full" src="/Background.png" />
+        <Image
+          className="object-cover w-full h-full"
+          width={1920}
+          height={1080}
+          src="/Background.png"
+          alt="Image"
+          priority={true}
+        />
       </div>
       <div
         className={`w-full md:w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out rounded-s-2xl ${slideEffect} shadow-xl shadow-red-300 bg-red-300`}
       >
         <div className="w-full h-2/6 flex justify-center items-center">
-          <Image src="/Logo/LogoCircular.png" width={175} height={175} />
+          <Image
+            alt="Image"
+            src="/Logo/LogoCircular.png"
+            width={175}
+            height={175}
+          />
         </div>
         <form
           className="w-full h-4/6 ps-16 pe-16 flex flex-col gap-3"
