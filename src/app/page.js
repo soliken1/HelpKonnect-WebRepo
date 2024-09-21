@@ -104,7 +104,7 @@ export default function Home() {
           className="object-cover w-full h-full"
           width={1920}
           height={1080}
-          src="/Background.png"
+          src="/Images/Background.png"
           alt="Image"
           priority={true}
         />
