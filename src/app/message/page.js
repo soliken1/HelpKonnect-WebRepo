@@ -6,11 +6,13 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import UserList from "@/components/messages/UserList";
 import { db } from "@/configs/firebaseConfigs";
 import { collection, getDocs } from "firebase/firestore";
+import UserListLoading from "@/components/loaders/Message/UserListLoading";
 
 function Message() {
   const [role, setRole] = useState("");
   const [userId, setUserId] = useState("");
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setRole(getCookie("role"));
@@ -19,6 +21,7 @@ function Message() {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setIsLoading(true);
       try {
         const querySnapshot = await getDocs(collection(db, "credentials"));
 
@@ -33,6 +36,7 @@ function Message() {
       } catch (error) {
         console.error("Error fetching users:", error);
       }
+      setIsLoading(false);
     };
 
     fetchUsers();
@@ -41,7 +45,11 @@ function Message() {
   return (
     <div className="flex flex-row h-screen w-screen overflow-x-hidden">
       <Sidebar role={role} />
-      <UserList users={users} currentUser={userId} />
+      {isLoading === true ? (
+        <UserListLoading />
+      ) : (
+        <UserList users={users} currentUser={userId} />
+      )}
     </div>
   );
 }

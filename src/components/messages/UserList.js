@@ -12,14 +12,14 @@ function List({ users, currentUser }) {
           className="w-full py-2 px-4 rounded-full placeholder:text-sm mt-4 text-sm shadow-md"
           placeholder="Search..."
         />
-        <div className="w-full h-full flex flex-col gap-3 mt-4">
+        <div className="w-full h-full flex flex-col py-4 overflow-auto">
           {users
             .filter((user) => user.id !== currentUser)
             .map((user) => (
               <Link
                 href={`/message/${user.id}`}
                 key={user.id}
-                className="flex flex-row gap-2 h-12 cursor-pointer"
+                className="flex flex-row gap-2 h-16 items-center cursor-pointer hover:bg-gray-300 px-4 duration-100 rounded-md"
               >
                 <img
                   src={`${user.imageUrl}`}

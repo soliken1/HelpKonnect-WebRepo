@@ -74,7 +74,7 @@ function FlagContent() {
   return (
     <div className="flex-1 flex flex-col h-full bg-white rounded-lg shadow-md p-4">
       <h1 className="text-xl font-bold mb-4">Flagged Comments for User</h1>
-      <div className="flex flex-col h-5/6 py-2">
+      <div className="flex flex-col py-4 h-5/6 overflow-auto">
         {flaggedComments.length === 0 ? (
           <p>No flagged comments for this user.</p>
         ) : (
@@ -91,7 +91,7 @@ function FlagContent() {
           ))
         )}
       </div>
-      <div className="w-full flex-1 flex flex-row gap-5">
+      <div className="w-full h-1/6 flex-1 flex gap-5 justify-center items-center">
         {isBanned ? (
           <span className="w-full h-12 flex justify-center items-center rounded-lg text-white shadow-md bg-gray-400">
             User is Banned
