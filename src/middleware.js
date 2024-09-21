@@ -8,6 +8,7 @@ export function middleware(request) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/static") ||
     pathname.startsWith("/images") ||
+    pathname.includes("Images") ||
     pathname.includes("Icons") ||
     pathname.includes("Logo")
   ) {
