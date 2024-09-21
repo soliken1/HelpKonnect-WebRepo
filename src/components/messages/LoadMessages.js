@@ -9,6 +9,7 @@ import {
 } from "stream-chat-react";
 import "stream-chat-react/dist/css/v2/index.css";
 import { useRouter } from "next/navigation";
+import MessageLoading from "@/components/loaders/Message/MessageLoading";
 
 function LoadMessages({ chatClient, channel, selectedUser }) {
   const router = useRouter();
@@ -18,7 +19,11 @@ function LoadMessages({ chatClient, channel, selectedUser }) {
   };
 
   if (!chatClient || !channel) {
-    return <div className="w-full h-full pb-8">Loading Please Wait!</div>;
+    return (
+      <div className="w-full h-full pb-8">
+        <MessageLoading />
+      </div>
+    );
   }
 
   return (
@@ -32,7 +37,7 @@ function LoadMessages({ chatClient, channel, selectedUser }) {
                 onClick={backMessage}
                 type="button"
               >
-                <img className="cursor-pointer" src="/Message.svg" />
+                <img className="cursor-pointer" src="/BackIcon.svg" />
               </div>
               <img
                 className="w-16 h-16 rounded-full shadow-md"
