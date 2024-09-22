@@ -2,6 +2,7 @@
 import {
   CallControls,
   CallingState,
+  CallState,
   SpeakerLayout,
   StreamCall,
   StreamTheme,
@@ -12,7 +13,6 @@ import {
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { getCookie } from "cookies-next";
-import CallCard from "./CallCard";
 
 const apiKey = process.env.STREAM_API_CALLKEY;
 
@@ -40,23 +40,32 @@ export default function VideoCall({ currentUser, selectedUser, onEndCall }) {
   const call = client.call("default", callId);
   call.join({ create: true });
   return (
-    <>
-      <CallCard callUrl={callId} />
-      <StreamVideo client={client}>
-        <StreamCall call={call}>
-          <MyUILayout />
-        </StreamCall>
-      </StreamVideo>
-    </>
+    <StreamVideo client={client}>
+      <StreamCall call={call}>
+        <MyUILayout />
+      </StreamCall>
+    </StreamVideo>
   );
 }
+
+import { useEffect } from "react";
+import MessageLoading from "../loaders/Message/MessageLoading";
 
 export const MyUILayout = () => {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
 
+  useEffect(() => {
+    if (
+      callingState === CallingState.LEFT ||
+      callingState === CallingState.OFFLINE
+    ) {
+      window.location.reload();
+    }
+  }, [callingState]);
+
   if (callingState !== CallingState.JOINED) {
-    return <div>Loading...</div>;
+    return <MessageLoading />;
   }
 
   return (

@@ -14,6 +14,7 @@ import VideoCall from "./VideoCall";
 function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
   const router = useRouter();
   const [isCallClicked, setIsCallClicked] = useState(false);
+  const [callId, setCallId] = useState("");
 
   const backMessage = () => {
     router.push("/message");
@@ -26,6 +27,16 @@ function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
       </div>
     );
   }
+
+  const startVideoCall = () => {
+    const newCallId = `${currentUser}${selectedUser.userId}`;
+    setCallId(newCallId);
+    setIsCallClicked(true);
+    channel.sendMessage({
+      text: `You have an incoming video call. Join This Link: https://getstream.io/video/demos/join/${newCallId}?id=${newCallId}`,
+      user: { id: currentUser },
+    });
+  };
 
   return (
     <div className="w-full h-full pb-8">
@@ -55,9 +66,9 @@ function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
                 <h2>{selectedUser?.facilityName || "Chat"}</h2>
                 <button
                   className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
-                  onClick={() => setIsCallClicked(true)}
+                  onClick={startVideoCall}
                 >
-                  Start Video Call
+                  Start A Call
                 </button>
               </div>
               <MessageList />
