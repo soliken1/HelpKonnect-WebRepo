@@ -76,7 +76,12 @@ function Posts({ posts, userId }) {
           <div className="w-full flex flex-row gap-2">
             <img className="w-12 h-12 rounded-full" src={post.userProfile} />
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-semibold">{post.username}</label>
+              <Link
+                href={`/profile/${post.userId}`}
+                className="text-sm font-semibold hover:underline"
+              >
+                {post.username}
+              </Link>
               <label className="text-xs text-gray-400">
                 {formatDate(post.time)}
               </label>

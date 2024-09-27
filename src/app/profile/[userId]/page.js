@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Body from "@/components/profile/Body";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
+import UserBody from "@/components/profile/UserBody";
 
 function Profile() {
   const [role, setRole] = useState("");
@@ -11,9 +11,9 @@ function Profile() {
     setRole(getCookie("role"));
   }, []);
   return (
-    <div className="flex flex-row bg-gray-100">
+    <div className="flex flex-row h-screen w-screen overflow-x-hidden bg-gray-100">
       <Sidebar role={role} />
-      <Body />
+      <UserBody />
     </div>
   );
 }
