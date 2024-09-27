@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
 import { db } from "@/configs/firebaseConfigs";
-import ProfileLoading from "../loaders/Profile/LoginLoading";
+import ProfileLoading from "../loaders/Profile/ProfileLogin";
 import { getCookie } from "cookies-next";
 import UserPosts from "./UserPosts";
 
