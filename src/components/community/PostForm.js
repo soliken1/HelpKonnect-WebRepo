@@ -5,10 +5,14 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, storage } from "@/configs/firebaseConfigs";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { handleModerationTest } from "@/configs/textFiltering";
+import { ToastContainer } from "react-toastify";
+import { toast, Bounce } from "react-toastify";
+import PostSubmitting from "../loaders/Community/PostSubmitting";
 
 function PostForm({ userId, username, userProfile }) {
   const [images, setImages] = useState([]);
   const [postMessage, setPostMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -23,6 +27,7 @@ function PostForm({ userId, username, userProfile }) {
   };
 
   const handlePostMessage = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     if (postMessage.trim() === "" && images.length === 0) return;
@@ -30,9 +35,21 @@ function PostForm({ userId, username, userProfile }) {
     const result = await handleModerationTest(postMessage.trim());
 
     if (result.result.includes("*")) {
-      alert(
-        "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been marked for moderation."
+      toast.error(
+        "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been marked for moderation.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        }
       );
+
       try {
         await addDoc(collection(db, "flaggedAccounts"), {
           time: serverTimestamp(),
@@ -43,6 +60,7 @@ function PostForm({ userId, username, userProfile }) {
         console.error(e);
       }
       setPostMessage("");
+      setLoading(false);
       return;
     }
 
@@ -139,6 +157,8 @@ function PostForm({ userId, username, userProfile }) {
           Post
         </button>
       </form>
+      <ToastContainer />
+      {loading && <PostSubmitting />}
     </div>
   );
 }

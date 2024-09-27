@@ -14,6 +14,9 @@ import Comments from "./Comments";
 import { getCookie } from "cookies-next";
 import PostLoader from "../loaders/Community/PostLoader";
 import { handleModerationTest } from "@/configs/textFiltering";
+import { toast, Bounce } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import PostSubmitting from "../loaders/Community/PostSubmitting";
 
 function SelectedPost() {
   const { postId } = useParams();
@@ -22,6 +25,7 @@ function SelectedPost() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [postComment, setPostComment] = useState("");
   const [userId, setUserId] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
 
   useEffect(() => {
     setUserId(getCookie("userId"));
@@ -64,12 +68,24 @@ function SelectedPost() {
   };
 
   const handleComments = async (e) => {
+    setIsPosting(true);
     e.preventDefault();
     if (postComment.trim() === "") return;
     const result = await handleModerationTest(postComment.trim());
     if (result.result.includes("*")) {
-      alert(
-        "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been flagged for moderation."
+      toast.error(
+        "Profanities are strictly prohibited on the Community, Please Refrain from doing so. You have been marked for moderation.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        }
       );
       try {
         await addDoc(collection(db, "flaggedAccounts"), {
@@ -81,6 +97,7 @@ function SelectedPost() {
         console.error(e);
       }
       setPostComment("");
+      setIsPosting(false);
       return;
     }
 
@@ -109,7 +126,6 @@ function SelectedPost() {
   return (
     <div className="w-full h-full flex flex-col md:flex-row items-center px-10 py-2 gap-4 z-0">
       <div className="w-full md:w-2/3 h-5/6 shadow-lg rounded-md bg-white flex flex-col">
-        {/* User Info */}
         <div className="p-4">
           <div className="flex flex-row gap-2">
             <img
@@ -124,12 +140,8 @@ function SelectedPost() {
               </label>
             </div>
           </div>
-
-          {/* Post Caption */}
           <label className="font-normal text-sm">{post.caption}</label>
         </div>
-
-        {/* Image Section with Slider */}
 
         <div className="relative w-full flex-1">
           <button
@@ -155,7 +167,6 @@ function SelectedPost() {
         </div>
       </div>
 
-      {/* Right-hand Side */}
       <div className="w-full md:w-1/3 h-5/6 flex flex-col shadow-lg rounded-md bg-white p-4">
         <div className="h-5/6 w-full">
           <label>Comments</label>
@@ -177,7 +188,9 @@ function SelectedPost() {
             Comment
           </button>
         </form>
+        <ToastContainer />
       </div>
+      {isPosting && <PostSubmitting />}
     </div>
   );
 }

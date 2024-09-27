@@ -11,6 +11,8 @@ import { setCookie } from "cookies-next";
 import { logUserActivity } from "@/utils/userActivity";
 import { logSessionStart } from "@/utils/sessions";
 import LoginLoading from "@/components/loaders/Login/LoginLoading";
+import { toast, Bounce } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 const Startup = dynamic(() => import("@/components/home/Startup"), {
   ssr: false,
 });
@@ -68,7 +70,18 @@ export default function Home() {
         const userData = docSnap.data();
 
         if (userData.banned) {
-          alert("Your account has been banned. Please contact support.");
+          toast.error("Your account has been banned. Please contact support.", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+          });
+          setIsLoading(false);
           return;
         }
 
@@ -182,6 +195,7 @@ export default function Home() {
           </div>
           {error && <p className="text-white font-bold text-center">{error}</p>}
         </form>
+        <ToastContainer />
       </div>
       {loggingIn && <LoginLoading />}
     </div>
