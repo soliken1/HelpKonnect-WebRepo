@@ -33,6 +33,6 @@ Developers has Analytics for the Whole Platform, Registering of Incoming Partner
 
 ###
 
-**APIs:** Purgomalum Text Filtering
+**APIs:** Purgomalum Text Filtering, Stream Chat API
 
 **Deployment:** Vercel
