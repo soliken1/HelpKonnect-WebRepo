@@ -133,8 +133,8 @@ function SelectedPost() {
               src={post.userProfile}
               alt="User Profile"
               className="w-12 h-12 rounded-full"
-              width={48}
-              height={48}
+              width={1920}
+              height={1080}
             />
             <div className="flex flex-col justify-center">
               <label className="text-sm font-semibold">{post.username}</label>
