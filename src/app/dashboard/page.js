@@ -7,7 +7,6 @@ import Ribbon from "@/components/dashboard/Ribbon";
 import { useRouter } from "next/navigation";
 function Dashboard() {
   const [role, setRole] = useState();
-  const [currentUser, setCurrentUser] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -15,7 +14,6 @@ function Dashboard() {
     const currentUserCookie = getCookie("currentUser");
 
     setRole(roleCookie);
-    setCurrentUser(currentUserCookie);
 
     if (!roleCookie && !currentUserCookie) {
       try {
@@ -35,7 +33,7 @@ function Dashboard() {
         console.error(err);
       }
     }
-  }, []);
+  }, [role, router]);
 
   return (
     <div className="flex flex-row overflow-hidden">

@@ -78,6 +78,7 @@ function UserPosts({ userPosts, currentUser }) {
             {post.imageUrls.map((url, index) => (
               <img
                 src={url}
+                key={index}
                 alt={`Post Image ${index + 1}`}
                 className="object-cover w-64 h-64"
               />

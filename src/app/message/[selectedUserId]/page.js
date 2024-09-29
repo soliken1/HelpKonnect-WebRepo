@@ -23,7 +23,7 @@ function Page() {
     const userRole = getCookie("role");
     setCurrentUser(userId);
     setRole(userRole);
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -100,7 +100,7 @@ function Page() {
         chatClient.disconnectUser();
       }
     };
-  }, [currentUser, selectedUser]);
+  }, [currentUser, selectedUser, chatClient]);
 
   return (
     <div className="flex flex-row h-screen w-screen overflow-x-hidden">
