@@ -1,5 +1,12 @@
 "use client";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDocs,
+  getDoc,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
@@ -12,10 +19,12 @@ function UserBody() {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState("");
+  const [userPosts, setUserPosts] = useState([]);
   useEffect(() => {
     setCurrentUser(getCookie("userId"));
     const fetchUser = async () => {
-      if (!userId && currentUser) return;
+      if (!userId && currentUser && !userPosts) return;
+
       try {
         const docRef = doc(db, "credentials", userId);
         const docSnap = await getDoc(docRef);
@@ -24,6 +33,21 @@ function UserBody() {
           setUser(userData);
         } else {
           console.log("No such document!");
+        }
+
+        const postsRef = collection(db, "community");
+        const q = query(postsRef, where("userId", "==", userId));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userPosts = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          console.log(userPosts);
+          setUserPosts(userPosts);
+        } else {
+          console.log("No Posts Found");
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -38,7 +62,7 @@ function UserBody() {
       {user ? (
         <div className="w-full h-full flex gap-5 flex-col md:flex-row mt-5">
           <UserProfile user={user} currentUser={currentUser} />
-          <UserPosts />
+          <UserPosts userPosts={userPosts} currentUser={currentUser} />
         </div>
       ) : (
         <ProfileLoading />

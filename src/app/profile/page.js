@@ -11,7 +11,7 @@ function Profile() {
     setRole(getCookie("role"));
   }, []);
   return (
-    <div className="flex flex-row bg-gray-100">
+    <div className="flex flex-row">
       <Sidebar role={role} />
       <Body />
     </div>
