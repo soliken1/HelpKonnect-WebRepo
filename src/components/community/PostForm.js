@@ -8,6 +8,7 @@ import { handleModerationTest } from "@/configs/textFiltering";
 import { ToastContainer } from "react-toastify";
 import { toast, Bounce } from "react-toastify";
 import PostSubmitting from "../loaders/Community/PostSubmitting";
+import Image from "next/image";
 
 function PostForm({ userId, username, userProfile }) {
   const [images, setImages] = useState([]);
@@ -108,7 +109,13 @@ function PostForm({ userId, username, userProfile }) {
           {userProfile === "" ? (
             <div className="w-10 h-10 rounded-full bg-red-300 animate-pulse"></div>
           ) : (
-            <img className="w-10 h-10 rounded-full" src={userProfile} />
+            <Image
+              className="w-10 h-10 rounded-full"
+              src={userProfile}
+              width={1920}
+              height={1080}
+              alt={"User Profile"}
+            />
           )}
           <textarea
             value={postMessage}
@@ -126,19 +133,22 @@ function PostForm({ userId, username, userProfile }) {
               multiple
               accept="image/*"
             />
-            <img
-              className="w-full h-full"
+            <Image
+              className="w-10 h-10"
               src="/Icons/FileIcon.svg"
               alt="Upload Icon"
+              width={20}
+              height={20}
             />
           </label>
           <div className="bg-gray-100 w-5/6 h-24 rounded-md flex items-center justify-start gap-2 overflow-x-auto">
             {images.map((image, index) => (
               <div key={index} className="relative w-1/5 h-full">
-                <img
+                <Image
                   src={URL.createObjectURL(image)}
                   alt={`Uploaded ${index + 1}`}
                   className="object-cover h-full w-full rounded-md"
+                  fill
                 />
                 <button
                   onClick={() => handleRemoveImage(index)}

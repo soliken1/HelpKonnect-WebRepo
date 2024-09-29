@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import Modal from "./AddProfModal";
-
+import Image from "next/image";
 function Table() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,9 +39,12 @@ function Table() {
 
         <div className="h-5/6 flex flex-col md:flex-row w-full mt-4">
           <div className="md:w-96 w-full h-full flex justify-center items-center">
-            <img
+            <Image
               src="/SampleProfile.jpg"
               className="md:h-80 md:w-80 w-40 h-40 rounded-full shadow-md"
+              width={1920}
+              height={1080}
+              alt="Profile"
             />
           </div>
           <div className="md:w-2/3 md:mt-0  bg-red-200 px-10 py-8 md:p-10 rounded-md">

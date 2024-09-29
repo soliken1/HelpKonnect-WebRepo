@@ -5,6 +5,7 @@ import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db, storage } from "@/configs/firebaseConfigs";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import Image from "next/image";
 
 function Body() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -128,16 +129,20 @@ function Body() {
           className="md:h-80 md:w-80 h-60 w-60 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
         >
           {imagePreview ? (
-            <img
+            <Image
               src={imagePreview || profile}
               alt="Selected"
               className="h-full w-full object-cover rounded-full"
+              width={1920}
+              height={1080}
             />
           ) : (
-            <img
-              src={profile || "SampleProfile.jpg"}
+            <Image
+              src={profile || "/SampleProfile.jpg"}
               alt="Placeholder"
               className="h-full w-full object-cover rounded-full"
+              width={1920}
+              height={1080}
             />
           )}
         </label>
@@ -156,10 +161,12 @@ function Body() {
               autoComplete="off"
             />
             <button type="button" onClick={() => toggleEditable("username")}>
-              <img
+              <Image
                 className="w-6 h-6 object-scale-down"
                 src="/Icons/EditIcon.png"
                 alt="Edit"
+                width={1920}
+                height={1080}
               />
             </button>
           </div>
@@ -184,10 +191,12 @@ function Body() {
                   type="button"
                   onClick={() => toggleEditable("description")}
                 >
-                  <img
+                  <Image
                     className="w-6 h-6 object-scale-down"
                     src="/Icons/EditIcon.png"
                     alt="Edit"
+                    width={1920}
+                    height={1080}
                   />
                 </button>
               </div>
@@ -204,10 +213,12 @@ function Body() {
                   type="button"
                   onClick={() => toggleEditable("location")}
                 >
-                  <img
+                  <Image
                     className="w-6 h-6 object-scale-down"
                     src="/Icons/EditIcon.png"
                     alt="Edit"
+                    width={1920}
+                    height={1080}
                   />
                 </button>
               </div>
@@ -221,10 +232,12 @@ function Body() {
                   disabled={!isEditable.contact}
                 />
                 <button type="button" onClick={() => toggleEditable("contact")}>
-                  <img
+                  <Image
                     className="w-6 h-6 object-scale-down"
                     src="/Icons/EditIcon.png"
                     alt="Edit"
+                    width={1920}
+                    height={1080}
                   />
                 </button>
               </div>

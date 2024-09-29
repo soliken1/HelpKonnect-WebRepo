@@ -26,11 +26,11 @@ function Profile() {
         </div>
       ) : (
         <>
-          <img
-            className="rounded-full"
+          <Image
+            className="rounded-full w-8 h-8"
             src={userProfile}
-            width={30}
-            height={30}
+            width={1920}
+            height={1920}
             alt="Profile"
           />
           <label className="text-white font-semibold cursor-pointer md:block hidden">

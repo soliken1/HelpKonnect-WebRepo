@@ -11,7 +11,7 @@ import {
 import { db } from "@/configs/firebaseConfigs";
 import Link from "next/link";
 import FlagListLoader from "../loaders/Moderation/FlagListLoader";
-
+import Image from "next/image";
 function FlagList() {
   const [flaggedUsers, setFlaggedUsers] = useState([]);
 
@@ -73,9 +73,12 @@ function FlagList() {
               key={user.userId}
               className="p-4 border-b-2 flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-100 duration-100"
             >
-              <img
+              <Image
                 className="h-12 w-12 object-contain rounded-full"
                 src={user.imageUrl}
+                width={1920}
+                height={1080}
+                alt="User Profile"
               />
               <div className="flex flex-col">
                 <label className="font-semibold cursor-pointer">

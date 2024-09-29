@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 import Link from "next/link";
-
+import Image from "next/image";
 function UserPosts({ userPosts, currentUser }) {
   const [likes, setLikes] = useState({});
   useEffect(() => {
@@ -62,9 +62,12 @@ function UserPosts({ userPosts, currentUser }) {
       {userPosts.map((post) => (
         <div key={post.id} className="flex flex-col gap-2">
           <div className="flex-row flex gap-2">
-            <img
+            <Image
               src={post.userProfile}
               className="w-12 h-12 rounded-full bg-gray-200"
+              width={1920}
+              height={1080}
+              alt="User Profile"
             />
             <div className="flex flex-col">
               <div className="text-sm font-semibold">{post.username}</div>
@@ -76,11 +79,13 @@ function UserPosts({ userPosts, currentUser }) {
           <label className="font-normal">{post.caption}</label>
           <div className="w-full h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {post.imageUrls.map((url, index) => (
-              <img
+              <Image
                 src={url}
                 key={index}
                 alt={`Post Image ${index + 1}`}
                 className="object-cover w-64 h-64"
+                width={1920}
+                height={1080}
               />
             ))}
           </div>
@@ -114,7 +119,13 @@ function UserPosts({ userPosts, currentUser }) {
               type="button"
               className="w-1/2 h-full flex flex-row justify-center items-center gap-5 hover:bg-gray-200 rounded-sm duration-200"
             >
-              <img className="" src="/Icons/CommentIcon.svg" />
+              <Image
+                width={1920}
+                height={1080}
+                className="w-6 h-6"
+                src="/Icons/CommentIcon.svg"
+                alt="Comment Icon"
+              />
               <label className="cursor-pointer">
                 {post.commentCount}{" "}
                 {post.commentCount > 1 ? "Comments" : "Comment"}

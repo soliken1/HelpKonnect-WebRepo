@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db, auth } from "@/configs/firebaseConfigs";
+import Image from "next/image";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -213,10 +214,12 @@ function Body() {
               className="md:h-80 md:w-80 h-40 w-40 rounded-full shadow-md flex justify-center items-center bg-gray-200 cursor-pointer"
             >
               {imagePreview ? (
-                <img
+                <Image
                   src={imagePreview}
                   alt="Selected"
                   className="h-full w-full object-cover rounded-full"
+                  width={1920}
+                  height={1080}
                 />
               ) : (
                 <span className="md:text-sm font-semibold text-xs text-gray-500">

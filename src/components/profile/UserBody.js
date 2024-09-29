@@ -55,7 +55,7 @@ function UserBody() {
     };
 
     fetchUser();
-  }, [userId, currentUser]);
+  }, [userId, currentUser, userPosts]);
 
   return (
     <div className="w-full h-full flex flex-col p-10">

@@ -1,10 +1,17 @@
 import React from "react";
+import Image from "next/image";
 
 function Card() {
   return (
     <div className="flex flex-col w-80 h-80 shadow-md shadow-red-200 rounded-lg gap-3">
       <div className="h-40 w-full">
-        <img className="w-full" src="/SampleImage.png" />
+        <Image
+          className="w-full"
+          width={1920}
+          height={1080}
+          src="/SampleImage.png"
+          alt="Sample Image Event"
+        />
       </div>
       <div className="flex flex-col gap-2 p-5">
         <label className="font-semibold">Annual Care Seminar</label>

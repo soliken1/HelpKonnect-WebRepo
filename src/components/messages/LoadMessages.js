@@ -10,6 +10,7 @@ import "stream-chat-react/dist/css/v2/index.css";
 import { useRouter } from "next/navigation";
 import MessageLoading from "@/components/loaders/Message/MessageLoading";
 import VideoCall from "./VideoCall";
+import Image from "next/image";
 
 function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
   const router = useRouter();
@@ -56,12 +57,20 @@ function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
                   onClick={backMessage}
                   type="button"
                 >
-                  <img className="cursor-pointer" src="/BackIcon.svg" />
+                  <Image
+                    className="cursor-pointer w-6 h-6"
+                    width={1920}
+                    height={1080}
+                    src="/BackIcon.svg"
+                    alt="Back Icon"
+                  />
                 </div>
-                <img
+                <Image
                   className="w-16 h-16 rounded-full shadow-md"
                   src={selectedUser?.imageUrl}
                   alt={selectedUser?.facilityName}
+                  width={1920}
+                  height={1080}
                 />
                 <h2>{selectedUser?.facilityName || "Chat"}</h2>
                 <button

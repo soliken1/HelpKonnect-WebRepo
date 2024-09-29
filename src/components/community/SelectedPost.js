@@ -17,6 +17,7 @@ import { handleModerationTest } from "@/configs/textFiltering";
 import { toast, Bounce } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import PostSubmitting from "../loaders/Community/PostSubmitting";
+import Image from "next/image";
 
 function SelectedPost() {
   const { postId } = useParams();
@@ -128,10 +129,12 @@ function SelectedPost() {
       <div className="w-full md:w-2/3 h-5/6 shadow-lg rounded-md bg-white flex flex-col">
         <div className="p-4">
           <div className="flex flex-row gap-2">
-            <img
+            <Image
               src={post.userProfile}
               alt="User Profile"
               className="w-12 h-12 rounded-full"
+              width={48}
+              height={48}
             />
             <div className="flex flex-col justify-center">
               <label className="text-sm font-semibold">{post.username}</label>
@@ -158,10 +161,12 @@ function SelectedPost() {
             &#8594;
           </button>
           {post.imageUrls && post.imageUrls.length > 0 && (
-            <img
+            <Image
               src={post.imageUrls[currentImageIndex]}
               alt="Post"
               className="object-cover w-full max-h-[500px] rounded-b-md z-10"
+              width={1920}
+              height={1080}
             />
           )}
         </div>

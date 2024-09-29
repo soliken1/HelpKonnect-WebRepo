@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
+import Image from "next/image";
 
 function Comments({ postId }) {
   const [comments, setComments] = useState([]);
@@ -70,10 +71,12 @@ function Comments({ postId }) {
     <div className="comments-section">
       {comments.map((comment, index) => (
         <div key={index} className="comment-item flex gap-2 px-2 py-4 border-b">
-          <img
+          <Image
             src={comment.userProfile || "/defaultProfileImage.png"}
             alt="User Profile"
             className="w-8 h-8 rounded-full"
+            width={1920}
+            height={1080}
           />
           <div className="flex flex-col">
             <div className="flex flex-row items-center gap-2">

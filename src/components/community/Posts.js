@@ -14,6 +14,7 @@ import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
 import ImageModal from "./ImageModal";
 import Link from "next/link";
+import Image from "next/image";
 
 function Posts({ posts, userId }) {
   const [modalImage, setModalImage] = useState(null);
@@ -74,7 +75,13 @@ function Posts({ posts, userId }) {
           className="w-full h-[800px] md:h-auto shadow-md flex flex-col gap-2 rounded-md p-4 bg-white"
         >
           <div className="w-full flex flex-row gap-2">
-            <img className="w-12 h-12 rounded-full" src={post.userProfile} />
+            <Image
+              className="w-12 h-12 rounded-full"
+              width={1920}
+              height={1080}
+              src={post.userProfile}
+              alt="User Profile"
+            />
             <div className="flex flex-col gap-1">
               <Link
                 href={`/profile/${post.userId}`}
@@ -96,11 +103,13 @@ function Posts({ posts, userId }) {
                 key={index}
                 className="w-full h-20 md:h-full bg-gray-200 rounded-md overflow-hidden"
               >
-                <img
+                <Image
                   src={url}
                   alt={`Post Image ${index + 1}`}
                   className="object-cover w-full h-full cursor-pointer"
                   onClick={() => handleImageClick(url)}
+                  width={1000}
+                  height={1000}
                 />
               </div>
             ))}
@@ -135,7 +144,13 @@ function Posts({ posts, userId }) {
               type="button"
               className="w-1/2 h-full flex flex-row justify-center items-center gap-5 hover:bg-gray-200 rounded-sm duration-200"
             >
-              <img className="" src="/Icons/CommentIcon.svg" />
+              <Image
+                className="w-5 h-5"
+                src="/Icons/CommentIcon.svg"
+                width={20}
+                height={20}
+                alt="Comment Icon"
+              />
               <label className="cursor-pointer">
                 {post.commentCount}{" "}
                 {post.commentCount > 1 ? "Comments" : "Comment"}

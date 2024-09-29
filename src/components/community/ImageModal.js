@@ -1,5 +1,5 @@
 import React from "react";
-
+import Image from "next/image";
 function ImageModal({ src, alt, onClose }) {
   if (!src) return null;
 
@@ -12,10 +12,12 @@ function ImageModal({ src, alt, onClose }) {
         >
           X
         </button>
-        <img
+        <Image
           src={src}
           alt={alt}
           className="max-w-full max-h-screen rounded-md"
+          width={1920}
+          height={1080}
         />
       </div>
     </div>

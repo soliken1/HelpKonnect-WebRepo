@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 function List({ users, currentUser }) {
   return (
@@ -21,10 +22,10 @@ function List({ users, currentUser }) {
                 key={user.id}
                 className="flex flex-row gap-2 h-16 items-center cursor-pointer hover:bg-gray-300 px-4 duration-100 rounded-md"
               >
-                <img
+                <Image
                   src={`${user.imageUrl}`}
-                  width={20}
-                  height={20}
+                  width={1920}
+                  height={1080}
                   className="rounded-full w-12 h-12"
                   alt={`${user.facilityName || user.username}'s profile`}
                 />

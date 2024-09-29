@@ -18,6 +18,16 @@ const nextConfig = {
     STREAM_API_SECRET: process.env.STREAM_API_SECRET,
     STREAM_API_CALLKEY: process.env.STREAM_API_CALLKEY,
   },
+  images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        port: "",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
