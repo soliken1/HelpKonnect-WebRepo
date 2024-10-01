@@ -15,7 +15,7 @@ function ImageModal({ src, alt, onClose }) {
         <Image
           src={src}
           alt={alt}
-          className="max-w-full max-h-screen rounded-md"
+          className="max-w-full max-h-screen rounded-md object-contain p-10"
           width={1920}
           height={1080}
         />
