@@ -17,6 +17,7 @@ const nextConfig = {
     STREAM_API_KEY: process.env.STREAM_API_KEY,
     STREAM_API_SECRET: process.env.STREAM_API_SECRET,
     STREAM_API_CALLKEY: process.env.STREAM_API_CALLKEY,
+    OPEN_WEATHER_API_KEY: process.env.OPEN_WEATHER_API_KEY,
   },
   images: {
     dangerouslyAllowSVG: true,
