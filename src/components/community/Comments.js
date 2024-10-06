@@ -40,7 +40,8 @@ function Comments({ postId }) {
 
             return {
               ...commentData,
-              username: userData.facilityName || "Unknown User",
+              username:
+                userData.facilityName || userData.username || "Unknown User",
               userProfile: userData.imageUrl || "",
             };
           })
@@ -68,7 +69,7 @@ function Comments({ postId }) {
   }
 
   return (
-    <div className="comments-section">
+    <div className="comments-section pt-6 max-h-40 md:pt-0 md:max-h-[450px] overflow-y-auto">
       {comments.map((comment, index) => (
         <div key={index} className="comment-item flex gap-2 px-2 py-4 border-b">
           <Image
