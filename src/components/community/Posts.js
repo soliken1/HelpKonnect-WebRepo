@@ -98,7 +98,7 @@ function Posts({ posts, userId }) {
             <label className="font-normal">{post.caption}</label>
           </div>
           <div className="w-full h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            {post.imageUrls.map((url, index) => (
+            {post.imageUrls?.map((url, index) => (
               <div
                 key={index}
                 className="w-full h-20 md:h-full bg-gray-200 rounded-md overflow-hidden"
