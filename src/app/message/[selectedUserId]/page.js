@@ -78,7 +78,9 @@ function Page() {
 
           setChatClient(client);
         }
-        const customChannelId = `${currentUser}_${selectedUser.userId}`;
+        const userIds = [currentUser, selectedUser.userId].sort();
+
+        const customChannelId = `${userIds[0]}_${userIds[1]}`;
 
         const conversation = client.channel("messaging", customChannelId, {
           members: [currentUser, selectedUser.userId],
