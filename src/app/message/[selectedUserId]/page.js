@@ -71,15 +71,16 @@ function Page() {
           await client.connectUser(
             {
               id: currentUser,
-              name: selectedUser.facilityName,
+              name: selectedUser.facilityName || selectedUser.username,
             },
             userToken
           );
 
           setChatClient(client);
         }
+        const customChannelId = `${currentUser}_${selectedUser.userId}`;
 
-        const conversation = client.channel("messaging", {
+        const conversation = client.channel("messaging", customChannelId, {
           members: [currentUser, selectedUser.userId],
         });
 

@@ -68,11 +68,11 @@ function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
                 <Image
                   className="w-16 h-16 rounded-full shadow-md"
                   src={selectedUser?.imageUrl}
-                  alt={selectedUser?.facilityName}
+                  alt={selectedUser?.facilityName || selectedUser?.username}
                   width={1920}
                   height={1080}
                 />
-                <h2>{selectedUser?.facilityName || "Chat"}</h2>
+                <h2>{selectedUser?.facilityName || selectedUser?.username}</h2>
                 <button
                   className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
                   onClick={startVideoCall}
