@@ -1,12 +1,12 @@
 export default function handler(req, res) {
   if (req.method === "GET") {
-    const rapidAPIKey = process.env.RAPID_API_KEY;
+    const androidRapidKey = process.env.ANDROID_RAPID_API_KEY;
 
-    if (!rapidAPIKey) {
+    if (!androidRapidKey) {
       return res.status(500).json({ error: "API key not found" });
     }
 
-    res.status(200).json({ rapidAPIKey });
+    res.status(200).json({ androidRapidKey });
   } else {
     res.status(405).json({ error: "Method not allowed" });
   }
