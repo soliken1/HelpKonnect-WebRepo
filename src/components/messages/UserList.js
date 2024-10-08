@@ -23,7 +23,7 @@ function List({ users, currentUser }) {
                 className="flex flex-row gap-2 h-16 items-center cursor-pointer hover:bg-gray-300 px-4 duration-100 rounded-md"
               >
                 <Image
-                  src={`${user.imageUrl}`}
+                  src={user.imageUrl ? user.imageUrl : "/UserIcon.svg"}
                   width={1920}
                   height={1080}
                   className="rounded-full w-12 h-12"
