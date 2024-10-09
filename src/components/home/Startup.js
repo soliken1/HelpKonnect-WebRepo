@@ -41,6 +41,18 @@ function Startup() {
       <label className="absolute bottom-10 text-red-300 text-lg">
         The Help-Konnect Team 2024
       </label>
+      <Image
+        src="/Images/Standing.png"
+        width={1920}
+        height={1080}
+        className="w-[200px] h-[370px] absolute bottom-28 right-0 opacity-70"
+      />
+      <Image
+        src="/Images/Lines.png"
+        width={1920}
+        height={1080}
+        className="w-full h-full absolute -z-10 opacity-50"
+      />
     </div>
   );
 }
