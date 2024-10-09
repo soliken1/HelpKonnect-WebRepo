@@ -6,7 +6,7 @@ function Message() {
     <div className="h-12 flex justify-center items-center w-auto">
       <Link
         href="/message"
-        className="p-3 bg-red-300 rounded-full drop-shadow-md shadow-black"
+        className="p-3 bg-red-300 hover:bg-red-400 rounded-full shadow-md duration-100"
       >
         <svg
           width="21"

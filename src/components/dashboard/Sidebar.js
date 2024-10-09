@@ -46,10 +46,9 @@ function Sidebar({ role }) {
       <div
         className={`h-screen z-10 fixed md:relative w-32 ${
           isPressed ? "inline" : "hidden"
-        } flex flex-col gap-5 bg-red-300 shadow-md shadow-red-400`}
+        } flex flex-col gap-5 bg-red-300 shadow-red-400`}
       >
         <div className="w-full h-32 flex items-center justify-center"></div>
-
         <div className="w-full h-4/6 flex flex-col gap-5">
           {role === "admin" ? (
             <>

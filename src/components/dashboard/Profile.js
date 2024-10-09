@@ -17,7 +17,7 @@ function Profile() {
   return (
     <Link
       href="/profile"
-      className="z-40 bg-red-300 w-auto md:min-w-48 flex flex-row gap-2 justify-center items-center h-12 rounded-3xl shadow-md shadow-gray-200 px-4 py-2"
+      className="z-40 bg-red-300 hover:bg-red-400 rounded-full duration-100 w-auto md:min-w-48 flex shadow-md flex-row gap-2 justify-center items-center h-12 px-4 py-2"
     >
       {userProfile === "" ? (
         <div className="animate-pulse flex flex-row gap-3 justify-center items-center">

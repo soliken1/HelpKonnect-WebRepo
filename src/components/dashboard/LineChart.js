@@ -26,7 +26,7 @@ ChartJS.register(
 function LineChart({ data }) {
   return (
     <Line
-      className="p-0 md:p-4"
+      className="p-0 md:p-4 shadow-md rounded-md"
       data={data}
       options={{
         responsive: true,

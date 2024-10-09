@@ -2,7 +2,7 @@ import React from "react";
 
 function Card() {
   return (
-    <div className="flex flex-col w-80 h-80 shadow-md shadow-red-200 rounded-lg p-5 gap-3 hover:w-96 hover:h-80 transition-all duration-700">
+    <div className="flex flex-col w-80 h-80 shadow-md rounded-lg p-5 gap-3 transition-all duration-700">
       <label className="text-black font-bold">E-Book</label>
       <label className="text-black font-semibold">
         Man's Search For Meaning

@@ -11,7 +11,8 @@ import {
 } from "@/utils/avgSession";
 import formatDuration from "@/utils/formatDuration";
 import ChartLoader from "../loaders/Analytics/ChartLoader";
-import Barchart from "./BarChart";
+import DonutChart from "./DonutChart";
+import Image from "next/image";
 
 function Analytics() {
   const [user, setUser] = useState("");
@@ -105,52 +106,71 @@ function Analytics() {
   }, []);
 
   return (
-    <div className="flex flex-col w-screen h-screen p-10">
+    <div className="flex flex-col w-screen h-screen px-10 py-6">
       <label className="text-lg font-bold">Analytics</label>
+      <label className="font-medium text-gray-400">
+        General Statistics on {role === "admin" ? "Application" : user}
+      </label>
       <div className="flex flex-col h-full w-full">
-        <label className="font-medium text-gray-400">
-          General Statistics on {role === "admin" ? "Application" : user}
-        </label>
         <div className="flex flex-col h-full md:flex-row mt-6">
           <div className="flex flex-col md:w-3/4 md:h-full">
             <div className="w-full h-full md:min-w-full md:min-h-full flex p-2 rounded-lg flex-col gap-2">
               {chartData ? <LineChart data={chartData} /> : <ChartLoader />}
-              <div className="flex flex-row justify-evenly">
-                <div className="w-60 h-28 border-2 border-red-300 p-4 flex flex-col rounded-md">
-                  <label className="font-bold">Happy Users</label>
-                  <label className="text-2xl text-green-300">200</label>
-                  <label className="text-green-300 text-sm">
-                    +200 <label className="text-black">In Previous Day</label>
+              <div className="flex flex-row justify-evenly items-center mt-auto mb-auto">
+                <div className="w-60 h-28 relative border-2 min-h-28 bg-gradient-to-br from-green-500 to-emerald-600 hover:scale-105 duration-200 p-4 flex flex-col rounded-md">
+                  <label className="font-bold text-white">Happy Users</label>
+                  <label className="text-3xl text-green-300">200</label>
+                  <label className="text-white text-sm">
+                    +200 <label className="text-white">In Previous Day</label>
                   </label>
+                  <Image
+                    src="/SmileIcon.svg"
+                    className="absolute bottom-0 right-2 opacity-10 transform translate-x-3"
+                    width={100}
+                    height={100}
+                  />
                 </div>
-                <div className="w-60 h-28 border-2 border-red-300 p-4 flex flex-col rounded-md">
-                  <label className="font-bold">Sad Users</label>
-                  <label className="text-2xl text-red-500">0</label>
-                  <label className="text-green-300 text-sm">
-                    -200 <label className="text-black">In Previous Day</label>
+                <div className="w-60 relative h-28 border-2 bg-gradient-to-br min-h-28 from-red-400 to-rose-600 hover:scale-105 duration-200 p-4 flex flex-col rounded-md">
+                  <label className="font-bold text-white">Sad Users</label>
+                  <label className="text-3xl text-red-300">0</label>
+                  <label className="text-white text-sm">
+                    -200 <label className="text-white">In Previous Day</label>
                   </label>
+                  <Image
+                    src="/FrownIcon.svg"
+                    className="absolute bottom-0 right-2 opacity-10 transform translate-x-3"
+                    width={100}
+                    height={100}
+                  />
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="w-full md:w-1/4 flex flex-col p-4 gap-5 shadow-md">
-            <div className="flex flex-col gap-1 border-b-2 pb-2">
-              <label className="text-lg font-bold">Total Users</label>
+          <div className="w-full md:w-1/4 flex flex-col px-4 pt-4 pb-8 gap-5">
+            <label>Detailed Analytics</label>
+            <div className="flex justify-center items-center pb-4 rounded-md shadow-md duration-75 hover:scale-105">
+              <div className="h-48">
+                {chartData ? <DonutChart data={chartData} /> : ""}
+              </div>
+            </div>
+            <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">
+              <label className="text-lg text-white font-bold">
+                Total Users
+              </label>
               {totalUser === "" ? (
-                <div className="w-32 h-4 bg-red-300 rounded-full animate-pulse"></div>
+                <div className="w-32 h-4 bg-green-400 rounded-full animate-pulse"></div>
               ) : (
-                <label>{totalUser}</label>
+                <label className="text-green-300 text-2xl">{totalUser}</label>
               )}
               {totalUser === "" && prevTotalUser === "" ? (
-                <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
+                <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
               ) : (
-                <label>
+                <label className="text-white">
                   <label
                     className={
                       totalUser - prevTotalUser >= 0
-                        ? "text-green-400"
-                        : "text-red-400"
+                        ? "text-green-100"
+                        : "text-red-100"
                     }
                   >
                     {totalUser - prevTotalUser >= 0
@@ -160,23 +180,45 @@ function Analytics() {
                   In Previous Day
                 </label>
               )}
+              <Image
+                src="/UserIcon.svg"
+                className="absolute transform translate-y-4 translate-x-4 bottom-0 right-0 opacity-10"
+                width={140}
+                height={140}
+              />
             </div>
-            <div className="flex flex-col gap-1 border-b-2 pb-2">
-              <label className="text-lg font-bold">Total User Activities</label>
+            <div
+              className={`flex relative flex-col gap-1 px-4 py-2 shadow-md min-h-28 rounded-md duration-300 hover:scale-105 ${
+                dau - prevDayActivity >= 0
+                  ? "bg-gradient-to-br from-green-500 to-emerald-600"
+                  : "bg-gradient-to-br from-red-400 to-rose-600"
+              }`}
+            >
+              <label className="text-lg text-white font-bold">
+                Total User Activities
+              </label>
               {dau === "" ? (
-                <div className="w-32 h-4 bg-red-300 animate-pulse rounded-full"></div>
+                <div className="w-32 h-4 bg-green-400 animate-pulse rounded-full"></div>
               ) : (
-                <label>{dau}</label>
+                <label
+                  className={`text-2xl ${
+                    dau - prevDayActivity >= 0
+                      ? "text-green-300"
+                      : "text-red-300"
+                  }`}
+                >
+                  {dau}
+                </label>
               )}
               {dau === "" && prevDayActivity === "" ? (
-                <div className="w-48 h-4 bg-red-300 rounded-full animate-pulse"></div>
+                <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
               ) : (
-                <label>
+                <label className="text-white">
                   <label
                     className={
                       dau - prevDayActivity >= 0
-                        ? "text-green-400"
-                        : "text-red-400"
+                        ? "text-green-100"
+                        : "text-red-100"
                     }
                   >
                     {dau - prevDayActivity >= 0
@@ -186,18 +228,38 @@ function Analytics() {
                   In Previous Day
                 </label>
               )}
+              <Image
+                src="/SendIcon.svg"
+                className="absolute bottom-0 right-2 opacity-10"
+                width={100}
+                height={100}
+              />
             </div>
-            <div className="flex flex-col gap-1 border-b-2 pb-2">
-              <label className="text-lg font-bold">
+            <div
+              className={`flex flex-col relative gap-1 px-4 py-2 shadow-md min-h-28 rounded-md duration-300 hover:scale-105 ${
+                avgSession - prevAvgSession > 0
+                  ? "bg-gradient-to-br from-green-500 to-emerald-600"
+                  : "bg-gradient-to-br from-red-400 to-rose-600"
+              }`}
+            >
+              <label className="text-lg text-white font-bold">
                 Average Session Duration
               </label>
-              <label>{formatDuration(avgSession)}</label>
-              <label>
+              <label
+                className={`text-2xl ${
+                  avgSession - prevAvgSession > 0
+                    ? "text-green-300"
+                    : "text-red-300"
+                }`}
+              >
+                {formatDuration(avgSession)}
+              </label>
+              <label className="text-white">
                 <label
                   className={`${
                     avgSession - prevAvgSession > 0
-                      ? `${"text-green-400"}`
-                      : `${"text-red-400"}`
+                      ? `${"text-green-100"}`
+                      : `${"text-red-100"}`
                   }`}
                 >
                   {avgSession - prevAvgSession > 0
@@ -206,8 +268,13 @@ function Analytics() {
                 </label>{" "}
                 In Previous Day
               </label>
+              <Image
+                src="/ClockIcon.svg"
+                className="absolute bottom-0 right-0 opacity-10"
+                width={100}
+                height={100}
+              />
             </div>
-            {chartData ? <Barchart data={chartData} /> : <ChartLoader />}
           </div>
         </div>
       </div>
