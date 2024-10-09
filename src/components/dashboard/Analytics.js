@@ -11,6 +11,7 @@ import {
 } from "@/utils/avgSession";
 import formatDuration from "@/utils/formatDuration";
 import ChartLoader from "../loaders/Analytics/ChartLoader";
+import Barchart from "./BarChart";
 
 function Analytics() {
   const [user, setUser] = useState("");
@@ -111,13 +112,29 @@ function Analytics() {
           General Statistics on {role === "admin" ? "Application" : user}
         </label>
         <div className="flex flex-col h-full md:flex-row mt-6">
-          <div className="flex flex-col md:w-3/4">
-            <div className="w-full h-full md:min-w-full md:min-h-full flex justify-center items-center p-2 rounded-lg">
+          <div className="flex flex-col md:w-3/4 md:h-full">
+            <div className="w-full h-full md:min-w-full md:min-h-full flex p-2 rounded-lg flex-col gap-2">
               {chartData ? <LineChart data={chartData} /> : <ChartLoader />}
+              <div className="flex flex-row justify-evenly">
+                <div className="w-60 h-28 border-2 border-red-300 p-4 flex flex-col rounded-md">
+                  <label className="font-bold">Happy Users</label>
+                  <label className="text-2xl text-green-300">200</label>
+                  <label className="text-green-300 text-sm">
+                    +200 <label className="text-black">In Previous Day</label>
+                  </label>
+                </div>
+                <div className="w-60 h-28 border-2 border-red-300 p-4 flex flex-col rounded-md">
+                  <label className="font-bold">Sad Users</label>
+                  <label className="text-2xl text-red-500">0</label>
+                  <label className="text-green-300 text-sm">
+                    -200 <label className="text-black">In Previous Day</label>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="w-full md:w-1/4 flex flex-col p-4 gap-5">
+          <div className="w-full md:w-1/4 flex flex-col p-4 gap-5 shadow-md">
             <div className="flex flex-col gap-1 border-b-2 pb-2">
               <label className="text-lg font-bold">Total Users</label>
               {totalUser === "" ? (
@@ -190,6 +207,7 @@ function Analytics() {
                 In Previous Day
               </label>
             </div>
+            {chartData ? <Barchart data={chartData} /> : <ChartLoader />}
           </div>
         </div>
       </div>
