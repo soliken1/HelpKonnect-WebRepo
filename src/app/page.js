@@ -113,6 +113,24 @@ export default function Home() {
   return (
     <div className="flex flex-col md:flex-row h-screen overflow-hidden relative">
       <div className="w-1/2 hidden md:block h-screen justify-center items-center">
+        <a
+          className="absolute bottom-4 left-4 hover:scale-110 duration-300 opacity-50 hover:opacity-100 animate-bounce hover:animate-none group"
+          href="https://github.com/ajiwnl/HelpKonnect-Android"
+          target="_blank"
+        >
+          <Image
+            src="/Images/MobileFrame.png"
+            width={1920}
+            height={1080}
+            className="h-[240px] w-[120px]"
+          />
+
+          <span className="absolute left-full top-1/2 transform w-[400px] -translate-y-1/2 ml-4 p-4 text-lg font-semibold text-white rounded-lg shadow-lg bg-gradient-to-br to-red-300 from-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            Check Out Our Mobile Application For Users and Mental Health
+            Professionals!
+          </span>
+        </a>
+
         <Image
           className="object-cover w-full h-full"
           width={1920}
@@ -125,30 +143,24 @@ export default function Home() {
       <div
         className={`w-full md:w-1/2 h-screen transform transition-transform translate-x- duration-1000 ease-in-out rounded-s-2xl ${slideEffect} shadow-xl shadow-red-300 bg-red-300`}
       >
-        <div className="w-full h-2/6 flex justify-center items-center">
+        <div className="w-full h-2/6 relative flex justify-center">
           <Image
             alt="Image"
-            src="/Logo/LogoCircular.png"
+            src="/Logo/Logo.png"
+            className="absolute bottom-0 transform"
             width={175}
             height={175}
           />
         </div>
         <form
-          className="w-full h-4/6 ps-16 pe-16 flex flex-col gap-3"
+          className="w-full h-4/6 ps-16 pe-16 flex flex-col gap-3 relative"
           onSubmit={(e) => handleLogin(e, email, password)}
         >
-          <label className="text-white text-2xl font-bold text-center">
-            Logging In As Admin
+          <label className="text-white text-3xl font-bold text-center">
+            Sign In
           </label>
           <label className="text-white font-normal text-center">
-            Not an Admin? Check Out Our{" "}
-            <a
-              target="_blank"
-              href="https://www.google.com"
-              className="text-white font-bold"
-            >
-              Mobile Application!
-            </a>
+            Management For Partnered Facilities and Developer Moderations
           </label>
           <div className="relative mt-5">
             <input
@@ -185,13 +197,41 @@ export default function Home() {
               Password
             </label>
           </div>
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex justify-between h-6 px-2">
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" className="form-checkbox" />
+              <span className="text-sm text-white">Remember Me?</span>
+            </label>
+            <label className="text-sm text-white cursor-pointer underline">
+              Forgot Password?
+            </label>
+          </div>
+          <div className="w-full flex justify-center items-center flex-col">
             <button
               type="submit"
-              className="w-1/2 flex items-center justify-center h-10 mt-3 bg-red-500 rounded-lg text-white font-bold"
+              className="w-1/2 hover:bg-red-600 duration-300 flex items-center justify-center h-10 bg-red-500 rounded-lg text-white font-bold"
             >
               Login
             </button>
+            <label className="absolute bottom-8 text-xs max-w-72 text-center text-white">
+              By signing in, I have read, understand, and agree to the
+              Help-Konnect's{" "}
+              <a
+                className="underline"
+                href="https://www.google.com"
+                target="_blank"
+              >
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a
+                className="underline"
+                href="https://www.google.com"
+                target="_blank"
+              >
+                Privacy Policy.
+              </a>
+            </label>
           </div>
           {error && <p className="text-white font-bold text-center">{error}</p>}
         </form>
