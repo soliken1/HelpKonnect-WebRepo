@@ -123,6 +123,7 @@ export default function Home() {
             width={1920}
             height={1080}
             className="h-[240px] w-[120px]"
+            alt="Phone Frame"
           />
 
           <span className="absolute left-full top-1/2 transform w-[400px] -translate-y-1/2 ml-4 p-4 text-lg font-semibold text-white rounded-lg shadow-lg bg-gradient-to-br to-red-300 from-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">

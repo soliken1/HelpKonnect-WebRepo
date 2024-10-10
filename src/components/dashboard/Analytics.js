@@ -155,6 +155,7 @@ function Analytics() {
                     className="absolute bottom-0 right-2 opacity-10 transform translate-x-3"
                     width={100}
                     height={100}
+                    alt="Smile Icon"
                   />
                 </div>
                 <div className="w-60 relative h-28 border-2 bg-gradient-to-br min-h-28 from-red-400 to-rose-600 hover:scale-105 duration-200 p-4 flex flex-col rounded-md">
@@ -168,6 +169,7 @@ function Analytics() {
                     className="absolute bottom-0 right-2 opacity-10 transform translate-x-3"
                     width={100}
                     height={100}
+                    alt="Frown Icon"
                   />
                 </div>
               </div>
@@ -212,6 +214,7 @@ function Analytics() {
                 className="absolute transform translate-y-4 translate-x-4 bottom-0 right-0 opacity-10"
                 width={140}
                 height={140}
+                alt="User Icon"
               />
             </div>
             <div
@@ -260,6 +263,7 @@ function Analytics() {
                 className="absolute bottom-0 right-2 opacity-10"
                 width={100}
                 height={100}
+                alt="Send Icon"
               />
             </div>
             <div
@@ -300,6 +304,7 @@ function Analytics() {
                 className="absolute bottom-0 right-0 opacity-10"
                 width={100}
                 height={100}
+                alt="Clock Icon"
               />
             </div>
           </div>

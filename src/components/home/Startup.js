@@ -46,12 +46,14 @@ function Startup() {
         width={1920}
         height={1080}
         className="w-[200px] h-[370px] absolute bottom-28 right-0 opacity-70"
+        alt="Standing Person"
       />
       <Image
         src="/Images/Lines.png"
         width={1920}
         height={1080}
         className="w-full h-full absolute -z-10 opacity-50"
+        alt="Lines"
       />
     </div>
   );
