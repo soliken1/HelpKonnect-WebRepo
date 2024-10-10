@@ -5,16 +5,16 @@ function Table() {
     <table className="min-w-full">
       <thead>
         <tr>
-          <th className="p-4 bg-red-100 font-bold text-sm text-gray-600 border-b border-gray-300">
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Professional Name
           </th>
-          <th className="p-4 bg-red-100 font-bold text-sm text-gray-600 border-b border-gray-300">
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Email
           </th>
-          <th className="p-4 bg-red-100 font-bold text-sm text-gray-600 border-b border-gray-300">
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Qualification
           </th>
-          <th className="p-4 bg-red-100 font-bold text-sm text-gray-600 border-b border-gray-300">
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Status
           </th>
         </tr>

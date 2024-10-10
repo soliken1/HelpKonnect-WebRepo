@@ -29,7 +29,7 @@ function Body() {
       <div className="flex justify-end mt-10 mb-4">
         <button
           onClick={openModal}
-          className="bg-green-400 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md hover:bg-green-500 duration-300"
+          className="ps-10 pe-10 pt-2 pb-2 rounded-xl shadow-md hover:bg-red-300 hover:text-white duration-300"
         >
           Add Professional
         </button>

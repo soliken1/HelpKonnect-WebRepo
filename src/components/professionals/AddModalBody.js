@@ -21,7 +21,7 @@ function AddModalBody({ isOpen, onClose }) {
         <div className="md:w-96 w-full h-full flex justify-center items-center">
           <Image
             src="/UserIcon.svg"
-            className="md:h-80 md:w-80 w-40 h-40 rounded-full shadow-md"
+            className="md:h-80 md:w-80 w-40 h-40 rounded-full shadow-md opacity-25"
             width={1920}
             height={1080}
             alt="Profile"
