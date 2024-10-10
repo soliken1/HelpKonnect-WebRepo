@@ -10,6 +10,7 @@ import {
   getPrevDayAvgSessionDuration,
 } from "@/utils/avgSession";
 import formatDuration from "@/utils/formatDuration";
+import { userType } from "@/utils/userType";
 import ChartLoader from "../loaders/Analytics/ChartLoader";
 import DonutChart from "./DonutChart";
 import Image from "next/image";
@@ -24,6 +25,7 @@ function Analytics() {
   const [prevTotalUser, setPrevTotalUser] = useState("");
   const [avgSession, setAvgSession] = useState(0);
   const [prevAvgSession, setPrevAvgSession] = useState(0);
+  const [userTypeData, setUserTypeData] = useState(null);
 
   useEffect(() => {
     setUser(getCookie("user"));
@@ -60,6 +62,30 @@ function Analytics() {
         setTotalUser(data);
       } catch (error) {
         console.error("Error fetching total user:", error);
+      }
+    }
+
+    async function fetchUserType() {
+      try {
+        const userTypeCounts = await userType();
+
+        console.log(userTypeCounts);
+
+        const chartData = {
+          labels: Object.keys(userTypeCounts),
+          datasets: [
+            {
+              label: "Types of Users",
+              data: Object.values(userTypeCounts),
+              backgroundColor: ["#FF6384", "#36A2EB"],
+              borderColor: ["#FF6384", "#36A2EB"],
+            },
+          ],
+        };
+
+        setUserTypeData(chartData);
+      } catch (error) {
+        console.error("Error fetching user type:", error);
       }
     }
 
@@ -102,6 +128,7 @@ function Analytics() {
     fetchAvgSession();
     fetchDau();
     fetchTotalUser();
+    fetchUserType();
     fetchChartData();
   }, []);
 
@@ -150,7 +177,7 @@ function Analytics() {
             <label>Detailed Analytics</label>
             <div className="flex justify-center items-center pb-4 rounded-md shadow-md duration-75 hover:scale-105">
               <div className="h-48">
-                {chartData ? <DonutChart data={chartData} /> : ""}
+                {userTypeData ? <DonutChart data={userTypeData} /> : ""}
               </div>
             </div>
             <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">

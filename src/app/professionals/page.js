@@ -2,7 +2,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Table from "@/components/professionals/Table";
+import Body from "@/components/professionals/Body";
 import { getCookie } from "cookies-next";
 import Ribbon from "@/components/dashboard/Ribbon";
 
@@ -15,7 +15,7 @@ function Professionals() {
     <div className="flex flex-row">
       <Sidebar role={role} />
       <Ribbon />
-      <Table />
+      <Body />
     </div>
   );
 }

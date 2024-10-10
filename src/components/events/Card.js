@@ -3,7 +3,7 @@ import Image from "next/image";
 
 function Card() {
   return (
-    <div className="flex flex-col w-80 h-80 shadow-md shadow-red-200 rounded-lg gap-3">
+    <div className="flex flex-col w-80 h-80 shadow-md rounded-lg gap-3">
       <div className="h-40 w-full">
         <Image
           className="w-full"

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Profile from "@/components/dashboard/Profile";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import Body from "@/components/resources/Body";

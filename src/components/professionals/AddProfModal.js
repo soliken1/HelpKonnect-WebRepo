@@ -16,7 +16,7 @@ export default function Modal({ isOpen, onClose, children }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div
-        className={`bg-white p-10 rounded-lg shadow-md shadow-red-200 relative w-full h-full md:w-5/6 md:h-5/6 transition-transform duration-200 ease-in-out ${
+        className={`bg-white p-10 rounded-lg shadow-md relative w-full h-full md:w-5/6 md:h-5/6 transition-transform duration-200 ease-in-out ${
           showModal ? "scale-100" : "scale-0"
         }`}
       >
