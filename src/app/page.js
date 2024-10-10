@@ -85,6 +85,7 @@ export default function Home() {
       //     return;
       //   }
 
+      // Temporary Firebase Cutoff
       const adminData = {
         role: "facility",
         facilityName: "HelpKonnect Dev",
@@ -95,6 +96,16 @@ export default function Home() {
         email: "helpkonnectdev@gmail.com",
       };
 
+      const facilityData = {
+        role: "facility",
+        facilityName: "HelpKonnect Facility",
+        userId: "QTCDmp0oBWgb05LeqFEDIwyv2eA2",
+        imageUrl: "/SampleProfile.jpg",
+        facilityDescription: "HelpKonnect Facilty",
+        facilityLocation: "Somewhere In UC Banilad",
+        email: "kennethrex456@gmail.com",
+      };
+
       // setCookie("role", userData.role);
       // setCookie("user", userData.facilityName);
       // setCookie("userId", userData.userId);
@@ -103,13 +114,23 @@ export default function Home() {
       // setCookie("userLocation", userData.facilityLocation);
       // setCookie("userEmail", userData.email);
 
-      setCookie("role", adminData.role);
-      setCookie("user", adminData.facilityName);
-      setCookie("userId", adminData.userId);
-      setCookie("userProfile", adminData.imageUrl);
-      setCookie("userDescription", adminData.facilityDescription);
-      setCookie("userLocation", adminData.facilityLocation);
-      setCookie("userEmail", adminData.email);
+      if (email === "helpkonnectdev@gmail.com") {
+        setCookie("role", adminData.role);
+        setCookie("user", adminData.facilityName);
+        setCookie("userId", adminData.userId);
+        setCookie("userProfile", adminData.imageUrl);
+        setCookie("userDescription", adminData.facilityDescription);
+        setCookie("userLocation", adminData.facilityLocation);
+        setCookie("userEmail", adminData.email);
+      } else {
+        setCookie("role", facilityData.role);
+        setCookie("user", facilityData.facilityName);
+        setCookie("userId", facilityData.userId);
+        setCookie("userProfile", facilityData.imageUrl);
+        setCookie("userDescription", facilityData.facilityDescription);
+        setCookie("userLocation", facilityData.facilityLocation);
+        setCookie("userEmail", facilityData.email);
+      }
 
       // await logUserActivity(userData.userId);
       // await logSessionStart(userData.userId);
