@@ -1,5 +1,6 @@
 import React from "react";
-import CardContainer from "./CardContainer";
+import Table from "./Table";
+import Image from "next/image";
 function Body() {
   return (
     <div className="w-full flex flex-col p-10">
@@ -7,12 +8,19 @@ function Body() {
       <label className="font-medium text-gray-400">
         Pending Mental Health Resources on Sample Facility
       </label>
-      <div>
-        <button className="bg-green-400 mt-10 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400">
-          All
+      <div className="w-full">
+        <button className="ps-10 pe-10 pt-2 pb-2 rounded-xl shadow-md hover:bg-red-300 hover:text-white duration-300 mt-5">
+          All Resources
         </button>
       </div>
-      <CardContainer />
+      <div className="flex flex-row gap-10 flex-nowrap h-full mt-5">
+        <div className="overflow-x-auto shadow-md rounded-md w-8/12">
+          <Table />
+        </div>
+        <div className="flex-1 shadow-md rounded-md">
+          <Image src="" />
+        </div>
+      </div>
     </div>
   );
 }

@@ -26,7 +26,13 @@ function Body() {
       <label className="font-medium text-gray-400">
         Professional List on {userName}
       </label>
-      <div className="flex justify-end mt-10 mb-4">
+      <div className="flex justify-between mt-10 mb-4">
+        <button
+          className="ps-10 pe-10 pt-2 pb-2 rounded-xl shadow-md hover:bg-red-300 hover:text-white duration-300"
+          type="button"
+        >
+          Active
+        </button>
         <button
           onClick={openModal}
           className="ps-10 pe-10 pt-2 pb-2 rounded-xl shadow-md hover:bg-red-300 hover:text-white duration-300"
@@ -40,7 +46,7 @@ function Body() {
           <Table />
         </div>
         <div className="flex-1 h-full shadow-md flex flex-col items-center">
-          <div className="flex flex-col gap-2 text-center w-full py-8 rounded-t-md bg-red-300 group">
+          <div className="flex flex-col gap-2 text-center w-full py-8 rounded-t-md from-red-300 to-red-500 bg-gradient-to-br group">
             <label className="text-6xl text-white font-bold group-hover:scale-110 transition-transform duration-300">
               3
             </label>
