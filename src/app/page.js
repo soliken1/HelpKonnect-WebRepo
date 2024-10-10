@@ -56,54 +56,73 @@ export default function Home() {
     setError("");
     setLoggingIn(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
+      // const userCredential = await signInWithEmailAndPassword(
+      //   auth,
+      //   email,
+      //   password
+      // );
+      // const user = userCredential.user;
 
-      const docRef = doc(db, "credentials", user.uid);
-      const docSnap = await getDoc(docRef);
+      // const docRef = doc(db, "credentials", user.uid);
+      // const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const userData = docSnap.data();
+      // if (docSnap.exists()) {
+      //   const userData = docSnap.data();
 
-        if (userData.banned) {
-          toast.error("Your account has been banned. Please contact support.", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-          });
-          setIsLoading(false);
-          return;
-        }
+      //   if (userData.banned) {
+      //     toast.error("Your account has been banned. Please contact support.", {
+      //       position: "bottom-right",
+      //       autoClose: 5000,
+      //       hideProgressBar: false,
+      //       closeOnClick: true,
+      //       pauseOnHover: true,
+      //       draggable: false,
+      //       progress: undefined,
+      //       theme: "colored",
+      //       transition: Bounce,
+      //     });
+      //     setIsLoading(false);
+      //     return;
+      //   }
 
-        setCookie("role", userData.role);
-        setCookie("user", userData.facilityName);
-        setCookie("userId", userData.userId);
-        setCookie("userProfile", userData.imageUrl);
-        setCookie("userDescription", userData.facilityDescription);
-        setCookie("userLocation", userData.facilityLocation);
-        setCookie("userEmail", userData.email);
+      const adminData = {
+        role: "facility",
+        facilityName: "HelpKonnect Dev",
+        userId: "GrHxzpnJxcVZIhOUPWkNitsZM4B3",
+        imageUrl: "/SampleProfile.jpg",
+        facilityDescription: "HelpKonnect Dev",
+        facilityLocation: "Somewhere In UC Banilad",
+        email: "helpkonnectdev@gmail.com",
+      };
 
-        await logUserActivity(userData.userId);
-        await logSessionStart(userData.userId);
+      // setCookie("role", userData.role);
+      // setCookie("user", userData.facilityName);
+      // setCookie("userId", userData.userId);
+      // setCookie("userProfile", userData.imageUrl);
+      // setCookie("userDescription", userData.facilityDescription);
+      // setCookie("userLocation", userData.facilityLocation);
+      // setCookie("userEmail", userData.email);
 
-        await setServerCookie(userData);
+      setCookie("role", adminData.role);
+      setCookie("user", adminData.facilityName);
+      setCookie("userId", adminData.userId);
+      setCookie("userProfile", adminData.imageUrl);
+      setCookie("userDescription", adminData.facilityDescription);
+      setCookie("userLocation", adminData.facilityLocation);
+      setCookie("userEmail", adminData.email);
 
-        router.push("/dashboard");
-        setLoggingIn(false);
-      } else {
-        setIsLoading(false);
-        console.log("No such document!");
-      }
+      // await logUserActivity(userData.userId);
+      // await logSessionStart(userData.userId);
+
+      await setServerCookie(adminData);
+
+      router.push("/dashboard");
+      setLoggingIn(false);
+
+      // } else {
+      //   setIsLoading(false);
+      //   console.log("No such document!");
+      // }
     } catch (error) {
       setError("User Email or Password Is Incorrect, Please Try Again");
       setLoggingIn(false);
