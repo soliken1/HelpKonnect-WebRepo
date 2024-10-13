@@ -12,10 +12,25 @@ import { db } from "@/configs/firebaseConfigs";
 import Link from "next/link";
 import FlagListLoader from "../loaders/Moderation/FlagListLoader";
 import Image from "next/image";
+import { getBannedUserCount, getMarkedAccounts } from "@/utils/moderationCount";
+
 function FlagList() {
   const [flaggedUsers, setFlaggedUsers] = useState([]);
+  const [bannedUserCount, setBannedUserCount] = useState(0);
+  const [markedAccounts, setMarkedAccounts] = useState([]);
 
   useEffect(() => {
+    const fetchBannedUserCount = async () => {
+      const count = await getBannedUserCount();
+      setBannedUserCount(count);
+    };
+    fetchBannedUserCount();
+
+    const fetchMarkedAccounts = async () => {
+      const accounts = await getMarkedAccounts();
+      setMarkedAccounts(accounts);
+    };
+    fetchMarkedAccounts();
     const fetchFlaggedUsers = async () => {
       try {
         const flaggedQuery = query(
@@ -70,7 +85,7 @@ function FlagList() {
           Marked Users:
         </label>
         <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
-          3
+          {markedAccounts.length}
         </label>
       </div>
       <div className="w-full h-28 mt-5 bg-gradient-to-br items-start from-red-500 rounded-md flex flex-col to-pink-500 p-4 group shadow-md">
@@ -78,7 +93,7 @@ function FlagList() {
           Banned Users:
         </label>
         <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
-          1
+          {bannedUserCount}
         </label>
       </div>
       <div className="mt-4">
