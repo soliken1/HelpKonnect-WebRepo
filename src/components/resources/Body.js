@@ -36,6 +36,7 @@ function Body() {
             className="w-full h-60 object-contain"
             width={1920}
             height={1080}
+            alt="Sample Resource"
           />
           <label className="text-2xl font-semibold mt-5">
             Man's Search For Meaning

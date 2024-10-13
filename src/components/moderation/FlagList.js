@@ -61,10 +61,26 @@ function FlagList() {
   }, []);
 
   return (
-    <div className="flex flex-col md:w-3/12 md:h-full rounded-lg shadow-md">
+    <div className="flex flex-col md:w-3/12 md:h-full rounded-lg shadow-md overflow-y-auto px-4">
       <label className="text-black font-bold text-xl px-4 pt-4">
         Flagged Users
       </label>
+      <div className="w-full h-28 mt-5 bg-gradient-to-br items-start from-red-300 rounded-md flex flex-col to-pink-400 p-4 group shadow-md">
+        <label className="text-white text-lg items-start flex group-hover:scale-110 transition-transform duration-300">
+          Marked Users:
+        </label>
+        <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
+          3
+        </label>
+      </div>
+      <div className="w-full h-28 mt-5 bg-gradient-to-br items-start from-red-500 rounded-md flex flex-col to-pink-500 p-4 group shadow-md">
+        <label className="text-white text-lg items-start flex group-hover:scale-110 transition-transform duration-300">
+          Banned Users:
+        </label>
+        <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
+          1
+        </label>
+      </div>
       <div className="mt-4">
         {flaggedUsers.length > 0 ? (
           flaggedUsers.map((user) => (
