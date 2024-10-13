@@ -46,7 +46,7 @@ function Body() {
           <Table />
         </div>
         <div className="flex-1 h-full shadow-md flex flex-col items-center">
-          <div className="flex flex-col gap-2 text-center w-full py-8 rounded-t-md from-red-300 to-red-500 bg-gradient-to-br group">
+          <div className="flex flex-col gap-2 text-center w-full py-8 rounded-t-md from-red-300 to-pink-400 bg-gradient-to-br group">
             <label className="text-6xl text-white font-bold group-hover:scale-110 transition-transform duration-300">
               3
             </label>

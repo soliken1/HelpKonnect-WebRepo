@@ -20,10 +20,11 @@ function UserBody() {
   const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState("");
   const [userPosts, setUserPosts] = useState([]);
+
   useEffect(() => {
     setCurrentUser(getCookie("userId"));
     const fetchUser = async () => {
-      if (!userId && currentUser && !userPosts) return;
+      if (!userId || !currentUser) return;
 
       try {
         const docRef = doc(db, "credentials", userId);
@@ -40,12 +41,16 @@ function UserBody() {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          const userPosts = querySnapshot.docs.map((doc) => ({
+          const fetchedPosts = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
-          console.log(userPosts);
-          setUserPosts(userPosts);
+          setUserPosts((prevPosts) => {
+            if (JSON.stringify(prevPosts) !== JSON.stringify(fetchedPosts)) {
+              return fetchedPosts;
+            }
+            return prevPosts;
+          });
         } else {
           console.log("No Posts Found");
         }
@@ -55,7 +60,7 @@ function UserBody() {
     };
 
     fetchUser();
-  }, [userId, currentUser, userPosts]);
+  }, [userId, currentUser]);
 
   return (
     <div className="w-full h-full flex flex-col p-10">

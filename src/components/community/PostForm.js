@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, storage } from "@/configs/firebaseConfigs";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -9,11 +8,26 @@ import { ToastContainer } from "react-toastify";
 import { toast, Bounce } from "react-toastify";
 import PostSubmitting from "../loaders/Community/PostSubmitting";
 import Image from "next/image";
+import { fetchQuotes } from "@/configs/fetchQuotes";
 
 function PostForm({ userId, username, userProfile }) {
   const [images, setImages] = useState([]);
   const [postMessage, setPostMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [quote, setQuote] = useState("");
+
+  useEffect(() => {
+    const getQuote = async () => {
+      try {
+        const randomQuote = await fetchQuotes();
+        setQuote(`${randomQuote.quotes} - ${randomQuote.person}`);
+      } catch (error) {
+        console.error("Error fetching quote: ", error);
+      }
+    };
+
+    getQuote();
+  }, []);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -160,12 +174,17 @@ function PostForm({ userId, username, userProfile }) {
             ))}
           </div>
         </div>
-        <button
-          type="submit"
-          className="w-full bg-red-300 text-white py-2 rounded-lg"
-        >
-          Post
-        </button>
+        <div className="w-full px-20">
+          <button
+            type="submit"
+            className="w-full bg-red-300  hover:bg-red-400 duration-300 text-white py-2 rounded-lg"
+          >
+            Post
+          </button>
+        </div>
+        {/* <div className="text-start text-gray-500 italic h-20 mt-5 w-full flex justify-center items-center p-4">
+          {quote}
+        </div> */}
       </form>
       <ToastContainer />
       {loading && <PostSubmitting />}

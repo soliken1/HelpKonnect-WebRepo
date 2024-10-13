@@ -49,7 +49,20 @@ function PostContainer({ userId }) {
   }
 
   return (
-    <div className="w-full md:w-2/3 h-full flex flex-col gap-5 px-3 py-6 items-center rounded-lg overflow-auto">
+    <div className="w-full md:w-2/3 h-full flex flex-col gap-5 px-3 py-6 rounded-lg overflow-auto">
+      <div className="h-32 w-full flex-row flex gap-5">
+        <input
+          type="text"
+          className="w-full h-10 shadow-md rounded-full py-2 px-6 placeholder:text-black"
+          placeholder="Search"
+        />
+        <button
+          type="button"
+          className="w-auto px-6 py-2 h-10 bg-red-300 text-nowrap rounded-full text-white hover:bg-red-400 duration-300 shadow-md"
+        >
+          Most Recent
+        </button>
+      </div>
       <Posts userId={userId} posts={posts} />
     </div>
   );

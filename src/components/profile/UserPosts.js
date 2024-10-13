@@ -25,7 +25,7 @@ function UserPosts({ userPosts, currentUser }) {
       );
       const likesData = {};
       likesSnapshot.docs.forEach((doc) => {
-        likesData[doc.data().postId] = true;
+        g = likesData[doc.data().postId] = true;
       });
       setLikes(likesData);
     };
@@ -78,7 +78,7 @@ function UserPosts({ userPosts, currentUser }) {
           </div>
           <label className="font-normal">{post.caption}</label>
           <div className="w-full h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            {post.imageUrls.map((url, index) => (
+            {post.imageUrls?.map((url, index) => (
               <Image
                 src={url}
                 key={index}
