@@ -1,18 +1,101 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+import { db, storage } from "@/configs/firebaseConfigs";
 import Modal from "./AddEventModal";
 import Image from "next/image";
+import { toast, Bounce } from "react-toastify";
+import { getCookie } from "cookies-next";
 
 function AddModalBody({ isModalOpen, closeModal }) {
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [eventVenue, setEventVenue] = useState("");
+  const [accommodation, setAccommodation] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [timeStart, setTimeStart] = useState("");
+  const [timeEnd, setTimeEnd] = useState("");
 
   const handleAddEvent = async (event) => {
     event.preventDefault();
+    if (!imageFile) {
+      toast.error("Please Select an Image", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    try {
+      const imageRef = ref(storage, `images/${imageFile.name}`);
+      await uploadBytes(imageRef, imageFile);
+      const imageUrl = await getDownloadURL(imageRef);
+      const facilityName = getCookie("user");
+
+      await addDoc(collection(db, "events"), {
+        name: eventName,
+        description: eventDescription,
+        venue: eventVenue,
+        accommodation,
+        date: eventDate,
+        timeStart,
+        timeEnd,
+        imageUrl,
+        facilityName,
+      });
+
+      toast.success("Successfully Added an Event", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+
+      setImagePreview(null);
+      setImageFile(null);
+      setEventName("");
+      setEventDescription("");
+      setEventVenue("");
+      setAccommodation("");
+      setEventDate("");
+      setTimeStart("");
+      setTimeEnd("");
+
+      closeModal();
+    } catch (error) {
+      console.error("Error adding event: ", error);
+      toast.error("Failed To Add an Event", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -20,8 +103,10 @@ function AddModalBody({ isModalOpen, closeModal }) {
       reader.readAsDataURL(file);
     } else {
       setImagePreview(null);
+      setImageFile(null);
     }
   };
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h2 className="text-2xl font-semibold mb-1">Add Events</h2>
@@ -61,8 +146,9 @@ function AddModalBody({ isModalOpen, closeModal }) {
             <div className="relative mt-5">
               <input
                 type="text"
-                name="text"
-                id="floating_outlined"
+                name="eventName"
+                value={eventName}
+                onChange={(e) => setEventName(e.target.value)}
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                 placeholder=" "
                 autoComplete="off"
@@ -77,8 +163,9 @@ function AddModalBody({ isModalOpen, closeModal }) {
             <div className="relative mt-7">
               <input
                 type="text"
-                name="text"
-                id="floating_outlined"
+                name="eventDescription"
+                value={eventDescription}
+                onChange={(e) => setEventDescription(e.target.value)}
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                 placeholder=" "
                 autoComplete="off"
@@ -93,8 +180,9 @@ function AddModalBody({ isModalOpen, closeModal }) {
             <div className="relative mt-7">
               <input
                 type="text"
-                name="text"
-                id="floating_outlined"
+                name="eventVenue"
+                value={eventVenue}
+                onChange={(e) => setEventVenue(e.target.value)}
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                 placeholder=" "
                 autoComplete="off"
@@ -107,11 +195,12 @@ function AddModalBody({ isModalOpen, closeModal }) {
               </label>
             </div>
             <div className="flex flex-row justify-between mt-7 gap-5">
-              <div className="relative">
+              <div className="relative w-1/2">
                 <input
                   type="number"
-                  name="text"
-                  id="floating_outlined"
+                  name="accommodation"
+                  value={accommodation}
+                  onChange={(e) => setAccommodation(e.target.value)}
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
@@ -120,14 +209,15 @@ function AddModalBody({ isModalOpen, closeModal }) {
                   htmlFor="floating_outlined"
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
-                  Accomodation
+                  Accommodation
                 </label>
               </div>
-              <div className="relative">
+              <div className="relative w-1/2">
                 <input
                   type="date"
-                  name="text"
-                  id="floating_outlined"
+                  name="eventDate"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                   placeholder=" "
                   autoComplete="off"
@@ -137,6 +227,42 @@ function AddModalBody({ isModalOpen, closeModal }) {
                   className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
                 >
                   Event Date
+                </label>
+              </div>
+            </div>
+            <div className="flex flex-row justify-between mt-7 gap-5">
+              <div className="relative w-1/2">
+                <input
+                  type="time"
+                  name="timeStart"
+                  value={timeStart}
+                  onChange={(e) => setTimeStart(e.target.value)}
+                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
+                  placeholder=" "
+                  autoComplete="off"
+                />
+                <label
+                  htmlFor="floating_outlined"
+                  className="absolute  text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                >
+                  Start Time
+                </label>
+              </div>
+              <div className="relative w-1/2">
+                <input
+                  type="time"
+                  name="timeEnd"
+                  value={timeEnd}
+                  onChange={(e) => setTimeEnd(e.target.value)}
+                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
+                  placeholder=" "
+                  autoComplete="off"
+                />
+                <label
+                  htmlFor="floating_outlined"
+                  className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                >
+                  End Time
                 </label>
               </div>
             </div>

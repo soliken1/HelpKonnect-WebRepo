@@ -4,13 +4,29 @@ import CardContainer from "./CardContainer";
 import { useState } from "react";
 import AddModalBody from "./AddModalBody";
 import { getCookie } from "cookies-next";
+import { ToastContainer } from "react-toastify";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/configs/firebaseConfigs";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [events, setEvents] = useState([]);
+  const [totalEvents, setTotalEvents] = useState(0);
 
   useEffect(() => {
     setUserName(getCookie("user"));
+    const fetchEvents = async () => {
+      const eventsQuery = query(
+        collection(db, "events"),
+        where("facilityName", "==", userName)
+      );
+      const querySnapshot = await getDocs(eventsQuery);
+      const eventsData = querySnapshot.docs.map((doc) => doc.data());
+      setEvents(eventsData);
+      setTotalEvents(querySnapshot.size);
+    };
+    fetchEvents();
   }, [userName]);
 
   const openModal = () => setIsModalOpen(true);
@@ -37,7 +53,7 @@ function Body() {
               Total Active Events:
             </label>
             <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
-              100
+              {totalEvents}
             </label>
           </div>
           <div className="w-full h-32 bg-gradient-to-br items-start from-red-300 rounded-md flex flex-col to-pink-400 p-4 group shadow-md">
@@ -45,13 +61,14 @@ function Body() {
               Total Active Participations:
             </label>
             <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
-              30
+              0
             </label>
           </div>
         </div>
-        <CardContainer />
+        <CardContainer events={events} />
       </div>
       <AddModalBody isModalOpen={isModalOpen} closeModal={closeModal} />
+      <ToastContainer />
     </div>
   );
 }
