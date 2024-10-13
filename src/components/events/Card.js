@@ -2,6 +2,27 @@ import React from "react";
 import Image from "next/image";
 
 function Card({ event }) {
+  const eventDate = new Date(event.date);
+  const formattedDate = eventDate.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  const formatTime = (time) => {
+    const [hour, minute] = time.split(":");
+    const date = new Date();
+    date.setHours(hour, minute);
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  };
+
+  const formattedTimeStart = formatTime(event.timeStart);
+  const formattedTimeEnd = formatTime(event.timeEnd);
+
   return (
     <div className="flex flex-col w-full h-40 shadow-md rounded-lg gap-3 relative group hover:h-[450px] transition-all duration-300 overflow-hidden">
       <div className="h-full w-full bg-black rounded-md absolute">
@@ -21,10 +42,10 @@ function Card({ event }) {
         {event.venue}
       </label>
       <label className="text-lg text-gray-300 font-semibold absolute top-12 group-hover:opacity-100 transition-opacity duration-300 opacity-0 left-4">
-        {event.date}
+        {formattedDate}
       </label>
       <label className="text-lg text-gray-300 font-semibold absolute top-20 group-hover:opacity-100 transition-opacity duration-300 opacity-0 left-4">
-        {event.timeStart} - {event.timeEnd}
+        {formattedTimeStart} - {formattedTimeEnd}
       </label>
       <label className="text-xl text-gray-300 font-semibold absolute bottom-12 left-4">
         {event.description}

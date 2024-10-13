@@ -51,6 +51,7 @@ function AddModalBody({ isModalOpen, closeModal }) {
         timeEnd,
         imageUrl,
         facilityName,
+        done: false,
       });
 
       toast.success("Successfully Added an Event", {
