@@ -36,7 +36,7 @@ function AddModalBody({ isModalOpen, closeModal }) {
     }
 
     try {
-      const imageRef = ref(storage, `images/${imageFile.name}`);
+      const imageRef = ref(storage, `eventImages/${imageFile.name}`);
       await uploadBytes(imageRef, imageFile);
       const imageUrl = await getDownloadURL(imageRef);
       const facilityName = getCookie("user");

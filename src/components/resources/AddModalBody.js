@@ -1,13 +1,89 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from "./AddResourceModal";
 import Image from "next/image";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "@/configs/firebaseConfigs";
+import { toast, Bounce } from "react-toastify";
 
-function AddModalBody({ isModalOpen, closeModal }) {
+function AddModalBody({ isModalOpen, closeModal, username }) {
   const [imagePreview, setImagePreview] = useState(null);
+  const [resourceType, setResourceType] = useState("");
+  const [file, setFile] = useState(null);
+  const [resourceName, setResourceName] = useState("");
+  const [resourceDescription, setResourceDescription] = useState("");
 
   const handleAddEvent = async (event) => {
     event.preventDefault();
+    if (
+      !file ||
+      !resourceType ||
+      !resourceName ||
+      !resourceDescription ||
+      !imagePreview
+    ) {
+      toast.error("Please fill in all fields and select a file and an image.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    try {
+      const imageBlob = await fetch(imagePreview).then((res) => res.blob());
+      const imageRef = ref(storage, `resourceImages/${file.name}`);
+      await uploadBytes(imageRef, imageBlob);
+      const imageURL = await getDownloadURL(imageRef);
+
+      const fileRef = ref(storage, `resources/${file.name}`);
+      await uploadBytes(fileRef, file);
+      const fileURL = await getDownloadURL(fileRef);
+
+      await addDoc(collection(db, "resources"), {
+        name: resourceName,
+        facilityName: username,
+        description: resourceDescription,
+        time: Timestamp.now(),
+        type: resourceType,
+        fileURL: fileURL,
+        imageURL: imageURL,
+        approved: true,
+      });
+
+      toast.success("Resource added Successfully", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      window.location.reload();
+      closeModal();
+    } catch (error) {
+      console.error("Error adding resource: ", error);
+      toast.error("Failed to add resource. Please try again.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleImageChange = (e) => {
@@ -22,6 +98,24 @@ function AddModalBody({ isModalOpen, closeModal }) {
       setImagePreview(null);
     }
   };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const getFileAcceptType = () => {
+    switch (resourceType) {
+      case "Video":
+        return "video/mp4";
+      case "E-book (pdf)":
+        return "application/pdf";
+      case "Audio":
+        return "audio/mpeg";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <h2 className="text-2xl font-semibold mb-1">Add Resource</h2>
@@ -61,14 +155,16 @@ function AddModalBody({ isModalOpen, closeModal }) {
             <div className="relative mt-5">
               <input
                 type="text"
-                name="text"
-                id="floating_outlined"
+                name="resourceName"
+                id="resourceName"
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                 placeholder=" "
                 autoComplete="off"
               />
               <label
-                htmlFor="floating_outlined"
+                htmlFor="resourceName"
                 className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
               >
                 Resource Name
@@ -77,41 +173,57 @@ function AddModalBody({ isModalOpen, closeModal }) {
             <div className="relative mt-7">
               <input
                 type="text"
-                name="text"
-                id="floating_outlined"
+                name="resourceDescription"
+                id="resourceDescription"
+                value={resourceDescription}
+                onChange={(e) => setResourceDescription(e.target.value)}
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                 placeholder=" "
                 autoComplete="off"
               />
               <label
-                htmlFor="floating_outlined"
+                htmlFor="resourceDescription"
                 className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
               >
                 Resource Description
               </label>
             </div>
             <div className="relative mt-7">
-              <input
-                type="text"
-                name="text"
-                id="floating_outlined"
+              <select
+                name="resourceType"
+                id="resourceType"
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
-                placeholder=" "
-                autoComplete="off"
-              />
+                value={resourceType}
+                onChange={(e) => setResourceType(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select Resource Type
+                </option>
+                <option value="Video">Video</option>
+                <option value="E-book (pdf)">E-book (pdf)</option>
+                <option value="Audio">Audio</option>
+              </select>
               <label
-                htmlFor="floating_outlined"
+                htmlFor="resourceType"
                 className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
               >
                 Resource Type
               </label>
+            </div>
+            <div className="relative mt-7 bg-white p-2 rounded-md">
+              <input
+                type="file"
+                accept={getFileAcceptType()}
+                onChange={handleFileChange}
+                className="block w-full text-sm text-red-300 border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
+              />
             </div>
             <div className="w-full flex-1 flex items-center justify-center mt-5">
               <button
                 type="submit"
                 className="bg-green-400 hover:bg-green-500 duration-300 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md"
               >
-                Add Event
+                Add Resource
               </button>
             </div>
           </form>

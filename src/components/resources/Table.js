@@ -1,6 +1,8 @@
 import React from "react";
 
-function Table() {
+import formatDate from "@/utils/formatDate";
+
+function Table({ resources, onRowClick }) {
   return (
     <table className="min-w-full">
       <thead>
@@ -17,51 +19,35 @@ function Table() {
           <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Resource Type
           </th>
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
+            Approved
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr className="hover:bg-gray-100 cursor-pointer">
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Man's Search For Meaning
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Kenneth James
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            1/1/2024
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            E-Book
-          </td>
-        </tr>
-        <tr className="hover:bg-gray-100 cursor-pointer">
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Sample Audio
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Alvin John
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            2/2/2024
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Audio
-          </td>
-        </tr>
-        <tr className="hover:bg-gray-100 cursor-pointer">
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Sample Video
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Franz Ruie
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            3/3/2024
-          </td>
-          <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-            Video
-          </td>
-        </tr>
+        {resources.map((resource) => (
+          <tr
+            key={resource.id}
+            className="hover:bg-gray-100 cursor-pointer"
+            onClick={() => onRowClick(resource)}
+          >
+            <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              {resource.name}
+            </td>
+            <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              {resource.facilityName || resource.professionalName}
+            </td>
+            <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              {formatDate(resource.time)}
+            </td>
+            <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              {resource.type}
+            </td>
+            <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              {resource.approved ? "Approved" : "Pending"}
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
