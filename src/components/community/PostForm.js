@@ -182,9 +182,22 @@ function PostForm({ userId, username, userProfile }) {
             Post
           </button>
         </div>
-        {/* <div className="text-start text-gray-500 italic h-20 mt-5 w-full flex justify-center items-center p-4">
-          {quote}
-        </div> */}
+        <div className="relative group">
+          <Image
+            src="/Logo/Logo.png"
+            className="w-20 h-20 rounded-full absolute top-0 left-0 z-20 drop-shadow-md group-hover:scale-105 duration-300"
+            width={1920}
+            height={1080}
+          />
+          <div className="text-start group-hover:shadow-md duration-300 flex-col text-gray-500 sha  h-40 mt-5 w-full flex p-12 z-10">
+            <label className="text-black group-hover:scale-105 duration-300">
+              Random Quote:
+            </label>
+            <label className="italic group-hover:scale-105 duration-300">
+              {quote}
+            </label>
+          </div>
+        </div>
       </form>
       <ToastContainer />
       {loading && <PostSubmitting />}
