@@ -188,6 +188,7 @@ function PostForm({ userId, username, userProfile }) {
             className="w-20 h-20 rounded-full absolute top-0 left-0 z-20 drop-shadow-md group-hover:scale-105 duration-300"
             width={1920}
             height={1080}
+            alt="Logo Image"
           />
           <div className="text-start group-hover:shadow-md duration-300 flex-col text-gray-500 sha  h-40 mt-5 w-full flex p-12 z-10">
             <label className="text-black group-hover:scale-105 duration-300">

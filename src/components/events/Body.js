@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import CardContainer from "./CardContainer";
 import { useState } from "react";
 import AddModalBody from "./AddModalBody";
@@ -23,7 +23,7 @@ function Body() {
   const [totalEvents, setTotalEvents] = useState(0);
   const [filterDate, setFilterDate] = useState("All");
 
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const startOfWeek = getStartOfWeek(today);
   const endOfWeek = getEndOfWeek(today);
 
@@ -50,7 +50,7 @@ function Body() {
       setTotalEvents(querySnapshot.size);
     };
     fetchEvents();
-  }, [userName]);
+  }, [userName, today]);
 
   const filteredEvents = events.filter((event) => {
     const eventDate = new Date(event.date);
