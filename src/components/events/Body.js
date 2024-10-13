@@ -19,7 +19,7 @@ function Body() {
       <div className="flex justify-end">
         <button
           onClick={openModal}
-          className="bg-green-400 hover:bg-green-500 duration-300 mt-10 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400"
+          className="bg-green-400 hover:bg-green-500 duration-300 mt-10 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md"
         >
           Add Event
         </button>

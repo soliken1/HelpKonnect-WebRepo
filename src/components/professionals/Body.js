@@ -35,7 +35,7 @@ function Body() {
         </button>
         <button
           onClick={openModal}
-          className="ps-10 pe-10 pt-2 pb-2 rounded-xl shadow-md hover:bg-red-300 hover:text-white duration-300"
+          className="ps-10 pe-10 pt-2 pb-2 rounded-xl shadow-md bg-green-400 hover:bg-green-500 text-white duration-300"
         >
           Add Professional
         </button>
