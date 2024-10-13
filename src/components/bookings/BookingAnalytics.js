@@ -3,7 +3,7 @@ import React from "react";
 function BookingAnalytics() {
   return (
     <div className="flex-1 h-full flex flex-col gap-4">
-      <div className="flex flex-col gap-2 text-center w-full py-8 rounded-md from-red-300 to-red-500 bg-gradient-to-br hover:to-red-600 duration-100 group">
+      <div className="flex flex-col gap-2 text-center w-full py-8 rounded-md from-red-300 to-pink-400 bg-gradient-to-br hover:to-pink-600 duration-300 group">
         <label className="text-5xl text-white font-semibold group-hover:scale-110 transition-transform duration-300">
           ₱20 000
         </label>
@@ -28,7 +28,7 @@ function BookingAnalytics() {
             In-Progress
           </label>
         </div>
-        <div className="flex items-center flex-col rounded-md justify-center from-red-300 to-red-500 bg-gradient-to-br hover:to-red-600 duration-100 flex-1 group">
+        <div className="flex items-center flex-col rounded-md justify-center from-red-300 to-pink-400 bg-gradient-to-br hover:to-pink-600 duration-300 flex-1 group">
           <label className="text-3xl text-white font-semibold group-hover:scale-110 transition-transform duration-300">
             1
           </label>
@@ -37,7 +37,7 @@ function BookingAnalytics() {
           </label>
         </div>
       </div>
-      <div className="flex flex-col p-4 flex-1 w-full from-red-300 to-red-500 bg-gradient-to-br hover:to-red-600 duration-100 rounded-md">
+      <div className="flex flex-col p-4 flex-1 w-full from-red-300 to-pink-400 bg-gradient-to-br hover:to-pink-600 duration-300 rounded-md">
         <label className="text-lg font-semibold text-white">
           Total Books From Users:
         </label>

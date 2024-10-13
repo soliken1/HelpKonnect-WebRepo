@@ -3,9 +3,7 @@ import Card from "./Card";
 
 function CardContainer() {
   return (
-    <div className="flex flex-col items-center md:flex-row md:items-start md:justify-evenly gap-5 md:gap-3 mt-5">
-      <Card />
-      <Card />
+    <div className="flex w-2/3 rounded-md max-h-[550px] overflow-y-auto flex-row flex-wrap gap-5 px-4 md:gap-10 mt-5">
       <Card />
     </div>
   );
