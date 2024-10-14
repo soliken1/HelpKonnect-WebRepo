@@ -5,7 +5,7 @@ import Image from "next/image";
 import { getCookie } from "cookies-next";
 import AddModalBody from "./AddModalBody";
 import Table from "./Table";
-import Stars from "./Stars";
+import Stars from "@/components/general/Stars";
 import Comments from "./Comments";
 
 function Body() {

@@ -31,6 +31,8 @@ function Body() {
     banned: false,
     dateCreated: serverTimestamp(),
   });
+  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [facilityDetails, setFacilityDetails] = useState(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -107,7 +109,6 @@ function Body() {
       await setDoc(docRef, facilityData);
       await setDoc(facRef, setInitFacility);
 
-      console.log("Facility registered successfully:", facilityData);
       setFormData({
         email: "",
         facilityName: "",
@@ -120,6 +121,28 @@ function Body() {
       window.location.reload();
     } catch (error) {
       console.error("Error registering facility:", error);
+    }
+  };
+
+  const handleSelectFacility = async (facility) => {
+    setSelectedFacility(facility);
+    try {
+      const credentialsDocRef = doc(db, "credentials", facility.userId);
+      const credentialsDocSnap = await getDoc(credentialsDocRef);
+
+      if (credentialsDocSnap.exists()) {
+        setFacilityDetails(credentialsDocSnap.data());
+        console.log(credentialsDocSnap.data());
+      } else {
+        console.log(`No credentials found for userId ${facility.userId}`);
+        setFacilityDetails(null);
+      }
+    } catch (error) {
+      console.error(
+        `Error fetching credentials for userId ${facility.userId}:`,
+        error
+      );
+      setFacilityDetails(null);
     }
   };
 
@@ -203,8 +226,14 @@ function Body() {
         handleAddEvent={handleAddEvent}
       />
       <div className="flex flex-row gap-5 h-full">
-        <FacilityTable facilities={facilities} />
-        <FacilityAnalytics />
+        <FacilityTable
+          facilities={facilities}
+          onSelect={handleSelectFacility}
+        />
+        <FacilityAnalytics
+          selectedFacility={selectedFacility}
+          facilityDetails={facilityDetails}
+        />
       </div>
     </div>
   );

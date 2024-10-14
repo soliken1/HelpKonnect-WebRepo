@@ -145,7 +145,7 @@ function AddModalBody({
             <div className="relative h-12 flex items-center justify-center mt-2">
               <button
                 type="submit"
-                className="bg-green-400 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400"
+                className="bg-green-400 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md hover:bg-green-500 duration-300"
               >
                 Register Facility
               </button>

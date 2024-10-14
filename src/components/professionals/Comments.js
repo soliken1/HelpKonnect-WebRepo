@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Stars from "./Stars";
+import Stars from "@/components/general/Stars";
 function Comments() {
   return (
     <div className="w-full flex-1 mt-5">
@@ -13,7 +13,7 @@ function Comments() {
           className="rounded-full w-10 h-10"
         />
         <div className="container">
-          <label className="text-sm font-semibold">John Doe</label>
+          <label className="text-sm font-semibold">Sample User</label>
           <Stars className={"mt-0"} width={12} height={12} />
           <label className="text-xs font-light text-gray-600">Lol</label>
         </div>

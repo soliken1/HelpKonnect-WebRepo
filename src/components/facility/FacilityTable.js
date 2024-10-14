@@ -1,6 +1,6 @@
 import React from "react";
 
-function FacilityTable({ facilities }) {
+function FacilityTable({ facilities, onSelect }) {
   return (
     <div className="overflow-x-auto shadow-md w-2/3 rounded-md mt-5">
       <table className="min-w-full">
@@ -25,7 +25,11 @@ function FacilityTable({ facilities }) {
         </thead>
         <tbody>
           {facilities.map((facility) => (
-            <tr className="hover:bg-gray-100 cursor-pointer" key={facility.id}>
+            <tr
+              className="hover:bg-gray-100 cursor-pointer"
+              key={facility.id}
+              onClick={() => onSelect(facility)}
+            >
               <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
                 {facility.facilityName || "No Name"}
               </td>
