@@ -15,6 +15,7 @@ import { db, auth } from "@/configs/firebaseConfigs";
 import AddModalBody from "@/components/facility/AddModalBody.js";
 import FacilityTable from "@/components/facility/FacilityTable.js";
 import FacilityAnalytics from "@/components/facility/FacilityAnalytics.js";
+import AddLoader from "@/components/loaders/Facility/AddLoader.js";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,6 +34,7 @@ function Body() {
   });
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [facilityDetails, setFacilityDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -57,6 +59,7 @@ function Body() {
   };
 
   const handleAddEvent = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -118,9 +121,11 @@ function Body() {
       setImagePreview(null);
       setImageFile(null);
       closeModal();
+      setIsLoading(false);
       window.location.reload();
     } catch (error) {
       console.error("Error registering facility:", error);
+      setIsLoading(false);
     }
   };
 
@@ -235,6 +240,7 @@ function Body() {
           facilityDetails={facilityDetails}
         />
       </div>
+      {isLoading && <AddLoader />}
     </div>
   );
 }

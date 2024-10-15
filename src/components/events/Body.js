@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 import { getStartOfWeek, getEndOfWeek } from "@/utils/convertDates";
+import Pulser from "../loaders/Events/Pulser";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,9 +115,17 @@ function Body() {
             <label className="text-white text-lg group-hover:scale-105 transition-transform duration-300">
               Total Active Events:
             </label>
-            <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
-              {totalEvents}
-            </label>
+            {totalEvents ? (
+              <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
+                {totalEvents}
+              </label>
+            ) : (
+              <Pulser
+                classes={
+                  "h-6 w-1/2 bg-white animate-pulse duration-300 rounded-full mt-5"
+                }
+              />
+            )}
           </div>
           <div className="w-full h-32 bg-gradient-to-br items-start from-red-300 rounded-md flex flex-col to-pink-400 p-4 group shadow-md">
             <label className="text-white text-lg group-hover:scale-105 transition-transform duration-300">

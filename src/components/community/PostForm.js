@@ -9,7 +9,7 @@ import { toast, Bounce } from "react-toastify";
 import PostSubmitting from "../loaders/Community/PostSubmitting";
 import Image from "next/image";
 import { fetchQuotes } from "@/configs/fetchQuotes";
-
+import Pulser from "../loaders/Community/Pulser";
 function PostForm({ userId, username, userProfile }) {
   const [images, setImages] = useState([]);
   const [postMessage, setPostMessage] = useState("");
@@ -194,9 +194,17 @@ function PostForm({ userId, username, userProfile }) {
             <label className="text-black group-hover:scale-105 duration-300">
               Random Quote:
             </label>
-            <label className="italic group-hover:scale-105 duration-300">
-              {quote}
-            </label>
+            {quote ? (
+              <label className="italic group-hover:scale-105 duration-300">
+                {quote}
+              </label>
+            ) : (
+              <Pulser
+                classes={
+                  "h-4 w-full bg-red-300 animate-pulse duration-300 rounded-full mt-5"
+                }
+              />
+            )}
           </div>
         </div>
       </form>

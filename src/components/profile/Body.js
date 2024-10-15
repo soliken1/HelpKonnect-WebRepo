@@ -109,6 +109,11 @@ function Body() {
     }
   };
 
+  const inputClass = (isEditable) =>
+    `w-5/6 text-start rounded-full px-2 bg-white py-1 ${
+      isEditable ? "bg-blue-100 shadow-lg" : "bg-white"
+    }`;
+
   return (
     <div className="w-full h-screen flex flex-col p-10 overflow-auto">
       <label className="text-lg font-bold">Profile</label>
@@ -156,7 +161,9 @@ function Body() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="text-3xl font-semibold text-center w-auto h-10 rounded-full bg-white enabled:border-2 border-black"
+              className={`text-3xl font-semibold text-center w-auto h-10 rounded-full ${
+                isEditable.username ? "bg-blue-100 shadow-lg" : "bg-white"
+              }`}
               disabled={!isEditable.username}
               autoComplete="off"
             />
@@ -182,7 +189,7 @@ function Body() {
               <div className="flex flex-row gap-9">
                 <input
                   type="text"
-                  className="w-5/6 bg-white text-start enabled:border-2 border-black rounded-full px-2"
+                  className={inputClass(isEditable.description)}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   disabled={!isEditable.description}
@@ -204,7 +211,7 @@ function Body() {
               <div className="flex flex-row gap-9">
                 <input
                   type="text"
-                  className="w-5/6 bg-white text-start enabled:border-2 border-black rounded-full px-2"
+                  className={inputClass(isEditable.location)}
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   disabled={!isEditable.location}
@@ -226,7 +233,7 @@ function Body() {
               <div className="flex flex-row gap-9">
                 <input
                   type="text"
-                  className="w-5/6 bg-white text-start enabled:border-2 border-black rounded-full px-2"
+                  className={inputClass(isEditable.contact)}
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
                   disabled={!isEditable.contact}
@@ -244,7 +251,6 @@ function Body() {
             </div>
           </div>
 
-          {/* Save Changes Button */}
           <div className="w-full h-10 flex items-center justify-center mt-5">
             <button
               type="submit"

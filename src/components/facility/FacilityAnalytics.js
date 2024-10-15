@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getTotalFacilityCount } from "@/utils/totalFacility";
 import Image from "next/image";
 import Stars from "../general/Stars";
+import Pulser from "../loaders/Facility/Pulser";
 
 function FacilityAnalytics({ selectedFacility, facilityDetails }) {
   const [totalFacilityCount, setTotalFacilityCount] = useState(0);
@@ -20,9 +21,17 @@ function FacilityAnalytics({ selectedFacility, facilityDetails }) {
         <label className="text-white text-lg group-hover:scale-105 transition-transform duration-300">
           Total Facility Partnered:
         </label>
-        <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
-          {totalFacilityCount}
-        </label>
+        {totalFacilityCount ? (
+          <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
+            {totalFacilityCount}
+          </label>
+        ) : (
+          <Pulser
+            classes={
+              "h-8 w-1/2 bg-white animate-pulse duration-300 rounded-full mt-5"
+            }
+          />
+        )}
       </div>
       <div className="w-full h-32 bg-gradient-to-br items-start from-red-300 rounded-md flex flex-col to-pink-400 p-4 group shadow-md">
         <label className="text-white text-lg group-hover:scale-105 transition-transform duration-300">

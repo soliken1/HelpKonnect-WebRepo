@@ -13,6 +13,7 @@ import Link from "next/link";
 import FlagListLoader from "../loaders/Moderation/FlagListLoader";
 import Image from "next/image";
 import { getBannedUserCount, getMarkedAccounts } from "@/utils/moderationCount";
+import Pulser from "../loaders/Moderation/Pulser";
 
 function FlagList() {
   const [flaggedUsers, setFlaggedUsers] = useState([]);
@@ -84,17 +85,33 @@ function FlagList() {
         <label className="text-white text-lg items-start flex group-hover:scale-110 transition-transform duration-300">
           Marked Users:
         </label>
-        <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
-          {markedAccounts.length}
-        </label>
+        {markedAccounts.length ? (
+          <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
+            {markedAccounts.length}
+          </label>
+        ) : (
+          <Pulser
+            classes={
+              "h-4 w-1/2 bg-white animate-pulse duration-300 rounded-full mt-5"
+            }
+          />
+        )}
       </div>
       <div className="w-full h-28 mt-5 bg-gradient-to-br items-start from-red-500 rounded-md flex flex-col to-pink-500 p-4 group shadow-md">
         <label className="text-white text-lg items-start flex group-hover:scale-110 transition-transform duration-300">
           Banned Users:
         </label>
-        <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
-          {bannedUserCount}
-        </label>
+        {bannedUserCount ? (
+          <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
+            {bannedUserCount}
+          </label>
+        ) : (
+          <Pulser
+            classes={
+              "h-4 w-1/2 bg-white animate-pulse duration-300 rounded-full mt-5"
+            }
+          />
+        )}
       </div>
       <div className="mt-4">
         {flaggedUsers.length > 0 ? (

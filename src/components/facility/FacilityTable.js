@@ -1,4 +1,5 @@
 import React from "react";
+import Rowloader from "../loaders/Facility/Rowloader";
 
 function FacilityTable({ facilities, onSelect }) {
   return (
@@ -24,33 +25,44 @@ function FacilityTable({ facilities, onSelect }) {
           </tr>
         </thead>
         <tbody>
-          {facilities.map((facility) => (
-            <tr
-              className="hover:bg-gray-100 cursor-pointer"
-              key={facility.id}
-              onClick={() => onSelect(facility)}
-            >
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {facility.facilityName || "No Name"}
-              </td>
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {facility.prof || 0}
-              </td>
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {facility.books || 0}
-              </td>
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {facility.income || 0}
-              </td>
+          {!facilities || facilities.length === 0 ? (
+            <tr>
               <td
-                className={`py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300 ${
-                  facility.status ? "text-green-400" : "text-red-400"
-                }`}
+                colSpan="5"
+                className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300"
               >
-                {facility.status ? "Active" : "Inactive"}
+                <Rowloader />
               </td>
             </tr>
-          ))}
+          ) : (
+            facilities.map((facility) => (
+              <tr
+                className="hover:bg-gray-100 cursor-pointer"
+                key={facility.id}
+                onClick={() => onSelect(facility)}
+              >
+                <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+                  {facility.facilityName || "No Name"}
+                </td>
+                <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+                  {facility.prof || 0}
+                </td>
+                <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+                  {facility.books || 0}
+                </td>
+                <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+                  {facility.income || 0}
+                </td>
+                <td
+                  className={`py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300 ${
+                    facility.status ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {facility.status ? "Active" : "Inactive"}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

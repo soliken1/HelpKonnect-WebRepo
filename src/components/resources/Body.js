@@ -166,26 +166,46 @@ function Body() {
               </label>
               <div className="justify-center items-center flex-1 flex gap-4">
                 {selectedResource.approved ? (
-                  <>
+                  <div className="flex flex-col gap-4">
+                    <a
+                      href={selectedResource.fileURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button className="bg-blue-400 hover:bg-blue-500 duration-300 text-white font-semibold rounded-xl px-10 py-2">
+                        View Resource
+                      </button>
+                    </a>
                     <button className="bg-gray-400 hover:bg-gray-500 duration-300 text-white font-semibold rounded-xl px-10 py-2">
                       Approved
                     </button>
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <button
-                      onClick={handleApprove}
-                      className="bg-green-400 hover:bg-green-500 duration-300 text-white font-semibold rounded-xl px-10 py-2"
+                  <div className="flex flex-col gap-4">
+                    <a
+                      href={selectedResource.fileURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      Approve
-                    </button>
-                    <button
-                      onClick={handleDeny}
-                      className="bg-red-400 hover:bg-red-500 duration-300 text-white font-semibold rounded-xl px-10 py-2"
-                    >
-                      Deny
-                    </button>
-                  </>
+                      <button className="bg-blue-400 hover:bg-blue-500 duration-300 text-white font-semibold rounded-xl px-10 py-2">
+                        View Resource
+                      </button>
+                    </a>
+                    <div className="flex flex-row gap-4">
+                      <button
+                        onClick={handleApprove}
+                        className="bg-green-400 hover:bg-green-500 duration-300 text-white font-semibold rounded-xl px-10 py-2"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={handleDeny}
+                        className="bg-red-400 hover:bg-red-500 duration-300 text-white font-semibold rounded-xl px-10 py-2"
+                      >
+                        Deny
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
             </>
