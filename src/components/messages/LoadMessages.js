@@ -34,7 +34,7 @@ function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
     setCallId(newCallId);
     setIsCallClicked(true);
     channel.sendMessage({
-      text: `You have an incoming video call. Join This Link: https://getstream.io/video/demos/join/${newCallId}?id=${newCallId}`,
+      text: `You have an incoming video call. Join This Link: https://getstream.io/video/demos/join/${callId}?id=${callId}`,
       user: { id: currentUser },
     });
   };

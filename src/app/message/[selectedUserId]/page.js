@@ -81,7 +81,7 @@ function Page() {
         const userIds = [currentUser, selectedUser.userId].sort();
 
         const customChannelId = `${userIds[0]}_${userIds[1]}`;
-
+        console.log(customChannelId);
         const conversation = client.channel("messaging", customChannelId, {
           members: [currentUser, selectedUser.userId],
         });

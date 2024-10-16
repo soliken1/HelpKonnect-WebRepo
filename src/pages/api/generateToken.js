@@ -9,11 +9,18 @@ export default async function handler(req, res) {
   );
 
   try {
+    await serverClient.upsertUser({
+      id: userId,
+      role: "admin",
+    });
+
     const token = serverClient.createToken(userId);
+
     res.status(200).json({ token });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error generating token", error: error.message });
+    res.status(500).json({
+      message: "Error generating token",
+      error: error.message,
+    });
   }
 }
