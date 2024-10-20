@@ -22,7 +22,6 @@ export default function Home() {
   const [slideEffect, setSlideEffect] = useState("translate-x-full opacity-0");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
   const router = useRouter();
 
@@ -105,7 +104,17 @@ export default function Home() {
         console.log("No such document!");
       }
     } catch (error) {
-      setError("User Email or Password Is Incorrect, Please Try Again");
+      toast.error("User Email or Password Is Incorrect, Please Try Again", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
       setLoggingIn(false);
     }
   };
@@ -234,11 +243,10 @@ export default function Home() {
               </a>
             </label>
           </div>
-          {error && <p className="text-white font-bold text-center">{error}</p>}
         </form>
-        <ToastContainer />
       </div>
       {loggingIn && <LoginLoading />}
+      <ToastContainer />
     </div>
   );
 }

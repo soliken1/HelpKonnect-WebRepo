@@ -21,33 +21,41 @@ function FlagContent() {
   useEffect(() => {
     const fetchFlaggedComments = async () => {
       try {
-        const q = query(
-          collection(db, "flaggedAccounts"),
-          where("userId", "==", flaggedUser),
-          orderBy("time", "desc")
-        );
+        if (flaggedUser) {
+          const q = query(
+            collection(db, "flaggedAccounts"),
+            where("userId", "==", flaggedUser),
+            orderBy("time", "desc")
+          );
 
-        const querySnapshot = await getDocs(q);
+          const querySnapshot = await getDocs(q);
 
-        const commentsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+          const commentsData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-        setFlaggedComments(commentsData);
-        console.log(commentsData);
+          setFlaggedComments(commentsData);
+          console.log(commentsData);
+        } else {
+          console.warn("flaggedUser is undefined.");
+        }
       } catch (err) {
         console.error("Error fetching flagged comments: ", err);
       }
     };
     const fetchUserStatus = async () => {
       try {
-        const userRef = doc(db, "credentials", flaggedUser);
-        const userSnapshot = await getDoc(userRef);
+        if (flaggedUser) {
+          const userRef = doc(db, "credentials", flaggedUser);
+          const userSnapshot = await getDoc(userRef);
 
-        if (userSnapshot.exists()) {
-          const userData = userSnapshot.data();
-          setIsBanned(userData.banned || false);
+          if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            setIsBanned(userData.banned || false);
+          }
+        } else {
+          console.warn("flaggedUser is undefined.");
         }
       } catch (err) {
         console.error("Error fetching user status: ", err);

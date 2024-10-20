@@ -22,9 +22,14 @@ function FlagList() {
 
   useEffect(() => {
     const fetchBannedUserCount = async () => {
-      const count = await getBannedUserCount();
-      setBannedUserCount(count);
+      try {
+        const count = await getBannedUserCount();
+        setBannedUserCount(count);
+      } catch (error) {
+        console.error("Error fetching banned user count:", error);
+      }
     };
+
     fetchBannedUserCount();
 
     const fetchMarkedAccounts = async () => {
@@ -32,6 +37,7 @@ function FlagList() {
       setMarkedAccounts(accounts);
     };
     fetchMarkedAccounts();
+
     const fetchFlaggedUsers = async () => {
       try {
         const flaggedQuery = query(
@@ -101,7 +107,7 @@ function FlagList() {
         <label className="text-white text-lg items-start flex group-hover:scale-110 transition-transform duration-300">
           Banned Users:
         </label>
-        {bannedUserCount ? (
+        {bannedUserCount >= 0 ? (
           <label className="text-white text-3xl items-start flex group-hover:scale-110 transition-transform duration-300">
             {bannedUserCount}
           </label>

@@ -2,7 +2,11 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 
 export async function getBannedUserCount() {
-  const q = query(collection(db, "credentials"), where("banned", "==", true));
+  const q = query(
+    collection(db, "credentials"),
+    where("banned", "==", true),
+    where("banned", "!=", null)
+  );
 
   const querySnapshot = await getDocs(q);
   const bannedUserCount = querySnapshot.size;
