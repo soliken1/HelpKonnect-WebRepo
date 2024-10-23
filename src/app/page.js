@@ -52,7 +52,6 @@ export default function Home() {
 
   const handleLogin = async (event, email, password) => {
     event.preventDefault();
-    setError("");
     setLoggingIn(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
