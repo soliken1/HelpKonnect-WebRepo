@@ -4,7 +4,7 @@ import { db } from "@/configs/firebaseConfigs";
 export async function userType() {
   const userQuery = query(
     collection(db, "credentials"),
-    where("role", "in", ["User", "Professionals"])
+    where("role", "in", ["User", "Professional"])
   );
   const userQSnapshot = await getDocs(userQuery);
   const data = userQSnapshot.docs.map((doc) => doc.data());

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Table() {
+function Table({ professionals, onSelect }) {
   return (
     <table className="min-w-full">
       <thead>
@@ -20,48 +20,26 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        <tr className="hover:bg-gray-100 cursor-pointer">
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            John Doe
-          </td>
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            john.doe@example.com
-          </td>
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            Psychotherapist License
-          </td>
-          <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
-            Active
-          </td>
-        </tr>
-        <tr className="hover:bg-gray-100 cursor-pointer">
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            Jane Smith
-          </td>
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            jane.smith@example.com
-          </td>
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            Psychotherapist License
-          </td>
-          <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
-            Active
-          </td>
-        </tr>
-        <tr className="hover:bg-gray-100 cursor-pointer">
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            Michael Brown
-          </td>
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            michael.brown@example.com
-          </td>
-          <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
-            Psychotherapist License
-          </td>
-          <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
-            Active
-          </td>
-        </tr>
+        {professionals.map((professional) => (
+          <tr
+            key={professional.id}
+            className="hover:bg-gray-100 cursor-pointer"
+            onClick={() => onSelect(professional)}
+          >
+            <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+              {professional.username}
+            </td>
+            <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+              {professional.email}
+            </td>
+            <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+              {professional.qualification || "None"}
+            </td>
+            <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
+              {professional.status || "Active"}
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
