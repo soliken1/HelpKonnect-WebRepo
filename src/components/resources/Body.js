@@ -144,7 +144,7 @@ function Body() {
           {selectedResource ? (
             <>
               <Image
-                src={selectedResource.imageURL || "/SampleProfile.jpg"}
+                src={selectedResource.imageURL || "/UserIcon.svg"}
                 className="w-full h-60 object-contain"
                 width={1920}
                 height={1080}
@@ -181,7 +181,7 @@ function Body() {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 justify-center items-center">
                     <a
                       href={selectedResource.fileURL}
                       target="_blank"
