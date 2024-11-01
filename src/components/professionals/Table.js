@@ -12,6 +12,9 @@ function Table({ professionals, onSelect }) {
             Email
           </th>
           <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
+            Rate
+          </th>
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Qualification
           </th>
           <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
@@ -31,6 +34,9 @@ function Table({ professionals, onSelect }) {
             </td>
             <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
               {professional.email}
+            </td>
+            <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
+              ₱{professional.rate}
             </td>
             <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
               {professional.qualification || "None"}
