@@ -10,7 +10,8 @@ export function middleware(request) {
     pathname.startsWith("/images") ||
     pathname.includes("Images") ||
     pathname.includes("Icons") ||
-    pathname.includes("Logo")
+    pathname.includes("Logo") ||
+    pathname.startsWith("/status")
   ) {
     return NextResponse.next();
   }
