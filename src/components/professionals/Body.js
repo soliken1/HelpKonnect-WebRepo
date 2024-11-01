@@ -63,11 +63,13 @@ function Body() {
     event.preventDefault();
     if (selectedProfessional) {
       const updatedRate = event.target.rate.value;
+      const parsedRate = parseFloat(updatedRate);
+
       const professionalRef = doc(db, "credentials", selectedProfessional.id);
 
       try {
         await updateDoc(professionalRef, {
-          rate: updatedRate,
+          rate: parsedRate,
         });
 
         const snapshot = await getDocs(professionalsRef);
