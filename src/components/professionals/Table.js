@@ -41,7 +41,7 @@ function Table({ professionals, onSelect }) {
             <td className="py-3 px-4 text-center text-gray-700 border-b border-gray-300">
               {professional.qualification || "None"}
             </td>
-            <td className="py-3 px-4 text-center border-b text-green-600 border-gray-300">
+            <td className="py-3 px-4 text-center border-b font-semibold text-green-600 border-gray-300">
               {professional.status || "Active"}
             </td>
           </tr>

@@ -20,15 +20,7 @@ function BookingAnalytics() {
         </label>
       </div>
       <div className="flex flex-row w-full h-32 gap-4">
-        <div className="flex items-center flex-col justify-center rounded-md bg-gradient-to-br from-yellow-200 to-yellow-400 hover:to-yellow-500 flex-1 group">
-          <label className="text-3xl text-white font-semibold group-hover:scale-110 transition-transform duration-300">
-            1
-          </label>
-          <label className="text-white group-hover:scale-110 transition-transform duration-300">
-            In-Progress
-          </label>
-        </div>
-        <div className="flex items-center flex-col rounded-md justify-center from-red-300 to-pink-400 bg-gradient-to-br hover:to-pink-600 duration-300 flex-1 group">
+        <div className="flex items-center flex-col rounded-md justify-center from-red-600 to-red-700 bg-gradient-to-br hover:to-pink-600 duration-300 flex-1 group">
           <label className="text-3xl text-white font-semibold group-hover:scale-110 transition-transform duration-300">
             1
           </label>
