@@ -5,14 +5,6 @@ export default async function handler(req, res) {
     const { amount, username, email, phone } = req.body;
     const total = amount * 100;
 
-    console.log("Received request to create checkout session:", {
-      amount,
-      username,
-      email,
-      phone,
-      total,
-    });
-
     try {
       const response = await axios.post(
         "https://api.paymongo.com/v1/checkout_sessions",
@@ -49,10 +41,8 @@ export default async function handler(req, res) {
         }
       );
 
-      console.log("Checkout session created successfully:", response.data);
       res.status(200).json(response.data);
     } catch (error) {
-      console.error("Error creating checkout session:", error);
       res.status(500).json({ error: error.message });
     }
   } else {

@@ -48,7 +48,6 @@ function Body() {
         ...doc.data(),
       }));
 
-      console.log("Fetched professionals:", fetchedProfessionals);
       setProfessionals(fetchedProfessionals);
     };
 

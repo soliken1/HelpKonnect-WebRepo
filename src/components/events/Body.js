@@ -79,8 +79,6 @@ function Body() {
     const querySnapshot = await getDocs(eventParticipantsQuery);
     const eventParticipantsData = querySnapshot.docs.map((doc) => doc.data());
 
-    console.log("Participants for event:", event.name, eventParticipantsData);
-
     const userIds = eventParticipantsData.map(
       (participant) => participant.userId
     );
@@ -101,8 +99,6 @@ function Body() {
       username: user.username,
       imageUrl: user.imageUrl,
     }));
-
-    console.log("User details:", userInfo);
 
     setUserInfo(userInfo);
     setIsParticipantsModalOpen(true);

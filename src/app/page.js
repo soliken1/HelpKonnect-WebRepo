@@ -100,7 +100,7 @@ export default function Home() {
         setLoggingIn(false);
       } else {
         setIsLoading(false);
-        console.log("No such document!");
+        console.error("No such document!");
       }
     } catch (error) {
       toast.error("User Email or Password Is Incorrect, Please Try Again", {

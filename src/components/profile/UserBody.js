@@ -33,7 +33,7 @@ function UserBody() {
           const userData = docSnap.data();
           setUser(userData);
         } else {
-          console.log("No such document!");
+          console.error("No such document!");
         }
 
         const postsRef = collection(db, "community");
@@ -52,7 +52,7 @@ function UserBody() {
             return prevPosts;
           });
         } else {
-          console.log("No Posts Found");
+          console.error("No Posts Found");
         }
       } catch (error) {
         console.error("Error fetching user:", error);

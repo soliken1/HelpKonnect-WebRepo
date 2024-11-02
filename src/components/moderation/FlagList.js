@@ -72,7 +72,6 @@ function FlagList() {
           }
         }
         const usersArray = Array.from(flaggedMap.values());
-        console.log("Fetched Flagged Users:", usersArray);
         setFlaggedUsers(usersArray);
       } catch (error) {
         console.error("Error fetching flagged users:", error);

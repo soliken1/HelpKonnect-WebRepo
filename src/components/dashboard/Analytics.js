@@ -69,8 +69,6 @@ function Analytics() {
       try {
         const userTypeCounts = await userType();
 
-        console.log(userTypeCounts);
-
         const chartData = {
           labels: Object.keys(userTypeCounts),
           datasets: [

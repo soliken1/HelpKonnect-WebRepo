@@ -137,9 +137,7 @@ function Body() {
 
       if (credentialsDocSnap.exists()) {
         setFacilityDetails(credentialsDocSnap.data());
-        console.log(credentialsDocSnap.data());
       } else {
-        console.log(`No credentials found for userId ${facility.userId}`);
         setFacilityDetails(null);
       }
     } catch (error) {
@@ -179,7 +177,7 @@ function Body() {
                     credentialsData.facilityName || "Unknown Facility Name",
                 };
               } else {
-                console.log(
+                console.error(
                   `No credentials found for userId ${facility.userId}`
                 );
                 return null;

@@ -50,7 +50,6 @@ function Page() {
   useEffect(() => {
     const initChat = async () => {
       try {
-        console.log("Initializing chat...");
         if (!currentUser || !selectedUser || !selectedUser.userId) {
           console.error("currentUser or selectedUser is null");
           return;
@@ -81,14 +80,12 @@ function Page() {
         const userIds = [currentUser, selectedUser.userId].sort();
 
         const customChannelId = `${userIds[0]}_${userIds[1]}`;
-        console.log(customChannelId);
         const conversation = client.channel("messaging", customChannelId, {
           members: [currentUser, selectedUser.userId],
         });
 
         await conversation.watch();
         setChannel(conversation);
-        console.log("Channel set:", conversation);
       } catch (error) {
         console.error("Error initializing chat:", error);
       }

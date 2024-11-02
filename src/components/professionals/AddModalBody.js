@@ -23,7 +23,6 @@ function AddModalBody({ isOpen, onClose, currentUser }) {
     if (event.key === "Enter") {
       setIsFinding(true);
       event.preventDefault();
-      console.log(`Fetching professional details for username: ${username}`);
 
       const userRef = query(
         collection(db, "credentials"),

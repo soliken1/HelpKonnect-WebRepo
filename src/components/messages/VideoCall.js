@@ -18,7 +18,6 @@ const apiKey = process.env.STREAM_API_CALLKEY;
 
 export default function VideoCall({ currentUser, selectedUser, onEndCall }) {
   const callId = currentUser + selectedUser.userId;
-  console.log(callId);
   const user = {
     id: currentUser,
     name: getCookie("user"),

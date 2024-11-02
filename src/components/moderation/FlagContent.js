@@ -36,7 +36,6 @@ function FlagContent() {
           }));
 
           setFlaggedComments(commentsData);
-          console.log(commentsData);
         } else {
           console.warn("flaggedUser is undefined.");
         }
@@ -72,8 +71,6 @@ function FlagContent() {
 
       await updateDoc(userRef, { banned: true });
       setIsBanned(true);
-
-      console.log(`User with ID: ${flaggedUser} has been banned.`);
     } catch (err) {
       console.error("Error banning user: ", err);
     }

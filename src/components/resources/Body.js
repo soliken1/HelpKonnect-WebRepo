@@ -41,7 +41,7 @@ function Body() {
         }));
         setResources(resourcesData);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
