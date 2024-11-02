@@ -19,6 +19,7 @@ function FlagList() {
   const [flaggedUsers, setFlaggedUsers] = useState([]);
   const [bannedUserCount, setBannedUserCount] = useState(0);
   const [markedAccounts, setMarkedAccounts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchBannedUserCount = async () => {
@@ -81,6 +82,10 @@ function FlagList() {
     fetchFlaggedUsers();
   }, []);
 
+  const filteredFlaggedUsers = flaggedUsers.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col md:w-3/12 md:h-full rounded-lg shadow-md overflow-y-auto px-4">
       <label className="text-black font-bold text-xl px-4 pt-4">
@@ -119,8 +124,15 @@ function FlagList() {
         )}
       </div>
       <div className="mt-4">
-        {flaggedUsers.length > 0 ? (
-          flaggedUsers.map((user) => (
+        <input
+          type="text"
+          placeholder="Search by Username"
+          className="shadow-md rounded-full w-full mb-4 py-2 px-6 placeholder:text-black"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        {filteredFlaggedUsers.length > 0 ? (
+          filteredFlaggedUsers.map((user) => (
             <Link
               href={`/moderation/${user.userId}`}
               key={user.userId}
