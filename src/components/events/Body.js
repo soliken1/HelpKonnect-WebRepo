@@ -155,7 +155,7 @@ function Body() {
           </button>
           <input
             type="text"
-            placeholder="Search by Event Name"
+            placeholder="Search"
             className="shadow-md rounded-full py-2 px-6 placeholder:text-black"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

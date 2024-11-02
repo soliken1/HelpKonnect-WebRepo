@@ -35,6 +35,7 @@ function Body() {
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [facilityDetails, setFacilityDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -100,9 +101,6 @@ function Body() {
       };
 
       const setInitFacility = {
-        prof: 0,
-        books: 0,
-        income: 0,
         status: true,
         userId: user.uid,
       };
@@ -152,39 +150,72 @@ function Body() {
   useEffect(() => {
     const fetchFacilities = async () => {
       try {
-        const facilitiesSnapshot = await getDocs(collection(db, "facilities"));
-        const facilitiesData = facilitiesSnapshot.docs.map((doc) => ({
+        const credentialsSnapshot = await getDocs(
+          collection(db, "credentials")
+        );
+        const credentialsData = credentialsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
 
+        const bookingsSnapshot = await getDocs(collection(db, "bookings"));
+        const bookingsData = bookingsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const bookingsCount = bookingsData.reduce((acc, booking) => {
+          const facilityName = booking.facilityName;
+          acc[facilityName] = (acc[facilityName] || 0) + 1;
+
+          return acc;
+        }, {});
+
+        const generatedIncome = bookingsData.reduce((acc, booking) => {
+          const facilityName = booking.facilityName;
+          acc[facilityName] = (acc[facilityName] || 0) + (booking.amount || 0);
+          return acc;
+        }, {});
+
         const facilitiesWithNames = await Promise.all(
-          facilitiesData.map(async (facility) => {
+          credentialsData.map(async (credential) => {
             try {
-              const credentialsDocRef = doc(db, "credentials", facility.userId);
-              const credentialsDocSnap = await getDoc(credentialsDocRef);
+              if (
+                (credential.role && credential.role === "user") ||
+                credential.role === "admin" ||
+                credential.role === "Professional"
+              ) {
+                return null;
+              }
 
-              if (credentialsDocSnap.exists()) {
-                const credentialsData = credentialsDocSnap.data();
+              const associatedProfessionalsCount = credentialsData.filter(
+                (prof) =>
+                  prof.associated === credential.userId &&
+                  prof.role === "Professional"
+              ).length;
 
-                if (credentialsData.role && credentialsData.role === "user") {
-                  return null;
-                }
+              const facilityDocRef = doc(db, "facilities", credential.userId);
+              const facilityDocSnap = await getDoc(facilityDocRef);
 
+              if (facilityDocSnap.exists()) {
+                const facilityData = facilityDocSnap.data();
                 return {
-                  ...facility,
+                  ...facilityData,
                   facilityName:
-                    credentialsData.facilityName || "Unknown Facility Name",
+                    credential.facilityName || "Unknown Facility Name",
+                  totalProfessionals: associatedProfessionalsCount,
+                  totalBookings: bookingsCount[credential.facilityName] || 0,
+                  generated: generatedIncome[credential.facilityName] || 0,
                 };
               } else {
                 console.error(
-                  `No credentials found for userId ${facility.userId}`
+                  `No facility found for userId ${credential.userId}`
                 );
                 return null;
               }
             } catch (error) {
               console.error(
-                `Error fetching credentials for userId ${facility.userId}:`,
+                `Error processing credential for userId ${credential.userId}:`,
                 error
               );
               return null;
@@ -205,16 +236,29 @@ function Body() {
     fetchFacilities();
   }, []);
 
+  const filteredFacilities = facilities.filter((facility) =>
+    facility.facilityName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="w-full flex flex-col p-10">
       <label className="text-lg font-bold">Subscribed Facilities</label>
       <label className="font-medium text-gray-400">
         Add Facilities or View Subscribed Facilities on the Application
       </label>
-      <div className="flex justify-end">
+      <div className="flex justify-between mt-10">
+        <div className="flex flex-row gap-2">
+          <input
+            type="text"
+            placeholder="Search"
+            className="shadow-md rounded-full py-2 px-6 placeholder:text-black"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
         <button
           onClick={openModal}
-          className="bg-green-400 hover:bg-green-500 transition-colors duration-300 mt-10 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400"
+          className="bg-green-400 hover:bg-green-500 transition-colors duration-300 ps-10 pe-10 pt-2 pb-2 text-white font-semibold rounded-xl shadow-md shadow-gray-400"
         >
           Register Facility
         </button>
@@ -230,7 +274,7 @@ function Body() {
       />
       <div className="flex flex-row gap-5 h-full">
         <FacilityTable
-          facilities={facilities}
+          facilities={filteredFacilities}
           onSelect={handleSelectFacility}
         />
         <FacilityAnalytics
