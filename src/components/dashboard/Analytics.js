@@ -73,7 +73,6 @@ function Analytics() {
           labels: Object.keys(userTypeCounts),
           datasets: [
             {
-              label: "Types of Users",
               data: Object.values(userTypeCounts),
               backgroundColor: ["#FF6384", "#36A2EB"],
               borderColor: ["#FF6384", "#36A2EB"],

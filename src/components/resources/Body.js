@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "./Table";
 import Image from "next/image";
 import AddModalBody from "./AddModalBody";
-import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { getCookie } from "cookies-next";
 import {
@@ -23,6 +22,7 @@ function Body() {
   const [resources, setResources] = useState([]);
   const [selectedResource, setSelectedResource] = useState(null);
   const [filterType, setFilterType] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const username = getCookie("user");
@@ -81,9 +81,21 @@ function Body() {
     }
   };
 
-  const filteredResources = resources.filter((resource) =>
-    filterType === "All" ? true : resource.type === filterType
-  );
+  const filteredResources = resources
+    .filter((resource) => {
+      const resourceName = resource.name.toLowerCase();
+      return resourceName.includes(searchQuery.toLowerCase());
+    })
+    .filter((resource) =>
+      filterType === "All" ? true : resource.type === filterType
+    );
+
+  const cycleFilterType = () => {
+    const filterTypes = ["All", "Video", "Audio", "E-book (pdf)"];
+    const currentIndex = filterTypes.indexOf(filterType);
+    const nextIndex = (currentIndex + 1) % filterTypes.length;
+    setFilterType(filterTypes[nextIndex]);
+  };
 
   return (
     <div className="w-full flex flex-col p-10">
@@ -94,37 +106,18 @@ function Body() {
       <div className="flex justify-between mt-5">
         <div className="flex flex-row gap-4">
           <button
-            onClick={() => setFilterType("All")}
-            className={`ps-10 pe-10 pt-2 pb-2  rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
-              filterType === "All" ? "bg-red-300 text-white" : ""
-            }`}
+            onClick={cycleFilterType}
+            className="ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300"
           >
-            All Resources
+            {filterType}
           </button>
-          <button
-            onClick={() => setFilterType("Video")}
-            className={`ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
-              filterType === "Video" ? "bg-red-300 text-white" : ""
-            }`}
-          >
-            Video
-          </button>
-          <button
-            onClick={() => setFilterType("Audio")}
-            className={`ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
-              filterType === "Audio" ? "bg-red-300 text-white" : ""
-            }`}
-          >
-            Audio
-          </button>
-          <button
-            onClick={() => setFilterType("E-book (pdf)")}
-            className={`ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
-              filterType === "E-book (pdf)" ? "bg-red-300 text-white" : ""
-            }`}
-          >
-            E-book (pdf)
-          </button>
+          <input
+            type="text"
+            placeholder="Search"
+            className="shadow-md rounded-full py-2 px-6 placeholder:text-black"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <button
           onClick={openModal}

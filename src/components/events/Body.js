@@ -33,6 +33,7 @@ function Body() {
     []
   );
   const [userInfo, setUserInfo] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const today = useMemo(() => new Date(), []);
   const startOfWeek = getStartOfWeek(today);
@@ -106,16 +107,31 @@ function Body() {
 
   const filteredEvents = events.filter((event) => {
     const eventDate = new Date(event.date);
+    const matchesSearchQuery = event.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
     if (event.done) {
-      return filterDate === "All";
+      return filterDate === "All" && matchesSearchQuery;
     }
     if (filterDate === "Today") {
-      return eventDate.toDateString() === today.toDateString();
+      return (
+        eventDate.toDateString() === today.toDateString() && matchesSearchQuery
+      );
     } else if (filterDate === "This Week") {
-      return eventDate >= startOfWeek && eventDate <= endOfWeek;
+      return (
+        eventDate >= startOfWeek && eventDate <= endOfWeek && matchesSearchQuery
+      );
     }
-    return true;
+    return matchesSearchQuery;
   });
+
+  const cycleFilterType = () => {
+    const filterTypes = ["All", "Today", "This Week"];
+    const currentIndex = filterTypes.indexOf(filterDate);
+    const nextIndex = (currentIndex + 1) % filterTypes.length;
+    setFilterDate(filterTypes[nextIndex]);
+  };
 
   const openAddEventModal = () => setIsAddEventModalOpen(true);
   const closeAddEventModal = () => setIsAddEventModalOpen(false);
@@ -130,29 +146,20 @@ function Body() {
       <div className="flex justify-between mt-5">
         <div className="flex flex-row gap-4">
           <button
-            onClick={() => setFilterDate("All")}
+            onClick={cycleFilterType}
             className={`ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
               filterDate === "All" ? "bg-red-300 text-white" : ""
             }`}
           >
-            All Events
+            {filterDate}
           </button>
-          <button
-            onClick={() => setFilterDate("Today")}
-            className={`ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
-              filterDate === "Today" ? "bg-red-300 text-white" : ""
-            }`}
-          >
-            Today
-          </button>
-          <button
-            onClick={() => setFilterDate("This Week")}
-            className={`ps-10 pe-10 pt-2 pb-2 rounded-full shadow-md hover:bg-red-300 hover:text-white duration-300 ${
-              filterDate === "This Week" ? "bg-red-300 text-white" : ""
-            }`}
-          >
-            This Week
-          </button>
+          <input
+            type="text"
+            placeholder="Search by Event Name"
+            className="shadow-md rounded-full py-2 px-6 placeholder:text-black"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <button
           onClick={openAddEventModal}

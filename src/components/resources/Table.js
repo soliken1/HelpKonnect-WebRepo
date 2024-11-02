@@ -41,20 +41,20 @@ function Table({ resources, onRowClick }) {
               className="hover:bg-gray-100 cursor-pointer"
               onClick={() => onRowClick(resource)}
             >
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              <td className="py-3 px-4 text-center text-xs text-gray-700 border-b border-gray-300">
                 {resource.name}
               </td>
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              <td className="py-3 px-4 text-center text-xs text-gray-700 border-b border-gray-300">
                 {resource.facilityName || resource.professionalName}
               </td>
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              <td className="py-3 px-4 text-center text-xs text-gray-700 border-b border-gray-300">
                 {formatDate(resource.time)}
               </td>
-              <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
+              <td className="py-3 px-4 text-center text-xs text-gray-700 border-b border-gray-300">
                 {resource.type}
               </td>
               <td
-                className={`font-semibold py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300 ${
+                className={`font-semibold py-3 px-4 text-center text-xs text-gray-700 border-b border-gray-300 ${
                   resource.approved ? "text-green-500" : "text-red-500"
                 }`}
               >
