@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { amount, username, email, phone } = req.body;
+    const { amount, username, email, phone, title } = req.body;
     const total = amount * 100;
 
     try {
@@ -20,12 +20,12 @@ export default async function handler(req, res) {
                 {
                   currency: "PHP",
                   amount: total,
-                  description: "test",
-                  name: "test",
+                  description: title,
+                  name: title,
                   quantity: 1,
                 },
               ],
-              description: "test",
+              description: title,
               success_url: "https://helpkonnect.vercel.app/status/success",
               cancel_url: "https://helpkonnect.vercel.app/status/failed",
             },
