@@ -4,7 +4,7 @@ import { getBookingStatus } from "@/utils/bookingStatus";
 
 function Table({ bookings }) {
   return (
-    <table className="min-w-full">
+    <table className="min-w-full overflow-auto">
       <thead>
         <tr>
           <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">

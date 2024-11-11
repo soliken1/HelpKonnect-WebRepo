@@ -195,11 +195,9 @@ function Body() {
                 {totalParticipants}
               </label>
             ) : (
-              <Pulser
-                classes={
-                  "h-6 w-1/2 bg-white animate-pulse duration-300 rounded-full mt-5"
-                }
-              />
+              <label className="text-white text-6xl font-semibold group-hover:scale-105 transition-transform duration-300">
+                0
+              </label>
             )}
           </div>
         </div>
