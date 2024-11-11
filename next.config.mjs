@@ -21,6 +21,7 @@ const nextConfig = {
     ANDROID_RAPID_API_KEY: process.env.ANDROID_RAPID_API_KEY,
     PAYMONGO_SECRET_KEY: process.env.PAYMONGO_SECRET_KEY,
     PAYMONGO_PUBLIC_KEY: process.env.PAYMONGO_PUBLIC_KEY,
+    MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
   },
   images: {
     dangerouslyAllowSVG: true,

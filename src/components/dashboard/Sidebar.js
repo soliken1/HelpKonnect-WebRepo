@@ -49,7 +49,7 @@ function Sidebar({ role }) {
         } flex flex-col gap-5 bg-red-300 shadow-red-400`}
       >
         <div className="w-full h-32 flex items-center justify-center"></div>
-        <div className="w-full h-4/6 flex flex-col gap-5">
+        <div className="w-full h-5/6 flex flex-col gap-5">
           {role === "admin" ? (
             <>
               <Link
@@ -215,10 +215,26 @@ function Sidebar({ role }) {
                   </label>
                 </Link>
               </div>
+              <div className="w-full flex items-center justify-center h-16">
+                <Link
+                  href="/location"
+                  className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
+                >
+                  <Image
+                    src="/Icons/CompassIcon.svg"
+                    width={25}
+                    height={25}
+                    alt="Events Icon"
+                  />
+                  <label className="text-white text-sm font-bold cursor-pointer">
+                    Location
+                  </label>
+                </Link>
+              </div>
             </>
           ) : null}
         </div>
-        <div className="w-full flex items-center justify-center h-16">
+        <div className="w-full flex items-center justify-center h-16 mb-5">
           <div
             onClick={handleLogout}
             className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md cursor-pointer"

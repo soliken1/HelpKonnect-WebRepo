@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import { getCookie } from "cookies-next";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 const Sidebar = dynamic(() => import("@/components/dashboard/Sidebar.js"), {
   ssr: false,
@@ -8,15 +7,16 @@ const Sidebar = dynamic(() => import("@/components/dashboard/Sidebar.js"), {
 const Ribbon = dynamic(() => import("@/components/dashboard/Ribbon.js"), {
   ssr: false,
 });
-const Body = dynamic(() => import("@/components/facility/Body.js"), {
+const Body = dynamic(() => import("@/components/location/Body.js"), {
   ssr: false,
 });
+import { getCookie } from "cookies-next";
 
-function Facility() {
+function Location() {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    Object.freeze(setRole(getCookie("role")));
+    setRole(getCookie("role"));
   }, []);
   return (
     <div className="flex flex-row">
@@ -27,4 +27,4 @@ function Facility() {
   );
 }
 
-export default Facility;
+export default Location;
