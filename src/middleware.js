@@ -11,7 +11,8 @@ export function middleware(request) {
     pathname.includes("Images") ||
     pathname.includes("Icons") ||
     pathname.includes("Logo") ||
-    pathname.startsWith("/status")
+    pathname.startsWith("/status") ||
+    pathname.startsWith("/location")
   ) {
     return NextResponse.next();
   }
