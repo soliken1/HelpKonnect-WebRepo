@@ -114,7 +114,7 @@ const MapWithRouting = () => {
     <div className="w-screen h-screen relative">
       <div className="flex flex-row gap-5 absolute bottom-3 left-2 w-auto h-auto justify-center items-center z-10">
         <button
-          className="px-6 py-2 rounded-full bg-red-300 text-white hover:bg-red-400 duration-300 "
+          className="h-10 px-6 rounded-full bg-red-300 text-white hover:bg-red-400 duration-300 "
           onClick={toggleDirections}
           style={{ margin: "10px" }}
         >
