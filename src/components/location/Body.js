@@ -37,9 +37,11 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
 const MapWithRouting = () => {
   const [userPosition, setUserPosition] = useState(null);
   const [facilities, setFacilities] = useState([]);
+  const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [destination, setDestination] = useState(null);
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [showDirections, setShowDirections] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchFacilities = async () => {
@@ -59,6 +61,7 @@ const MapWithRouting = () => {
           };
         });
         setFacilities(fetchedFacilities);
+        setFilteredFacilities(fetchedFacilities);
       } catch (error) {
         console.error("Error fetching facilities:", error);
       }
@@ -66,6 +69,20 @@ const MapWithRouting = () => {
 
     fetchFacilities();
   }, []);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setFilteredFacilities(facilities);
+    } else {
+      setFilteredFacilities(
+        facilities.filter((facility) =>
+          facility.facilityName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+  }, [searchQuery, facilities]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -95,13 +112,23 @@ const MapWithRouting = () => {
 
   return (
     <div className="w-screen h-screen relative">
-      <button
-        className="px-6 py-2 rounded-full bg-red-300 text-white absolute top-3 left-12 hover:bg-red-400 duration-300 z-10"
-        onClick={toggleDirections}
-        style={{ margin: "10px" }}
-      >
-        {showDirections ? "Hide Directions" : "Show Directions"}
-      </button>
+      <div className="flex flex-row gap-5 absolute bottom-3 left-2 w-auto h-auto justify-center items-center z-10">
+        <button
+          className="px-6 py-2 rounded-full bg-red-300 text-white hover:bg-red-400 duration-300 "
+          onClick={toggleDirections}
+          style={{ margin: "10px" }}
+        >
+          {showDirections ? "Hide Directions" : "Show Directions"}
+        </button>
+        <input
+          placeholder="Search..."
+          type="text"
+          className="px-6 py-2 w-72 rounded-md"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       <MapContainer
         className="-z-0"
         center={[10.3150363, 123.8916419]}
@@ -128,11 +155,10 @@ const MapWithRouting = () => {
             }}
           >
             <Tooltip permanent={true}>You are Here!</Tooltip>
-            <Popup>You are here!</Popup>
           </CircleMarker>
         )}
 
-        {facilities.map((facility) => (
+        {filteredFacilities.map((facility) => (
           <Marker
             key={facility.id}
             position={[
@@ -144,7 +170,6 @@ const MapWithRouting = () => {
             }}
           >
             <Tooltip permanent={true}>{facility.facilityName}</Tooltip>
-            <Popup>{facility.facilityName}</Popup>
           </Marker>
         ))}
 
