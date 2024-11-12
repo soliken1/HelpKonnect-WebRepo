@@ -16,6 +16,7 @@ import AddModalBody from "@/components/facility/AddModalBody.js";
 import FacilityTable from "@/components/facility/FacilityTable.js";
 import FacilityAnalytics from "@/components/facility/FacilityAnalytics.js";
 import AddLoader from "@/components/loaders/Facility/AddLoader.js";
+import { getCoordinates } from "@/utils/getCoordinates";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,6 +29,7 @@ function Body() {
     facilityName: "",
     facilityDescription: "",
     facilityLocation: "",
+    facilityCoordinates: null,
     role: "facility",
     banned: false,
     dateCreated: serverTimestamp(),
@@ -93,11 +95,15 @@ function Body() {
 
         imageUrl = await getDownloadURL(storageRef);
       }
+      const facilityCoordinates = await getCoordinates(
+        formData.facilityLocation
+      );
 
       const facilityData = {
         ...formData,
         imageUrl,
         userId: user.uid,
+        facilityCoordinates,
       };
 
       const setInitFacility = {
@@ -115,6 +121,7 @@ function Body() {
         facilityName: "",
         facilityDescription: "",
         facilityLocation: "",
+        facilityCoordinates: null,
       });
       setImagePreview(null);
       setImageFile(null);

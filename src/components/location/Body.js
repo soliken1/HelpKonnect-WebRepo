@@ -1,8 +1,16 @@
-"use client";
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  CircleMarker,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
+import { db } from "@/configs/firebaseConfigs";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const RoutingMachine = ({ userPosition, destination }) => {
   const map = useMap();
@@ -26,10 +34,35 @@ const RoutingMachine = ({ userPosition, destination }) => {
 
 const MapWithRouting = () => {
   const [userPosition, setUserPosition] = useState(null);
+  const [facilities, setFacilities] = useState([]);
   const [destination, setDestination] = useState(null);
+  const [selectedFacility, setSelectedFacility] = useState(null);
 
-  const ucBanilad = [10.3384, 123.9117];
-  const ucMain = [10.2969648, 123.896915672416];
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const q = query(
+          collection(db, "credentials"),
+          where("role", "==", "facility"),
+          where("facilityCoordinates", "!=", null)
+        );
+        const querySnapshot = await getDocs(q);
+        const fetchedFacilities = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            facilityName: data.facilityName,
+            coordinates: data.facilityCoordinates,
+          };
+        });
+        setFacilities(fetchedFacilities);
+      } catch (error) {
+        console.error("Error fetching facilities:", error);
+      }
+    };
+
+    fetchFacilities();
+  }, []);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -46,7 +79,7 @@ const MapWithRouting = () => {
 
   return (
     <MapContainer
-      center={ucBanilad}
+      center={[10.3150363, 123.8916419]}
       zoom={13}
       scrollWheelZoom={false}
       style={{ height: "100vh", width: "100%" }}
@@ -60,28 +93,54 @@ const MapWithRouting = () => {
       />
 
       {userPosition && (
-        <Marker position={userPosition}>
+        <CircleMarker
+          center={userPosition}
+          pathOptions={{
+            color: "",
+            fillColor: "red",
+            fillOpacity: 0.7,
+            radius: 8,
+          }}
+        >
           <Popup>You are here!</Popup>
-        </Marker>
+        </CircleMarker>
       )}
 
-      <Marker
-        position={ucBanilad}
-        eventHandlers={{
-          click: () => setDestination(ucBanilad),
-        }}
-      >
-        <Popup>University of Cebu Banilad</Popup>
-      </Marker>
+      {facilities.map((facility) => (
+        <Marker
+          key={facility.id}
+          position={[
+            facility.coordinates.latitude,
+            facility.coordinates.longitude,
+          ]}
+          eventHandlers={{
+            click: () => {
+              setSelectedFacility(facility);
+              setDestination([
+                facility.coordinates.latitude,
+                facility.coordinates.longitude,
+              ]);
+            },
+          }}
+        >
+          <Popup>{facility.facilityName}</Popup>
+        </Marker>
+      ))}
 
-      <Marker
-        position={ucMain}
-        eventHandlers={{
-          click: () => setDestination(ucMain),
-        }}
-      >
-        <Popup>University of Cebu Main</Popup>
-      </Marker>
+      {selectedFacility && (
+        <CircleMarker
+          center={[
+            selectedFacility.coordinates.latitude,
+            selectedFacility.coordinates.longitude,
+          ]}
+          pathOptions={{
+            color: "red",
+            fillColor: "red",
+            fillOpacity: 0.7,
+            radius: 10,
+          }}
+        />
+      )}
 
       {userPosition && destination && (
         <RoutingMachine userPosition={userPosition} destination={destination} />
