@@ -3,7 +3,6 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   CircleMarker,
   Tooltip,
   useMap,
@@ -13,6 +12,16 @@ import "leaflet-routing-machine";
 import { db } from "@/configs/firebaseConfigs";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import Image from "next/image";
+
+const customIcon = L.icon({
+  iconUrl: "/Icons/marker-icon-2x.png",
+  shadowUrl: "/Icons/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [0, -41],
+  shadowSize: [41, 41],
+  shadowAnchor: [12, 41],
+});
 
 const RoutingMachine = ({ userPosition, destination, showDirections }) => {
   const map = useMap();
@@ -113,7 +122,7 @@ const MapWithRouting = () => {
 
   return (
     <div className="w-screen h-screen relative">
-      <div className="flex flex-row gap-2 absolute bottom-8 left-6 w-auto h-auto justify-center text-xs items-center z-10">
+      <div className="flex flex-row gap-2 absolute bottom-12 left-2 w-auto h-auto justify-center text-xs items-center z-10">
         <button
           className="py-1 px-1 rounded-full flex justify-center items-center bg-red-300 text-white hover:bg-red-400 duration-300 "
           onClick={toggleDirections}
@@ -175,6 +184,7 @@ const MapWithRouting = () => {
 
         {filteredFacilities.map((facility) => (
           <Marker
+            icon={customIcon}
             key={facility.id}
             position={[
               facility.coordinates.latitude,
