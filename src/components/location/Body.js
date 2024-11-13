@@ -124,7 +124,7 @@ const MapWithRouting = () => {
     <div className="w-screen h-screen relative">
       <div className="flex flex-row gap-2 absolute bottom-12 left-2 w-auto h-auto justify-center text-xs items-center z-10">
         <button
-          className="py-1 px-1 rounded-full flex justify-center items-center bg-red-300 text-white hover:bg-red-400 duration-300 "
+          className="py-2 px-2 rounded-full flex justify-center items-center bg-red-300 text-white hover:bg-red-400 duration-300 "
           onClick={toggleDirections}
           style={{ margin: "10px" }}
         >
@@ -134,6 +134,7 @@ const MapWithRouting = () => {
               className="w-auto h-auto"
               width={1920}
               height={1080}
+              alt="Eye On"
             />
           ) : (
             <Image
@@ -141,6 +142,7 @@ const MapWithRouting = () => {
               className="w-auto h-auto"
               width={1920}
               height={1080}
+              alt="Eye Off"
             />
           )}
         </button>
