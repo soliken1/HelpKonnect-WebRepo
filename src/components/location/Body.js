@@ -113,7 +113,7 @@ const MapWithRouting = () => {
 
   return (
     <div className="w-screen h-screen relative">
-      <div className="flex flex-row gap-5 absolute bottom-3 left-2 w-auto h-auto justify-center text-xs items-center z-10">
+      <div className="flex flex-row gap-2 absolute bottom-8 left-6 w-auto h-auto justify-center text-xs items-center z-10">
         <button
           className="py-1 px-1 rounded-full flex justify-center items-center bg-red-300 text-white hover:bg-red-400 duration-300 "
           onClick={toggleDirections}
@@ -138,7 +138,7 @@ const MapWithRouting = () => {
         <input
           placeholder="Search..."
           type="text"
-          className="px-2 h-6 w-32 rounded-md text-xs"
+          className="px-2 py-2 w-44 rounded-md text-xs"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
