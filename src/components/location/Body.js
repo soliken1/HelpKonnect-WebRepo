@@ -12,6 +12,7 @@ import L from "leaflet";
 import "leaflet-routing-machine";
 import { db } from "@/configs/firebaseConfigs";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import Image from "next/image";
 
 const RoutingMachine = ({ userPosition, destination, showDirections }) => {
   const map = useMap();
@@ -114,16 +115,30 @@ const MapWithRouting = () => {
     <div className="w-screen h-screen relative">
       <div className="flex flex-row gap-5 absolute bottom-3 left-2 w-auto h-auto justify-center text-xs items-center z-10">
         <button
-          className="h-10 px-6 rounded-full bg-red-300 text-white hover:bg-red-400 duration-300 "
+          className="py-1 px-1 rounded-full flex justify-center items-center bg-red-300 text-white hover:bg-red-400 duration-300 "
           onClick={toggleDirections}
           style={{ margin: "10px" }}
         >
-          {showDirections ? "Hide Directions" : "Show Directions"}
+          {showDirections ? (
+            <Image
+              src="/Icons/EyeOnIcon.png"
+              className="w-auto h-auto"
+              width={1920}
+              height={1080}
+            />
+          ) : (
+            <Image
+              src="/Icons/EyeOffIcon.png"
+              className="w-auto h-auto"
+              width={1920}
+              height={1080}
+            />
+          )}
         </button>
         <input
           placeholder="Search..."
           type="text"
-          className="px-6 h-10 w-60 rounded-md text-xs"
+          className="px-2 h-6 w-32 rounded-md text-xs"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
