@@ -23,6 +23,8 @@ const nextConfig = {
     PAYMONGO_PUBLIC_KEY: process.env.PAYMONGO_PUBLIC_KEY,
     MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
     GMAP_GEOCODING_KEY: process.env.GMAP_GEOCODING_KEY,
+    ONESIGNAL_KEY: process.env.ONESIGNAL_KEY,
+    ONESIGNAL_ID: process.env.ONESIGNAL_ID,
   },
   images: {
     dangerouslyAllowSVG: true,
