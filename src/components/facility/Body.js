@@ -29,7 +29,7 @@ function Body() {
     facilityName: "",
     facilityDescription: "",
     facilityLocation: "",
-    facilityCoordinates: null,
+    facilityExpertise: "",
     role: "facility",
     banned: false,
     dateCreated: serverTimestamp(),
@@ -121,6 +121,7 @@ function Body() {
         facilityName: "",
         facilityDescription: "",
         facilityLocation: "",
+        facilityExpertise: "",
         facilityCoordinates: null,
       });
       setImagePreview(null);

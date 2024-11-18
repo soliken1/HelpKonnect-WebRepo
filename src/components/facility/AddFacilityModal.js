@@ -17,7 +17,7 @@ function AddFacilityModal({ isOpen, onClose, children }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
-        className={`bg-white px-6 md:px-10 pt-8 pb-2 rounded-lg shadow-md relative w-full h-full md:w-5/6 md:h-5/6 transition-transform duration-200 ease-in-out ${
+        className={`bg-white px-6 flex flex-row md:px-10 pt-8 pb-2 rounded-lg shadow-md relative w-full h-full md:w-5/6 md:h-5/6 transition-transform duration-200 ease-in-out ${
           showModal ? "scale-100" : "scale-0"
         }`}
       >

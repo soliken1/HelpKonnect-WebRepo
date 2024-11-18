@@ -33,16 +33,16 @@ function Table({ bookings }) {
               className="hover:bg-gray-100 cursor-pointer"
             >
               <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {booking.professional.username}
+                {booking.professional?.username}
               </td>
               <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {booking.user.username}
+                {booking.user?.username}
               </td>
               <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                {booking.bookingDate}
+                {booking?.bookingDate}
               </td>
               <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
-                ₱{booking.amount}
+                ₱{booking?.amount}
               </td>
               <td
                 className={`py-3 px-4 font-semibold text-center text-sm border-b border-gray-300 ${className}`}

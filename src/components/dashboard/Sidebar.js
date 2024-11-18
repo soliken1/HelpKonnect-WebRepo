@@ -215,22 +215,6 @@ function Sidebar({ role }) {
                   </label>
                 </Link>
               </div>
-              <div className="w-full flex items-center justify-center h-16">
-                <Link
-                  href="/location"
-                  className="flex flex-col items-center justify-center gap-1 p-2 transition duration-150 hover:bg-red-400 rounded-md"
-                >
-                  <Image
-                    src="/Icons/CompassIcon.svg"
-                    width={25}
-                    height={25}
-                    alt="Events Icon"
-                  />
-                  <label className="text-white text-sm font-bold cursor-pointer">
-                    Location
-                  </label>
-                </Link>
-              </div>
             </>
           ) : null}
         </div>
