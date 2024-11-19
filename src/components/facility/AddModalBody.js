@@ -128,8 +128,8 @@ function AddModalBody({
             <div className="relative mt-7">
               <input
                 type="text"
-                name="facilityLocation"
-                id="facilityLocation"
+                name="facilityExpertise"
+                id="facilityExpertise"
                 className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-red-300 focus:outline-none focus:ring-0 focus:border-red-300 peer"
                 placeholder=" "
                 autoComplete="off"
@@ -138,7 +138,7 @@ function AddModalBody({
                 required={true}
               />
               <label
-                htmlFor="facilityLocation"
+                htmlFor="facilityExpertise"
                 className="absolute text-sm font-semibold text-red-300 dark:text-red-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] bg-transparent px-2 peer-focus:px-2 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-100 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
               >
                 Facility Expertise
