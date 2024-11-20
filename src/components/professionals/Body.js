@@ -176,11 +176,6 @@ function Body() {
                     </label>
                   </div>
                 </div>
-                <Stars
-                  width={25}
-                  height={25}
-                  className={"items-center justify-center mt-2"}
-                />
                 <div className="mt-5 w-full flex items-center justify-center flex-col gap-2">
                   <label className="font-semibold">Update Rate</label>
                   <form
@@ -192,6 +187,7 @@ function Body() {
                       className="text-center placeholder:text-black"
                       placeholder={`₱${selectedProfessional.rate}`}
                       type="number"
+                      min={0}
                       style={{ appearance: "textfield" }}
                     />
                     <button className="px-2 py-2 bg-green-400 hover:bg-green-500 text-white rounded-xl shadow-md duration-300">

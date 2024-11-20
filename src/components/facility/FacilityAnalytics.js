@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getTotalFacilityCount } from "@/utils/totalFacility";
 import Image from "next/image";
-import Stars from "../general/Stars";
 import Pulser from "../loaders/Facility/Pulser";
 import { revenue } from "@/utils/revenue";
-
+import { Rating } from "@mui/material";
 function FacilityAnalytics({ selectedFacility, facilityDetails }) {
   const [totalFacilityCount, setTotalFacilityCount] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -43,7 +42,7 @@ function FacilityAnalytics({ selectedFacility, facilityDetails }) {
           ₱{totalRevenue}
         </label>
       </div>
-      <div className="w-auto h-auto items-start rounded-md flex flex-col p-4 group shadow-md bg-white">
+      <div className="max-h-64 min-h-64 overflow-auto h-auto items-start rounded-md flex flex-col p-4 group shadow-md bg-white">
         {selectedFacility ? (
           <div className="flex flex-row gap-5">
             {facilityDetails && (
@@ -62,6 +61,10 @@ function FacilityAnalytics({ selectedFacility, facilityDetails }) {
                   <label className="text-sm text-gray-500">
                     {facilityDetails.email}
                   </label>
+                  <Rating
+                    defaultValue={facilityDetails.averageRating}
+                    readOnly
+                  />
                   <div className="mt-2">
                     <p className="text-sm text-gray-700">
                       {facilityDetails.facilityDescription}
@@ -75,7 +78,6 @@ function FacilityAnalytics({ selectedFacility, facilityDetails }) {
                         facilityDetails.dateCreated.seconds * 1000
                       ).toLocaleDateString()}
                     </p>
-                    <Stars className={"mt-2"} width={20} height={20} />
                   </div>
                 </div>
               </>

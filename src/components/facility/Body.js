@@ -172,6 +172,31 @@ function Body() {
           ...doc.data(),
         }));
 
+        const feedbackSnapshot = await getDocs(collection(db, "feedback"));
+        const feedbackData = feedbackSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const facilityRatings = feedbackData.reduce((acc, feedback) => {
+          const { facilityId, rating } = feedback;
+          if (!acc[facilityId]) {
+            acc[facilityId] = { totalRating: 0, count: 0 };
+          }
+          acc[facilityId].totalRating += rating;
+          acc[facilityId].count += 1;
+          return acc;
+        }, {});
+
+        const averageRatings = Object.keys(facilityRatings).reduce(
+          (acc, id) => {
+            const { totalRating, count } = facilityRatings[id];
+            acc[id] = totalRating / count;
+            return acc;
+          },
+          {}
+        );
+
         const bookingsCount = bookingsData.reduce((acc, booking) => {
           const facilityName = booking.facilityName;
           acc[facilityName] = (acc[facilityName] || 0) + 1;
@@ -207,6 +232,8 @@ function Body() {
 
               if (facilityDocSnap.exists()) {
                 const facilityData = facilityDocSnap.data();
+                const averageRating = averageRatings[credential.userId] || 0;
+
                 return {
                   ...facilityData,
                   facilityName:
@@ -214,6 +241,7 @@ function Body() {
                   totalProfessionals: associatedProfessionalsCount,
                   totalBookings: bookingsCount[credential.facilityName] || 0,
                   generated: generatedIncome[credential.facilityName] || 0,
+                  averageRating: averageRating,
                 };
               } else {
                 console.error(
