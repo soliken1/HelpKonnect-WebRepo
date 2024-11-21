@@ -62,8 +62,8 @@ function FacilityAnalytics({ selectedFacility, facilityDetails }) {
                     {facilityDetails.email}
                   </label>
                   <Rating
-                    defaultValue={facilityDetails.averageRating}
-                    readOnly
+                    value={selectedFacility.averageRating}
+                    precision={0.5}
                   />
                   <div className="mt-2">
                     <p className="text-sm text-gray-700">

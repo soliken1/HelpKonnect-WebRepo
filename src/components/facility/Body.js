@@ -232,8 +232,6 @@ function Body() {
 
               if (facilityDocSnap.exists()) {
                 const facilityData = facilityDocSnap.data();
-                const averageRating = averageRatings[credential.userId] || 0;
-
                 return {
                   ...facilityData,
                   facilityName:
@@ -241,7 +239,7 @@ function Body() {
                   totalProfessionals: associatedProfessionalsCount,
                   totalBookings: bookingsCount[credential.facilityName] || 0,
                   generated: generatedIncome[credential.facilityName] || 0,
-                  averageRating: averageRating,
+                  averageRating: averageRatings[credential.userId] || 0,
                 };
               } else {
                 console.error(
