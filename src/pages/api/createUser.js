@@ -13,7 +13,6 @@ export default async function handler(req, res) {
       {
         id: userId,
         name: username,
-        role: "admin",
       },
     ]);
     res.status(200).json({ message: "User created successfully" });
