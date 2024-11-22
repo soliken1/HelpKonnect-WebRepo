@@ -30,6 +30,8 @@ function Body() {
     facilityDescription: "",
     facilityLocation: "",
     facilityExpertise: "",
+    descriptionTag: "",
+    expertiseTag: "",
     role: "facility",
     banned: false,
     dateCreated: serverTimestamp(),
@@ -99,10 +101,33 @@ function Body() {
         formData.facilityLocation
       );
 
+      const response = await fetch(
+        "https://hk-recommender.vercel.app/tagging",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.uid,
+            facilityDescription: formData.facilityDescription,
+            facilityExpertise: formData.facilityExpertise,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch expertise and description tags");
+      }
+
+      const { expertiseTag, descriptionTag } = await response.json();
+
       const facilityData = {
         ...formData,
         imageUrl,
         userId: user.uid,
+        descriptionTag: descriptionTag,
+        expertiseTag: expertiseTag,
         facilityCoordinates,
       };
 
