@@ -11,7 +11,6 @@ import L from "leaflet";
 import "leaflet-routing-machine";
 import { db } from "@/configs/firebaseConfigs";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import Image from "next/image";
 
 const customIcon = L.icon({
   iconUrl: "/Icons/marker-icon-2x.png",
@@ -23,11 +22,11 @@ const customIcon = L.icon({
   shadowAnchor: [12, 41],
 });
 
-const RoutingMachine = ({ userPosition, destination, showDirections }) => {
+const RoutingMachine = ({ userPosition, destination }) => {
   const map = useMap();
 
   useEffect(() => {
-    if (!userPosition || !destination || !showDirections) return;
+    if (!userPosition || !destination) return;
 
     const routingControl = L.Routing.control({
       waypoints: [L.latLng(userPosition), L.latLng(destination)],
@@ -40,7 +39,7 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
     return () => {
       map.removeControl(routingControl);
     };
-  }, [userPosition, destination, map, showDirections]);
+  }, [userPosition, destination, map]);
 
   return null;
 };
@@ -51,7 +50,6 @@ const MapWithRouting = () => {
   const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [destination, setDestination] = useState(null);
   const [selectedFacility, setSelectedFacility] = useState(null);
-  const [showDirections, setShowDirections] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -107,7 +105,7 @@ const MapWithRouting = () => {
         (error) => {
           console.error("Error watching position:", error);
         },
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
@@ -126,39 +124,11 @@ const MapWithRouting = () => {
       facility.coordinates.latitude,
       facility.coordinates.longitude,
     ]);
-    setShowDirections(true);
-  };
-
-  const toggleDirections = () => {
-    setShowDirections((prevState) => !prevState);
   };
 
   return (
     <div className="w-screen h-screen relative">
       <div className="flex flex-row gap-2 absolute bottom-12 left-2 w-auto h-auto justify-center text-xs items-center z-10">
-        <button
-          className="py-2 px-2 rounded-full flex justify-center items-center bg-red-300 text-white hover:bg-red-400 duration-300 "
-          onClick={toggleDirections}
-          style={{ margin: "10px" }}
-        >
-          {showDirections ? (
-            <Image
-              src="/Icons/EyeOnIcon.png"
-              className="w-auto h-auto"
-              width={1920}
-              height={1080}
-              alt="Eye On"
-            />
-          ) : (
-            <Image
-              src="/Icons/EyeOffIcon.png"
-              className="w-auto h-auto"
-              width={1920}
-              height={1080}
-              alt="Eye Off"
-            />
-          )}
-        </button>
         <input
           placeholder="Search..."
           type="text"
@@ -228,11 +198,10 @@ const MapWithRouting = () => {
           />
         )}
 
-        {userPosition && destination && showDirections && (
+        {userPosition && destination && (
           <RoutingMachine
             userPosition={userPosition}
             destination={destination}
-            showDirections={showDirections}
           />
         )}
       </MapContainer>
