@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -29,21 +29,13 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
   useEffect(() => {
     if (!userPosition || !destination || !showDirections) return;
 
-    console.log("User Position:", userPosition);
-    console.log("Destination:", destination);
-    console.log("Show Directions:", showDirections);
-
     const routingControl = L.Routing.control({
       waypoints: [L.latLng(userPosition), L.latLng(destination)],
       routeWhileDragging: true,
+      show: false,
       router: L.Routing.mapbox(process.env.MAPBOX_TOKEN),
       createMarker: () => null,
     }).addTo(map);
-
-    routingControl.setWaypoints([
-      L.latLng(userPosition),
-      L.latLng(destination),
-    ]);
 
     return () => {
       map.removeControl(routingControl);
@@ -115,13 +107,12 @@ const MapWithRouting = () => {
         (error) => {
           console.error("Error watching position:", error);
         },
-        { enableHighAccuracy: true, maximumAge: 0 }
+        { enableHighAccuracy: true }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
 
-    // Cleanup the watcher on unmount
     return () => {
       if (watchId) {
         navigator.geolocation.clearWatch(watchId);
