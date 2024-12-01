@@ -139,7 +139,7 @@ function FlagList() {
               className="p-4 border-b-2 flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-100 duration-100"
             >
               <Image
-                className="h-12 w-12 object-contain rounded-full"
+                className="h-12 w-12 object-cover rounded-full"
                 src={user.imageUrl}
                 width={1920}
                 height={1080}

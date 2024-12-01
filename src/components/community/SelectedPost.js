@@ -132,7 +132,7 @@ function SelectedPost() {
             <Image
               src={post.userProfile}
               alt="User Profile"
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 object-cover rounded-full"
               width={1920}
               height={1080}
             />

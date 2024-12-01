@@ -50,7 +50,7 @@ function FacilityAnalytics({ selectedFacility, facilityDetails }) {
                 <Image
                   src={facilityDetails.imageUrl}
                   alt="Facility Profile"
-                  className="w-20 h-20 rounded-full mb-4 shadow-md"
+                  className="w-20 h-20 object-cover rounded-full mb-4 shadow-md"
                   width={80}
                   height={80}
                 />

@@ -76,7 +76,7 @@ function Posts({ posts, userId }) {
         >
           <div className="w-full flex flex-row gap-2">
             <Image
-              className="w-12 h-12 rounded-full"
+              className="w-12 h-12 object-cover rounded-full"
               width={1920}
               height={1080}
               src={post.userProfile}

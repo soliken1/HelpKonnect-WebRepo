@@ -162,7 +162,7 @@ function Body() {
                     width={1920}
                     height={1080}
                     alt="Profile"
-                    className="rounded-full w-16 h-16"
+                    className="rounded-full object-cover w-16 h-16"
                   />
                   <div className="flex flex-col">
                     <label className="text-md font-semibold">

@@ -75,7 +75,7 @@ function Comments({ postId }) {
           <Image
             src={comment.userProfile || "/defaultProfileImage.png"}
             alt="User Profile"
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 object-cover rounded-full"
             width={1920}
             height={1080}
           />

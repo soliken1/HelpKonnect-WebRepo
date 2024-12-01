@@ -27,7 +27,7 @@ function Profile() {
       ) : (
         <>
           <Image
-            className="rounded-full w-8 h-8"
+            className="rounded-full object-cover w-8 h-8"
             src={userProfile}
             width={1920}
             height={1920}
