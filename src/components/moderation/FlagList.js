@@ -65,7 +65,7 @@ function FlagList() {
 
             flaggedMap.set(userId, {
               userId,
-              imageUrl: userData.imageUrl,
+              imageUrl: userData?.imageUrl,
               name: userData?.facilityName || userData?.username || "Unknown",
               comment: flagged.comment,
               time: flagged.time.toDate(),
