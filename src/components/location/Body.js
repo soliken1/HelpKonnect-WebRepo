@@ -36,8 +36,16 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
       createMarker: () => null,
     }).addTo(map);
 
+    // Update waypoints dynamically
+    routingControl.setWaypoints([
+      L.latLng(userPosition),
+      L.latLng(destination),
+    ]);
+
     return () => {
-      map.removeControl(routingControl);
+      if (map.hasLayer(routingControl)) {
+        map.removeControl(routingControl);
+      }
     };
   }, [userPosition, destination, map, showDirections]);
 
