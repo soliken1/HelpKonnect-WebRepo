@@ -105,7 +105,7 @@ const MapWithRouting = () => {
         (error) => {
           console.error("Error watching position:", error);
         },
-        { enableHighAccuracy: true, maximumAge: 0 }
+        { enableHighAccuracy: true }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
