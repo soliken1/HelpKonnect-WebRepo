@@ -40,7 +40,6 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
       createMarker: () => null,
     }).addTo(map);
 
-    // Update waypoints dynamically
     routingControl.setWaypoints([
       L.latLng(userPosition),
       L.latLng(destination),
@@ -105,16 +104,29 @@ const MapWithRouting = () => {
   }, [searchQuery, facilities]);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setUserPosition([latitude, longitude]);
-      },
-      (error) => {
-        console.error("Location access denied:", error);
-      },
-      { enableHighAccuracy: true }
-    );
+    let watchId;
+
+    if (navigator.geolocation) {
+      watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserPosition([latitude, longitude]);
+        },
+        (error) => {
+          console.error("Error watching position:", error);
+        },
+        { enableHighAccuracy: true, maximumAge: 0 }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+
+    // Cleanup the watcher on unmount
+    return () => {
+      if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
   }, []);
 
   const handleFacilityClick = (facility) => {
