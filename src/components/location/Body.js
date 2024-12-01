@@ -29,6 +29,10 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
   useEffect(() => {
     if (!userPosition || !destination || !showDirections) return;
 
+    console.log("User Position:", userPosition);
+    console.log("Destination:", destination);
+    console.log("Show Directions:", showDirections);
+
     const routingControl = L.Routing.control({
       waypoints: [L.latLng(userPosition), L.latLng(destination)],
       routeWhileDragging: true,
@@ -43,9 +47,7 @@ const RoutingMachine = ({ userPosition, destination, showDirections }) => {
     ]);
 
     return () => {
-      if (map.hasLayer(routingControl)) {
-        map.removeControl(routingControl);
-      }
+      map.removeControl(routingControl);
     };
   }, [userPosition, destination, map, showDirections]);
 
