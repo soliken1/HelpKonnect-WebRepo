@@ -140,7 +140,7 @@ function Analytics() {
           <div className="flex flex-col md:w-3/4 md:h-full">
             <div className="w-full h-full md:min-w-full md:min-h-full flex p-2 rounded-lg flex-col gap-2">
               {chartData ? <LineChart data={chartData} /> : <ChartLoader />}
-              <div className="flex flex-row justify-evenly items-center mt-auto mb-auto">
+              {/* <div className="flex flex-row justify-evenly items-center mt-auto mb-auto">
                 <div className="w-60 h-28 relative border-2 min-h-28 bg-gradient-to-br from-green-500 to-emerald-600 hover:scale-105 duration-200 p-4 flex flex-col rounded-md">
                   <label className="font-bold text-white">Happy Users</label>
                   <label className="text-3xl text-green-300">200</label>
@@ -169,7 +169,7 @@ function Analytics() {
                     alt="Frown Icon"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="w-full md:w-1/4 flex flex-col px-4 pt-4 pb-8 gap-5">
