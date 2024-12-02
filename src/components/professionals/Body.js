@@ -58,6 +58,50 @@ function Body() {
     setSelectedProfessional(professional);
   };
 
+  const handleRemoveProfessional = async (event) => {
+    event.preventDefault();
+    if (selectedProfessional) {
+      const professionalRef = doc(db, "credentials", selectedProfessional.id);
+
+      try {
+        await updateDoc(professionalRef, {
+          associate: "",
+        });
+
+        const snapshot = await getDocs(professionalsRef);
+        const fetchedProfessionals = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProfessionals(fetchedProfessionals);
+
+        toast.success("Professional Removed Successfully", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      } catch (error) {
+        toast.error("Error Removing Professional! Try Again", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      }
+    }
+  };
+
   const handleRateUpdate = async (event) => {
     event.preventDefault();
     if (selectedProfessional) {
@@ -176,10 +220,10 @@ function Body() {
                     </label>
                   </div>
                 </div>
-                <div className="mt-5 w-full flex items-center justify-center flex-col gap-2">
+                <div className="mt-5 w-full flex items-center justify-center flex-col gap-2 debug">
                   <label className="font-semibold">Update Rate</label>
                   <form
-                    className="flex flex-col gap-5"
+                    className="flex flex-col gap-5 debug"
                     onSubmit={handleRateUpdate}
                   >
                     <input
@@ -194,6 +238,9 @@ function Body() {
                       Update Rate
                     </button>
                   </form>
+                  <button className="px-2 py-2 w-full bg-red-400 hover:bg-red-500 text-white rounded-xl shadow-md duration-300">
+                    Remove Professional
+                  </button>
                 </div>
               </>
             )}

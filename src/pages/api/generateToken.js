@@ -9,11 +9,6 @@ export default async function handler(req, res) {
   );
 
   try {
-    await serverClient.upsertUser({
-      id: userId,
-      role: "admin",
-    });
-
     const token = serverClient.createToken(userId);
 
     res.status(200).json({ token });
