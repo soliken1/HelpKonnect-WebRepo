@@ -5,6 +5,7 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/configs/firebaseConfigs";
 import { toast, Bounce } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import AddLoader from "../loaders/Resources/AddLoader";
 
 function AddModalBody({ isModalOpen, closeModal, username }) {
@@ -237,6 +238,7 @@ function AddModalBody({ isModalOpen, closeModal, username }) {
         </div>
       </Modal>
       {isLoading && <AddLoader />}
+      <ToastContainer />
     </>
   );
 }

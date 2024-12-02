@@ -4,7 +4,6 @@ import Image from "next/image";
 import { getCookie } from "cookies-next";
 import AddModalBody from "./AddModalBody";
 import Table from "./Table";
-import Stars from "@/components/general/Stars";
 import { db } from "@/configs/firebaseConfigs";
 import {
   collection,
@@ -65,7 +64,7 @@ function Body() {
 
       try {
         await updateDoc(professionalRef, {
-          associate: "",
+          associated: "",
         });
 
         const snapshot = await getDocs(professionalsRef);
@@ -220,10 +219,10 @@ function Body() {
                     </label>
                   </div>
                 </div>
-                <div className="mt-5 w-full flex items-center justify-center flex-col gap-2 debug">
+                <div className="mt-5 w-full flex items-center justify-center flex-col gap-2">
                   <label className="font-semibold">Update Rate</label>
                   <form
-                    className="flex flex-col gap-5 debug"
+                    className="flex flex-col gap-5 w-full px-12"
                     onSubmit={handleRateUpdate}
                   >
                     <input
@@ -238,7 +237,10 @@ function Body() {
                       Update Rate
                     </button>
                   </form>
-                  <button className="px-2 py-2 w-full bg-red-400 hover:bg-red-500 text-white rounded-xl shadow-md duration-300">
+                  <button
+                    onClick={handleRemoveProfessional}
+                    className="px-2 py-2 w-48 bg-red-400 hover:bg-red-500 text-white rounded-xl shadow-md duration-300"
+                  >
                     Remove Professional
                   </button>
                 </div>

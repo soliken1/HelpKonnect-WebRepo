@@ -12,9 +12,11 @@ import {
   doc,
   updateDoc,
   deleteField,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/configs/firebaseConfigs";
 import formatDate from "@/utils/formatDate";
+import { toast, Bounce } from "react-toastify";
 
 function Body() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,6 +80,35 @@ function Body() {
       setSelectedResource({ ...selectedResource, approved: undefined });
     } catch (error) {
       console.error("Error denying resource: ", error);
+    }
+  };
+
+  const handleDeleteResource = async () => {
+    if (!selectedResource) return;
+    try {
+      const resourceRef = doc(db, "resources", selectedResource.id);
+
+      await deleteDoc(resourceRef);
+
+      setResources((prevResources) =>
+        prevResources.filter((resource) => resource.id !== selectedResource.id)
+      );
+
+      setSelectedResource(null);
+
+      toast.success("Resource deleted successfully", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } catch (error) {
+      console.error("Error deleting resource: ", error);
     }
   };
 
@@ -159,18 +190,22 @@ function Body() {
               </label>
               <div className="justify-center items-center flex-1 flex gap-4">
                 {selectedResource.approved ? (
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col justify-center items-center gap-4">
                     <a
                       href={selectedResource.fileURL}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="w-full"
                     >
-                      <button className="bg-blue-400 hover:bg-blue-500 duration-300 text-white font-semibold rounded-xl px-10 py-2">
+                      <button className="bg-blue-400 w-full hover:bg-blue-500 duration-300 text-white font-semibold rounded-xl px-10 py-2">
                         View Resource
                       </button>
                     </a>
-                    <button className="bg-gray-400 hover:bg-gray-500 duration-300 text-white font-semibold rounded-xl px-10 py-2">
-                      Approved
+                    <button
+                      className="bg-red-400 hover:bg-red-500 duration-300 text-white font-semibold rounded-xl px-10 py-2"
+                      onClick={handleDeleteResource}
+                    >
+                      Delete Resource
                     </button>
                   </div>
                 ) : (
