@@ -15,7 +15,6 @@ import Image from "next/image";
 function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
   const router = useRouter();
   const [isCallClicked, setIsCallClicked] = useState(false);
-  const [callId, setCallId] = useState("");
 
   const backMessage = () => {
     router.push("/message");
@@ -31,10 +30,9 @@ function LoadMessages({ chatClient, channel, selectedUser, currentUser }) {
 
   const startVideoCall = () => {
     const newCallId = `${currentUser}${selectedUser.userId}`;
-    setCallId(newCallId);
     setIsCallClicked(true);
     channel.sendMessage({
-      text: `You have an incoming video call. Join This Link: https://getstream.io/video/demos/join/${callId}?id=${callId}`,
+      text: `You have an incoming video call. Join This Link: https://getstream.io/video/demos/join/${newCallId}?id=${newCallId}`,
       user: { id: currentUser },
     });
   };
