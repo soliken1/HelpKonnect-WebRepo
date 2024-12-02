@@ -14,6 +14,17 @@ import { userType } from "@/utils/userType";
 import ChartLoader from "../loaders/Analytics/ChartLoader";
 import DonutChart from "./DonutChart";
 import Image from "next/image";
+import { countTotalGains } from "@/utils/checkPrice";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/configs/firebaseConfigs";
+import { countTotalBookingsForFacility } from "@/utils/bookingStatus";
 
 function Analytics() {
   const [user, setUser] = useState("");
@@ -26,6 +37,8 @@ function Analytics() {
   const [avgSession, setAvgSession] = useState(0);
   const [prevAvgSession, setPrevAvgSession] = useState(0);
   const [userTypeData, setUserTypeData] = useState(null);
+  const [bookings, setBookings] = useState([]);
+  const [totalEvents, setTotalEvents] = useState(0);
 
   useEffect(() => {
     setUser(getCookie("user"));
@@ -122,12 +135,49 @@ function Analytics() {
         console.error("Error fetching chart data:", error);
       }
     }
+
+    const fetchBookings = async () => {
+      const bookingsCollection = await getDocs(collection(db, "bookings"));
+      const bookingsData = await Promise.all(
+        bookingsCollection.docs.map(async (docSnapshot) => {
+          const booking = docSnapshot.data();
+          const userDoc = await getDoc(doc(db, "credentials", booking.userId));
+          const professionalDoc = await getDoc(
+            doc(db, "credentials", booking.professionalId)
+          );
+
+          return {
+            ...booking,
+            user: userDoc.exists() ? userDoc.data() : null,
+            professional: professionalDoc.exists()
+              ? professionalDoc.data()
+              : null,
+          };
+        })
+      );
+      setBookings(bookingsData);
+    };
+
+    const fetchEvents = async () => {
+      const eventsQuery = query(
+        collection(db, "events"),
+        where("facilityName", "==", user)
+      );
+      const querySnapshot = await getDocs(eventsQuery);
+      setTotalEvents(querySnapshot.size);
+    };
+
+    fetchEvents();
     fetchAvgSession();
     fetchDau();
     fetchTotalUser();
     fetchUserType();
     fetchChartData();
-  }, []);
+    fetchBookings();
+  }, [user]);
+
+  const totalGains = countTotalGains(bookings, user);
+  const totalBookings = countTotalBookingsForFacility(bookings, user);
 
   return (
     <div className="flex flex-col w-screen h-screen px-10 py-6">
@@ -174,136 +224,256 @@ function Analytics() {
           </div>
           <div className="w-full md:w-1/4 flex flex-col px-4 pt-4 pb-8 gap-5">
             <label>Detailed Analytics</label>
-            <div className="flex justify-center items-center pb-4 rounded-md shadow-md duration-75 hover:scale-105">
-              <div className="h-48">
-                {userTypeData ? <DonutChart data={userTypeData} /> : ""}
-              </div>
-            </div>
-            <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">
-              <label className="text-lg text-white font-bold">
-                Total Users
-              </label>
-              {totalUser === "" ? (
-                <div className="w-32 h-4 bg-green-400 rounded-full animate-pulse"></div>
-              ) : (
-                <label className="text-green-300 text-2xl">{totalUser}</label>
-              )}
-              {totalUser === "" && prevTotalUser === "" ? (
-                <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
-              ) : (
-                <label className="text-white">
-                  <label
-                    className={
-                      totalUser - prevTotalUser >= 0
-                        ? "text-green-100"
-                        : "text-red-100"
-                    }
-                  >
-                    {totalUser - prevTotalUser >= 0
-                      ? `+${prevTotalUser}`
-                      : `${prevTotalUser}`}{" "}
+            {role === "admin" ? (
+              <>
+                <div className="flex justify-center items-center pb-4 rounded-md shadow-md duration-75 hover:scale-105">
+                  <div className="h-48">
+                    {userTypeData ? <DonutChart data={userTypeData} /> : ""}
+                  </div>
+                </div>
+                <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">
+                  <label className="text-lg text-white font-bold">
+                    Total Users
                   </label>
-                  In Previous Day
-                </label>
-              )}
-              <Image
-                src="/UserIcon.svg"
-                className="absolute transform translate-y-4 translate-x-4 bottom-0 right-0 opacity-10"
-                width={140}
-                height={140}
-                alt="User Icon"
-              />
-            </div>
-            <div
-              className={`flex relative flex-col gap-1 px-4 py-2 shadow-md min-h-28 rounded-md duration-300 hover:scale-105 ${
-                dau - prevDayActivity >= 0
-                  ? "bg-gradient-to-br from-green-500 to-emerald-600"
-                  : "bg-gradient-to-br from-red-400 to-rose-600"
-              }`}
-            >
-              <label className="text-lg text-white font-bold">
-                Total User Activities
-              </label>
-              {dau === "" ? (
-                <div className="w-32 h-4 bg-green-400 animate-pulse rounded-full"></div>
-              ) : (
-                <label
-                  className={`text-2xl ${
+                  {totalUser === "" ? (
+                    <div className="w-32 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-green-300 text-2xl">
+                      {totalUser}
+                    </label>
+                  )}
+                  {totalUser === "" && prevTotalUser === "" ? (
+                    <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-white">
+                      <label
+                        className={
+                          totalUser - prevTotalUser >= 0
+                            ? "text-green-100"
+                            : "text-red-100"
+                        }
+                      >
+                        {totalUser - prevTotalUser >= 0
+                          ? `+${prevTotalUser}`
+                          : `${prevTotalUser}`}{" "}
+                      </label>
+                      In Previous Day
+                    </label>
+                  )}
+                  <Image
+                    src="/UserIcon.svg"
+                    className="absolute transform translate-y-4 translate-x-4 bottom-0 right-0 opacity-10"
+                    width={140}
+                    height={140}
+                    alt="User Icon"
+                  />
+                </div>
+                <div
+                  className={`flex relative flex-col gap-1 px-4 py-2 shadow-md min-h-28 rounded-md duration-300 hover:scale-105 ${
                     dau - prevDayActivity >= 0
-                      ? "text-green-300"
-                      : "text-red-300"
+                      ? "bg-gradient-to-br from-green-500 to-emerald-600"
+                      : "bg-gradient-to-br from-red-400 to-rose-600"
                   }`}
                 >
-                  {dau}
-                </label>
-              )}
-              {dau === "" && prevDayActivity === "" ? (
-                <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
-              ) : (
-                <label className="text-white">
-                  <label
-                    className={
-                      dau - prevDayActivity >= 0
-                        ? "text-green-100"
-                        : "text-red-100"
-                    }
-                  >
-                    {dau - prevDayActivity >= 0
-                      ? `+${dau - prevDayActivity}`
-                      : `${dau - prevDayActivity}`}{" "}
+                  <label className="text-lg text-white font-bold">
+                    Total User Activities
                   </label>
-                  In Previous Day
-                </label>
-              )}
-              <Image
-                src="/SendIcon.svg"
-                className="absolute bottom-0 right-2 opacity-10"
-                width={100}
-                height={100}
-                alt="Send Icon"
-              />
-            </div>
-            <div
-              className={`flex flex-col relative gap-1 px-4 py-2 shadow-md min-h-28 rounded-md duration-300 hover:scale-105 ${
-                avgSession - prevAvgSession > 0
-                  ? "bg-gradient-to-br from-green-500 to-emerald-600"
-                  : "bg-gradient-to-br from-red-400 to-rose-600"
-              }`}
-            >
-              <label className="text-lg text-white font-bold">
-                Average Session Duration
-              </label>
-              <label
-                className={`text-2xl ${
-                  avgSession - prevAvgSession > 0
-                    ? "text-green-300"
-                    : "text-red-300"
-                }`}
-              >
-                {formatDuration(avgSession)}
-              </label>
-              <label className="text-white">
-                <label
-                  className={`${
+                  {dau === "" ? (
+                    <div className="w-32 h-4 bg-green-400 animate-pulse rounded-full"></div>
+                  ) : (
+                    <label
+                      className={`text-2xl ${
+                        dau - prevDayActivity >= 0
+                          ? "text-green-300"
+                          : "text-red-300"
+                      }`}
+                    >
+                      {dau}
+                    </label>
+                  )}
+                  {dau === "" && prevDayActivity === "" ? (
+                    <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-white">
+                      <label
+                        className={
+                          dau - prevDayActivity >= 0
+                            ? "text-green-100"
+                            : "text-red-100"
+                        }
+                      >
+                        {dau - prevDayActivity >= 0
+                          ? `+${dau - prevDayActivity}`
+                          : `${dau - prevDayActivity}`}{" "}
+                      </label>
+                      In Previous Day
+                    </label>
+                  )}
+                  <Image
+                    src="/SendIcon.svg"
+                    className="absolute bottom-0 right-2 opacity-10"
+                    width={100}
+                    height={100}
+                    alt="Send Icon"
+                  />
+                </div>
+                <div
+                  className={`flex flex-col relative gap-1 px-4 py-2 shadow-md min-h-28 rounded-md duration-300 hover:scale-105 ${
                     avgSession - prevAvgSession > 0
-                      ? `${"text-green-100"}`
-                      : `${"text-red-100"}`
+                      ? "bg-gradient-to-br from-green-500 to-emerald-600"
+                      : "bg-gradient-to-br from-red-400 to-rose-600"
                   }`}
                 >
-                  {avgSession - prevAvgSession > 0
-                    ? `+${formatDuration(avgSession - prevAvgSession)}`
-                    : `-${formatDuration(prevAvgSession - avgSession)}`}
-                </label>{" "}
-                In Previous Day
-              </label>
-              <Image
-                src="/ClockIcon.svg"
-                className="absolute bottom-0 right-0 opacity-10"
-                width={100}
-                height={100}
-                alt="Clock Icon"
-              />
-            </div>
+                  <label className="text-lg text-white font-bold">
+                    Average Session Duration
+                  </label>
+                  <label
+                    className={`text-2xl ${
+                      avgSession - prevAvgSession > 0
+                        ? "text-green-300"
+                        : "text-red-300"
+                    }`}
+                  >
+                    {formatDuration(avgSession)}
+                  </label>
+                  <label className="text-white">
+                    <label
+                      className={`${
+                        avgSession - prevAvgSession > 0
+                          ? `${"text-green-100"}`
+                          : `${"text-red-100"}`
+                      }`}
+                    >
+                      {avgSession - prevAvgSession > 0
+                        ? `+${formatDuration(avgSession - prevAvgSession)}`
+                        : `-${formatDuration(prevAvgSession - avgSession)}`}
+                    </label>{" "}
+                    In Previous Day
+                  </label>
+                  <Image
+                    src="/ClockIcon.svg"
+                    className="absolute bottom-0 right-0 opacity-10"
+                    width={100}
+                    height={100}
+                    alt="Clock Icon"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">
+                  <label className="text-lg text-white font-bold">
+                    Total Gains
+                  </label>
+                  {totalUser === "" ? (
+                    <div className="w-32 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-green-300 text-2xl">
+                      ₱{totalGains.toLocaleString()}
+                    </label>
+                  )}
+                  {totalUser === "" && prevTotalUser === "" ? (
+                    <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-white">
+                      <label
+                        className={
+                          totalUser - prevTotalUser >= 0
+                            ? "text-green-100"
+                            : "text-red-100"
+                        }
+                      >
+                        {totalUser - prevTotalUser >= 0
+                          ? `+${prevTotalUser}`
+                          : `${prevTotalUser}`}{" "}
+                      </label>
+                      In Previous Day
+                    </label>
+                  )}
+                  <Image
+                    src="/UserIcon.svg"
+                    className="absolute transform translate-y-4 translate-x-4 bottom-0 right-0 opacity-10"
+                    width={140}
+                    height={140}
+                    alt="User Icon"
+                  />
+                </div>
+                <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">
+                  <label className="text-lg text-white font-bold">
+                    Total Reservations
+                  </label>
+                  {totalUser === "" ? (
+                    <div className="w-32 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-green-300 text-2xl">
+                      {totalBookings}
+                    </label>
+                  )}
+                  {totalUser === "" && prevTotalUser === "" ? (
+                    <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-white">
+                      <label
+                        className={
+                          totalUser - prevTotalUser >= 0
+                            ? "text-green-100"
+                            : "text-red-100"
+                        }
+                      >
+                        {totalUser - prevTotalUser >= 0
+                          ? `+${prevTotalUser}`
+                          : `${prevTotalUser}`}{" "}
+                      </label>
+                      In Previous Day
+                    </label>
+                  )}
+                  <Image
+                    src="/SendIcon.svg"
+                    className="absolute bottom-0 right-2 opacity-10"
+                    width={100}
+                    height={100}
+                    alt="Send Icon"
+                  />
+                </div>
+                <div className="flex relative flex-col gap-1 bg-gradient-to-br min-h-28 from-green-500 to-emerald-600 hover:scale-105 duration-200 px-4 py-2 shadow-md rounded-md">
+                  <label className="text-lg text-white font-bold">
+                    Total Events
+                  </label>
+                  {totalUser === "" ? (
+                    <div className="w-32 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-green-300 text-2xl">
+                      {totalEvents}
+                    </label>
+                  )}
+                  {totalUser === "" && prevTotalUser === "" ? (
+                    <div className="w-48 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                  ) : (
+                    <label className="text-white">
+                      <label
+                        className={
+                          totalUser - prevTotalUser >= 0
+                            ? "text-green-100"
+                            : "text-red-100"
+                        }
+                      >
+                        {totalUser - prevTotalUser >= 0
+                          ? `+${prevTotalUser}`
+                          : `${prevTotalUser}`}{" "}
+                      </label>
+                      In Previous Day
+                    </label>
+                  )}
+                  <Image
+                    src="/ClockIcon.svg"
+                    className="absolute bottom-0 right-2 opacity-10"
+                    width={100}
+                    height={100}
+                    alt="Clock Icon"
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
