@@ -141,20 +141,32 @@ function Analytics() {
       const bookingsData = await Promise.all(
         bookingsCollection.docs.map(async (docSnapshot) => {
           const booking = docSnapshot.data();
+
           const userDoc = await getDoc(doc(db, "credentials", booking.userId));
-          const professionalDoc = await getDoc(
-            doc(db, "credentials", booking.professionalId)
-          );
+
+          let professionalData = null;
+          if (booking.professionalId && booking.professionalId.trim() !== "") {
+            const professionalDoc = await getDoc(
+              doc(db, "credentials", booking.professionalId)
+            );
+            professionalData = professionalDoc.exists()
+              ? professionalDoc.data()
+              : null;
+          } else {
+            professionalData = {
+              firstName: "Unknown",
+              lastName: "Professional",
+            };
+          }
 
           return {
             ...booking,
             user: userDoc.exists() ? userDoc.data() : null,
-            professional: professionalDoc.exists()
-              ? professionalDoc.data()
-              : null,
+            professional: professionalData,
           };
         })
       );
+
       setBookings(bookingsData);
     };
 
