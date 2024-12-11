@@ -2,7 +2,7 @@ import React from "react";
 
 import { getBookingStatus } from "@/utils/bookingStatus";
 
-function Table({ bookings }) {
+function Table({ bookings, handleRowClick }) {
   return (
     <table className="min-w-full overflow-auto">
       <thead>
@@ -20,6 +20,9 @@ function Table({ bookings }) {
             Cost
           </th>
           <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
+            Booking Status
+          </th>
+          <th className="p-4 bg-red-300 font-bold text-sm text-white border-b border-gray-300">
             Status
           </th>
         </tr>
@@ -31,6 +34,7 @@ function Table({ bookings }) {
             <tr
               key={booking.bookingId}
               className="hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleRowClick(booking)}
             >
               <td className="py-3 px-4 text-center text-sm text-gray-700 border-b border-gray-300">
                 {booking.professional?.username}
@@ -48,6 +52,13 @@ function Table({ bookings }) {
                 className={`py-3 px-4 font-semibold text-center text-sm border-b border-gray-300 ${className}`}
               >
                 {status}
+              </td>
+              <td
+                className={`py-3 px-4 font-semibold text-center text-sm border-b border-gray-300 ${
+                  booking?.status ? "text-green-400" : "text-yellow-400"
+                }`}
+              >
+                {booking?.status ? "Completed" : "Pending"}
               </td>
             </tr>
           );

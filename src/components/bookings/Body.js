@@ -2,17 +2,32 @@ import React, { useEffect, useState } from "react";
 import Table from "./Table";
 import Header from "./Header";
 import { db } from "@/configs/firebaseConfigs";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import BookingAnalytics from "./BookingAnalytics";
 import { getCookie } from "cookies-next";
 import { getBookingStatus } from "@/utils/bookingStatus";
 import { filterBookingsByTimeFrame } from "@/utils/filterBookings";
+import { ToastContainer } from "react-toastify";
+import { toast, Bounce } from "react-toastify";
 
 function Body({ user }) {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [timeFrameFilter, setTimeFrameFilter] = useState("All");
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [professionalName, setProfessionalName] = useState("");
+  const [professionalDetails, setProfessionalDetails] = useState(null);
+
   const facilityName = getCookie("user");
 
   useEffect(() => {
@@ -88,6 +103,90 @@ function Body({ user }) {
     });
   };
 
+  const handleRowClick = (booking) => {
+    setSelectedBooking(booking);
+    setModalVisible(true);
+  };
+
+  const fetchProfessionalDetails = async (name) => {
+    const professionalsCollection = await getDocs(
+      collection(db, "credentials")
+    );
+
+    const professionalDoc = professionalsCollection.docs.find((doc) => {
+      const data = doc.data();
+      const fullName = `${data.firstName} ${data.lastName}`.toLowerCase();
+
+      return (
+        fullName.includes(name.toLowerCase()) && data.role === "Professional"
+      );
+    });
+
+    if (professionalDoc) {
+      setProfessionalDetails(professionalDoc.data());
+    } else {
+      setProfessionalDetails(null);
+    }
+  };
+
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    setProfessionalName(name);
+    if (name) {
+      fetchProfessionalDetails(name);
+    } else {
+      setProfessionalDetails(null);
+    }
+  };
+
+  const updateBookingProfessional = async () => {
+    if (selectedBooking && professionalDetails) {
+      const bookingsCollection = collection(db, "bookings");
+      const q = query(
+        bookingsCollection,
+        where("bookingId", "==", selectedBooking.bookingId)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const bookingDoc = querySnapshot.docs[0];
+        const bookingRef = doc(db, "bookings", bookingDoc.id);
+
+        const sessionDuration = parseFloat(selectedBooking.sessionDuration);
+
+        if (isNaN(sessionDuration)) {
+          console.error("Invalid session duration");
+          return;
+        }
+
+        const amount = professionalDetails.rate * sessionDuration;
+
+        await updateDoc(bookingRef, {
+          professionalId: professionalDetails.userId,
+          status: true,
+          amount: amount,
+        });
+
+        setModalVisible(false);
+        toast.success("Successfully Set Professional to User!", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+        window.location.reload();
+      } else {
+        console.error("Booking not found");
+      }
+    }
+  };
+
   return (
     <div className="w-full flex flex-col p-10">
       <Header user={user} />
@@ -117,13 +216,52 @@ function Body({ user }) {
       </div>
       <div className="flex flex-row gap-4 flex-nowrap h-full">
         <div className="overflow-x-auto shadow-md rounded-md w-9/12 mt-2">
-          <Table bookings={filteredBookings} />
+          <Table bookings={filteredBookings} handleRowClick={handleRowClick} />
         </div>
         <BookingAnalytics
           bookings={filteredBookings}
           facilityName={facilityName}
         />
       </div>
+      {modalVisible && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-1/3">
+            <h2 className="text-xl font-bold">
+              Select Professional for Booking
+            </h2>
+            <input
+              type="text"
+              value={professionalName}
+              onChange={handleNameChange}
+              placeholder="Enter professional's name"
+              className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+            />
+            {professionalDetails && (
+              <div className="mt-4">
+                <h3>
+                  {professionalDetails.firstName} {professionalDetails.lastName}
+                </h3>
+                <p>Rate: ₱{professionalDetails.rate}</p>
+              </div>
+            )}
+            <div className="mt-4 flex justify-end gap-4">
+              <button
+                onClick={() => setModalVisible(false)}
+                className="py-2 px-4 bg-gray-300 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={updateBookingProfessional}
+                className="py-2 px-4 bg-red-400 text-white rounded-md"
+              >
+                Assign Professional
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <ToastContainer />
     </div>
   );
 }
